@@ -1,6 +1,6 @@
 {
-  "sbi": "200000002",
-  "crn": "1200000003",
+  "sbi": "300000001",
+  "crn": "9300000003",
   "role": "Business Partner",
   "permissionGroups": [
     {
@@ -11,6 +11,17 @@
         "View Applications",
         "View land, features and covers",
         "View CS agreement offer"
+      ]
+    },
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_AGREEMENTS",
+      "level": "VIEW",
+      "functions": [
+        "View CS Agreements",
+        "View Land, Features and Cover",
+        "View CS Agreement amendments",
+        "View CS agreement Transfers",
+        "View CS Claims"
       ]
     },
     {

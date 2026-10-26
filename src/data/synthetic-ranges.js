@@ -2,7 +2,7 @@
 // value is valid in format, so downstream validation accepts it, but comes from
 // a range that is unallocated or reserved for fiction. Do not widen them.
 //
-//   CRN       1200000NNN, 1300000NNN, 1400000NNN (issued CRNs start 11)
+//   CRN       9200000NNN, 9300000NNN, 9400000NNN (issued CRNs start 1)
 //   SBI       200000NNN, 300000NNN, 400000NNN (issued SBIs start 1)
 //   FRN       0 followed by a synthetic SBI
 //   Postcode  ZZ9 9AA / ZZ99 9AA (Royal Mail has no ZZ area)
@@ -10,7 +10,7 @@
 //   Landline  01632 960NNN (Ofcom drama range)
 //   Email     anything at example.test
 
-const CRN_PATTERN = /^1[234]00000\d{3}$/
+const CRN_PATTERN = /^9[234]00000\d{3}$/
 const SBI_PATTERN = /^[234]00000\d{3}$/
 const FRN_PATTERN = /^0[234]00000\d{3}$/
 const POSTCODE_PATTERN = /^ZZ\d{1,2} \d[ABD-HJLNP-UW-Z]{2}$/

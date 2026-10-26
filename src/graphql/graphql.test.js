@@ -7,11 +7,11 @@ import { IdMapping, IdMappingValidationError } from '#/data/id-mapping.js'
  * agreements, plus DAL-style error handling and identifier mapping.
  */
 
-const CS_PERSONA_CRN = '1300000001'
+const CS_PERSONA_CRN = '9300000001'
 const CS_PERSONA_SBI = '300000001'
 const SBI_WITH_AGREEMENTS = '300000001'
 const SBI_WITHOUT_AGREEMENTS = '200000001'
-const OTHER_CRN = '1200000003'
+const OTHER_CRN = '9200000003'
 
 // The Apollo integration writes the response as a JSON string, so parse it.
 const postGraphql = async (server, payload, headers = {}) => {
@@ -276,7 +276,7 @@ describe('POST /graphql', () => {
       ],
       [
         'business.customer(crn) with a leading zero',
-        `{ business(sbi: "${CS_PERSONA_SBI}") { customer(crn: "0130000001") { crn } } }`
+        `{ business(sbi: "${CS_PERSONA_SBI}") { customer(crn: "0930000001") { crn } } }`
       ]
     ])(
       'malformed %s is a BAD_REQUEST error with HTTP 400',
@@ -550,14 +550,14 @@ describe('createServer with a mapping whose target has no fixture', () => {
   test('refuses to start and names the missing fixtures', async () => {
     const error = await createServer({
       idMapping: new IdMapping({
-        crn: '1100000009:1300000099',
+        crn: '1100000009:9300000099',
         sbi: '100000009:300000099'
       })
     }).catch((err) => err)
 
     expect(error).toBeInstanceOf(IdMappingValidationError)
     expect(error.problems).toEqual([
-      'CRN map target 1300000099 has no customer fixture',
+      'CRN map target 9300000099 has no customer fixture',
       'SBI map target 300000099 has no business fixture'
     ])
   })

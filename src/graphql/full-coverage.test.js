@@ -13,7 +13,7 @@ import { CustomerBusiness } from '#/graphql/resolvers/customer.js'
  */
 
 const SBI = '300000001'
-const CRN = '1300000001'
+const CRN = '9300000001'
 
 const REQUIRED_PATHS = {
   Business: [
