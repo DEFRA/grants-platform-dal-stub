@@ -1,0 +1,144 @@
+{
+  "sbi": "300000001",
+  "organisationId": "7400001",
+  "info": {
+    "name": "Green Farm",
+    "reference": "0300000001",
+    "email": {
+      "address": "contact+300000001@example.test"
+    },
+    "phone": {
+      "mobile": "07300000001",
+      "landline": "01300000001"
+    },
+    "address": {
+      "line1": "2 Station Road",
+      "line2": "Business Park",
+      "line3": "Maidstone",
+      "line4": "Somerset",
+      "line5": "",
+      "street": "Test Lane",
+      "city": "Maidstone",
+      "postalCode": "W50 5UY",
+      "uprn": "481124619099",
+      "buildingName": null,
+      "buildingNumberRange": "1",
+      "county": "Testshire",
+      "dependentLocality": null,
+      "doubleDependentLocality": null,
+      "flatName": null,
+      "pafOrganisationName": "York Park House"
+    },
+    "vat": "GB300000001",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0001",
+      "charityCommission": "TC000001"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6246",
+        "parcelId": "1022"
+      },
+      {
+        "sheetId": "SD8343",
+        "parcelId": "1056"
+      },
+      {
+        "sheetId": "SD7858",
+        "parcelId": "1059"
+      },
+      {
+        "sheetId": "SD5547",
+        "parcelId": "1063"
+      },
+      {
+        "sheetId": "SD5964",
+        "parcelId": "1071"
+      }
+    ]
+  },
+  "agreements": [
+    {
+      "contractId": "TestContractId111",
+      "name": "SFI123",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2027-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "MOR1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8343",
+          "parcelName": "1056",
+          "actionArea": 50,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 54.4566,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2027-02-27T13:54:20.492Z"
+        }
+      ]
+    },
+    {
+      "contractId": "TestContractId222",
+      "name": "SFI123",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2024-12-19T10:40:05.244Z",
+      "endDate": "2027-07-21T05:12:15.156Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "CMOR1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5964",
+          "parcelName": "1071",
+          "actionArea": 40,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 41.8518,
+          "startDate": "2024-12-19T10:40:05.244Z",
+          "endDate": "2027-07-21T05:12:15.156Z"
+        },
+        {
+          "optionCode": "UP1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5964",
+          "parcelName": "1071",
+          "actionArea": 40,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 41.8518,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2027-02-27T13:54:20.492Z"
+        }
+      ]
+    }
+  ],
+  "countyParishHoldings": [
+    {
+      "cphNumber": "99/901/0001"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "sbi": "300000001",
+  "crn": "1300000003",
+  "role": "Business Partner",
+  "permissionGroups": [
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_APPLICATIONS",
+      "level": "VIEW",
+      "functions": [
+        "View CS Scheme eligibility",
+        "View Applications",
+        "View land, features and covers",
+        "View CS agreement offer"
+      ]
+    },
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_AGREEMENTS",
+      "level": "VIEW",
+      "functions": [
+        "View CS Agreements",
+        "View Land, Features and Cover",
+        "View CS Agreement amendments",
+        "View CS agreement Transfers",
+        "View CS Claims"
+      ]
+    },
+    {
+      "id": "BUSINESS_DETAILS",
+      "level": "VIEW",
+      "functions": [
+        "View business details",
+        "View people associated with the business"
+      ]
+    }
+  ]
+}

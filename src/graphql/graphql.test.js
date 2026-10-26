@@ -1,0 +1,435 @@
+import { createServer } from '#/server.js'
+import { IdMapping } from '#/data/id-mapping.js'
+
+/**
+ * Exercises the stub with the query shapes DAL consumers send: permissions,
+ * land parcels, business and customer details, county parish holdings and
+ * agreements, plus DAL-style error handling and identifier mapping.
+ */
+
+const CS_PERSONA_CRN = '1300000001'
+const CS_PERSONA_SBI = '300000001'
+const SBI_WITH_AGREEMENTS = '300000001'
+const SBI_WITHOUT_AGREEMENTS = '200000001'
+const OTHER_CRN = '1200000003'
+
+// The Apollo integration writes the response as a JSON string, so parse it.
+const postGraphql = async (server, payload, headers = {}) => {
+  const response = await server.inject({
+    method: 'POST',
+    url: '/graphql',
+    payload,
+    headers: { 'content-type': 'application/json', ...headers }
+  })
+  return { statusCode: response.statusCode, body: JSON.parse(response.payload) }
+}
+
+describe('POST /graphql', () => {
+  let server
+
+  beforeAll(async () => {
+    server = await createServer()
+    await server.initialize()
+  })
+
+  afterAll(async () => {
+    await server.stop()
+  })
+
+  describe('business and customer queries', () => {
+    test('GetBusinessPermissions returns the permission groups for a customer/business pair', async () => {
+      const response = await postGraphql(server, {
+        query: `
+          query GetBusinessPermissions {
+            customer(crn: "${CS_PERSONA_CRN}") {
+              business(sbi: "${CS_PERSONA_SBI}") {
+                permissionGroups {
+                  id
+                  level
+                  functions
+                }
+              }
+            }
+          }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.errors).toBeUndefined()
+      expect(
+        response.body.data.customer.business.permissionGroups
+      ).toContainEqual(
+        expect.objectContaining({
+          id: 'COUNTRYSIDE_STEWARDSHIP_APPLICATIONS',
+          level: 'SUBMIT',
+          functions: expect.arrayContaining(['Submit CS Application'])
+        })
+      )
+    })
+
+    test('customer.business is null when the customer has no relationship with the business', async () => {
+      const response = await postGraphql(server, {
+        query: `{ customer(crn: "${CS_PERSONA_CRN}") { business(sbi: "${SBI_WITHOUT_AGREEMENTS}") { permissionGroups { id } } } }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.data.customer.business).toBeNull()
+    })
+
+    test('Business parcels query ignores the date argument and returns sheet and parcel ids', async () => {
+      const response = await postGraphql(server, {
+        query: `
+          query Business {
+            business(sbi: "${SBI_WITH_AGREEMENTS}") {
+              land {
+                parcels(date: "${new Date().toISOString()}") {
+                  parcelId
+                  sheetId
+                }
+              }
+            }
+          }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.data.business.land.parcels).toContainEqual({
+        parcelId: '1056',
+        sheetId: 'SD8343'
+      })
+    })
+
+    test('Business and customer information query returns the full address shape', async () => {
+      const response = await postGraphql(server, {
+        query: `
+          query Business {
+            customer(crn: "${CS_PERSONA_CRN}") {
+              info { name { title first middle last } }
+            }
+            business(sbi: "${CS_PERSONA_SBI}") {
+              info {
+                reference
+                email { address }
+                phone { mobile landline }
+                name
+                address {
+                  line1 line2 line3 line4 line5 street city postalCode uprn county
+                  buildingName buildingNumberRange dependentLocality doubleDependentLocality
+                  flatName pafOrganisationName
+                }
+              }
+            }
+          }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.errors).toBeUndefined()
+      const { customer, business } = response.body.data
+      expect(customer.info.name).toEqual({
+        title: 'Ms',
+        first: 'Alice',
+        middle: 'Louise',
+        last: 'Carter'
+      })
+      expect(business.info.name).toBe('Green Farm')
+      expect(business.info.email.address).toMatch(/@example\.test$/)
+      expect(business.info.address).toEqual(
+        expect.objectContaining({
+          postalCode: 'W50 5UY',
+          uprn: expect.any(String)
+        })
+      )
+    })
+
+    test('Business and CPH query returns vat, type and county parish holdings', async () => {
+      const response = await postGraphql(server, {
+        query: `
+          query Business {
+            business(sbi: "${CS_PERSONA_SBI}") {
+              info { vat type { code type } }
+              countyParishHoldings { cphNumber }
+            }
+          }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.errors).toBeUndefined()
+      expect(response.body.data.business.countyParishHoldings).toEqual([
+        expect.objectContaining({ cphNumber: expect.any(String) })
+      ])
+    })
+  })
+
+  describe('agreements query with variables', () => {
+    const query = `
+      query GetBusiness($sbi: ID!) {
+        business(sbi: $sbi) {
+          agreements {
+            status
+            paymentSchedules {
+              optionCode
+              sheetName
+              parcelName
+              actionArea
+              actionMTL
+              actionUnits
+              startDate
+              endDate
+            }
+          }
+        }
+      }`
+
+    test('returns agreements and payment schedules using variables', async () => {
+      const response = await postGraphql(server, {
+        query,
+        variables: { sbi: SBI_WITH_AGREEMENTS }
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.data.business.agreements[0]).toEqual({
+        status: 'SIGNED',
+        paymentSchedules: expect.arrayContaining([
+          expect.objectContaining({
+            optionCode: 'MOR1',
+            sheetName: 'SD8343',
+            parcelName: '1056',
+            actionArea: 50,
+            actionMTL: null,
+            actionUnits: null
+          })
+        ])
+      })
+    })
+
+    test('returns an empty agreement list for a business without agreements', async () => {
+      const response = await postGraphql(server, {
+        query,
+        variables: { sbi: SBI_WITHOUT_AGREEMENTS }
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toEqual({
+        data: { business: { agreements: [] } }
+      })
+    })
+  })
+
+  describe('DAL-shaped errors', () => {
+    test('unknown SBI is a NOT_FOUND GraphQL error with HTTP 404', async () => {
+      const response = await postGraphql(server, {
+        query: '{ business(sbi: "999999999") { sbi } }'
+      })
+
+      expect(response.statusCode).toBe(404)
+      expect(response.body.data).toEqual({ business: null })
+      expect(response.body.errors).toEqual([
+        expect.objectContaining({
+          message: 'Business not found',
+          path: ['business'],
+          extensions: { code: 'NOT_FOUND' }
+        })
+      ])
+    })
+
+    test('unknown CRN is a NOT_FOUND GraphQL error', async () => {
+      const response = await postGraphql(server, {
+        query: '{ customer(crn: "9999999999") { crn } }'
+      })
+
+      expect(response.statusCode).toBe(404)
+      expect(response.body.errors[0].extensions.code).toBe('NOT_FOUND')
+    })
+
+    test('a CRN that is not associated with the business is NOT_FOUND on business.customer', async () => {
+      const response = await postGraphql(server, {
+        query: `{ business(sbi: "${SBI_WITH_AGREEMENTS}") { customer(crn: "${OTHER_CRN}") { crn } } }`
+      })
+
+      expect(response.statusCode).toBe(404)
+      expect(response.body.errors[0].message).toBe('Customer not found')
+    })
+
+    test('unknown parcel is NOT_FOUND', async () => {
+      const response = await postGraphql(server, {
+        query: `{ business(sbi: "${SBI_WITH_AGREEMENTS}") { land { parcel(sheetId: "XX0000", parcelId: "0000") { id } } } }`
+      })
+
+      expect(response.statusCode).toBe(404)
+      expect(response.body.errors[0].extensions.code).toBe('NOT_FOUND')
+    })
+
+    test('invalid query is a GRAPHQL_VALIDATION_FAILED error with HTTP 400', async () => {
+      const response = await postGraphql(server, {
+        query: '{ business(sbi: "300000001") { noSuchField } }'
+      })
+
+      expect(response.statusCode).toBe(400)
+      expect(response.body.errors[0].extensions.code).toBe(
+        'GRAPHQL_VALIDATION_FAILED'
+      )
+    })
+  })
+
+  describe('wider schema coverage', () => {
+    test('business.customers and customer.businesses are derived from relationships', async () => {
+      const response = await postGraphql(server, {
+        query: `{
+          business(sbi: "${CS_PERSONA_SBI}") {
+            sbi
+            organisationId
+            customers { crn firstName lastName role personId permissionGroups { id level } }
+          }
+          customer(crn: "${CS_PERSONA_CRN}") {
+            crn
+            personId
+            businesses { sbi name organisationId role }
+          }
+        }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.errors).toBeUndefined()
+      const { business, customer } = response.body.data
+      expect(business.sbi).toBe(CS_PERSONA_SBI)
+      expect(business.customers.map((c) => c.crn)).toContain(CS_PERSONA_CRN)
+      expect(customer.crn).toBe(CS_PERSONA_CRN)
+      expect(customer.businesses).toEqual([
+        expect.objectContaining({
+          sbi: CS_PERSONA_SBI,
+          name: 'Green Farm',
+          organisationId: business.organisationId
+        })
+      ])
+    })
+
+    test('land parcel, summary, covers and land uses resolve from the fixture', async () => {
+      const response = await postGraphql(server, {
+        query: `{
+          business(sbi: "${SBI_WITH_AGREEMENTS}") {
+            land {
+              parcel(sheetId: "SD8343", parcelId: "1056") { id sheetId parcelId area }
+              parcelCovers(sheetId: "SD8343", parcelId: "1056") { id name }
+              parcelLandUses(sheetId: "SD8343", parcelId: "1056") { code }
+              summary { totalParcels totalArea }
+            }
+          }
+        }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.errors).toBeUndefined()
+      const { land } = response.body.data.business
+      expect(land.parcel).toEqual({
+        id: 'SD8343-1056',
+        sheetId: 'SD8343',
+        parcelId: '1056',
+        area: null
+      })
+      expect(land.parcelCovers).toEqual([])
+      expect(land.parcelLandUses).toEqual([])
+      expect(land.summary.totalParcels).toBe(5)
+    })
+
+    test('permissionGroups reference data is served from the vendored DAL file', async () => {
+      const response = await postGraphql(server, {
+        query:
+          '{ permissionGroups { id name permissions { level functions } } }'
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.data.permissionGroups).toContainEqual(
+        expect.objectContaining({
+          id: 'BUSINESS_DETAILS',
+          name: 'Business details'
+        })
+      )
+    })
+
+    test('Authorization and Defra ID headers are accepted and ignored', async () => {
+      const response = await postGraphql(
+        server,
+        { query: `{ business(sbi: "${SBI_WITH_AGREEMENTS}") { sbi } }` },
+        {
+          authorization: 'Bearer not-a-real-token',
+          'x-forwarded-authorization': 'not-a-real-defra-id-token',
+          'gateway-type': 'external'
+        }
+      )
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.data.business.sbi).toBe(SBI_WITH_AGREEMENTS)
+    })
+  })
+
+  describe('GET /health', () => {
+    test('responds with success', async () => {
+      const response = await server.inject({ method: 'GET', url: '/health' })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.result).toEqual({ message: 'success' })
+    })
+  })
+})
+
+describe('POST /graphql with an identifier mapping', () => {
+  const REAL_CRN = '1100000001'
+  const REAL_SBI = '100000001'
+  let server
+
+  beforeAll(async () => {
+    server = await createServer({
+      idMapping: new IdMapping({
+        crn: `${REAL_CRN}:${CS_PERSONA_CRN}`,
+        sbi: `${REAL_SBI}:${CS_PERSONA_SBI}`
+      })
+    })
+    await server.initialize()
+  })
+
+  afterAll(async () => {
+    await server.stop()
+  })
+
+  test('resolves the mapped identifiers to synthetic fixtures and echoes the requested ids', async () => {
+    const response = await postGraphql(server, {
+      query: `{
+        customer(crn: "${REAL_CRN}") {
+          crn
+          info { name { last } }
+          business(sbi: "${REAL_SBI}") { sbi name permissionGroups { id level } }
+          businesses { sbi }
+        }
+        business(sbi: "${REAL_SBI}") {
+          sbi
+          info { name }
+          customer(crn: "${REAL_CRN}") { crn }
+          customers { crn }
+        }
+      }`
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body.errors).toBeUndefined()
+    const { customer, business } = response.body.data
+    expect(customer.crn).toBe(REAL_CRN)
+    expect(customer.info.name.last).toBe('Carter')
+    expect(customer.business.sbi).toBe(REAL_SBI)
+    expect(customer.business.permissionGroups).toContainEqual({
+      id: 'COUNTRYSIDE_STEWARDSHIP_APPLICATIONS',
+      level: 'SUBMIT'
+    })
+    expect(customer.businesses).toEqual([{ sbi: REAL_SBI }])
+    expect(business.sbi).toBe(REAL_SBI)
+    expect(business.info.name).toBe('Green Farm')
+    expect(business.customer.crn).toBe(REAL_CRN)
+    expect(business.customers.map((c) => c.crn)).toContain(REAL_CRN)
+  })
+
+  test('unmapped synthetic identifiers keep working alongside the mapping', async () => {
+    const response = await postGraphql(server, {
+      query: `{ business(sbi: "${SBI_WITHOUT_AGREEMENTS}") { sbi } }`
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body.data.business.sbi).toBe(SBI_WITHOUT_AGREEMENTS)
+  })
+})

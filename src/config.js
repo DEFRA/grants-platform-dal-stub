@@ -1,13 +1,18 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import convict from 'convict'
 import convictFormatWithValidator from 'convict-format-with-validator'
 
-import { convictValidateMongoUri } from '#/common/helpers/convict/validate-mongo-uri.js'
-
-convict.addFormat(convictValidateMongoUri)
 convict.addFormats(convictFormatWithValidator)
 
 const isProduction = process.env.NODE_ENV === 'production'
 const isTest = process.env.NODE_ENV === 'test'
+
+const repoRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..'
+)
 
 export const config = convict({
   serviceVersion: {
@@ -24,9 +29,9 @@ export const config = convict({
     env: 'HOST'
   },
   port: {
-    doc: 'The port to bind',
+    doc: 'The port to bind. 3008 is the port consumers expect the DAL stub on in their local stacks.',
     format: 'port',
-    default: 3001,
+    default: 3008,
     env: 'PORT'
   },
   serviceName: {
@@ -76,48 +81,29 @@ export const config = convict({
         : ['req', 'res', 'responseTime']
     }
   },
-  mongo: {
-    mongoUrl: {
-      doc: 'URI for mongodb',
+  data: {
+    path: {
+      doc: 'Directory holding the synthetic fixture collections (businesses/, customers/, relationships/)',
       format: String,
-      default: 'mongodb://127.0.0.1:27017/',
-      env: 'MONGO_URI'
-    },
-    databaseName: {
-      doc: 'database for mongodb',
-      format: String,
-      default: 'grants-platform-dal-stub',
-      env: 'MONGO_DATABASE'
-    },
-    mongoOptions: {
-      retryWrites: {
-        doc: 'Enable Mongo write retries, overrides mongo URI when set.',
-        format: Boolean,
-        default: null,
-        nullable: true,
-        env: 'MONGO_RETRY_WRITES'
-      },
-      readPreference: {
-        doc: 'Mongo read preference, overrides mongo URI when set.',
-        format: [
-          'primary',
-          'primaryPreferred',
-          'secondary',
-          'secondaryPreferred',
-          'nearest'
-        ],
-        default: null,
-        nullable: true,
-        env: 'MONGO_READ_PREFERENCE'
-      }
+      default: path.join(repoRoot, 'data'),
+      env: 'DATA_PATH'
     }
   },
-  httpProxy: {
-    doc: 'HTTP Proxy URL',
-    format: String,
-    nullable: true,
-    default: null,
-    env: 'HTTP_PROXY'
+  idMapping: {
+    crn: {
+      doc: 'CRN mapping, "from:to,from:to", resolving sign-in CRNs the fixtures do not contain to synthetic ones. Set only in environment configuration, never in this repository.',
+      format: String,
+      default: '',
+      env: 'CRN_MAP',
+      sensitive: true
+    },
+    sbi: {
+      doc: 'SBI mapping, "from:to,from:to", resolving sign-in SBIs the fixtures do not contain to synthetic ones. Set only in environment configuration, never in this repository.',
+      format: String,
+      default: '',
+      env: 'SBI_MAP',
+      sensitive: true
+    }
   },
   tracing: {
     header: {

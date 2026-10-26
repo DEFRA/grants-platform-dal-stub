@@ -1,0 +1,114 @@
+"""
+Business Agreement.
+"""
+type Agreement {
+  """
+  Internal SitiAgri/Portal unique identifier for the agreement.
+  """
+  contractId: ID
+
+  """
+  Name of the agreement.
+  """
+  name: String
+
+  """
+  Status of the agreement.
+  """
+  status: String
+
+  """
+  Type of the agreement.
+  """
+  contractType: String
+
+  """
+  Year of the agreement.
+  """
+  schemeYear: Int
+
+  """
+  Start date of the agreement.
+  """
+  startDate: Date
+
+  """
+  End date of the agreement.
+  """
+  endDate: Date
+
+  """
+  Payment schedules for the agreement.
+  """
+  paymentSchedules: [PaymentSchedule]
+}
+
+"""
+Payment schedule for an agreement.
+"""
+type PaymentSchedule {
+  """
+  Option code for the payment schedule.
+  """
+  optionCode: String
+
+  """
+  Option description for the payment schedule.
+  """
+  optionDescription: String
+
+  """
+  Commitment group start date for the payment schedule.
+  """
+  commitmentGroupStartDate: Date
+
+  """
+  Commitment group end date for the payment schedule.
+  """
+  commitmentGroupEndDate: Date
+
+  """
+  Year of the payment schedule.
+  """
+  year: Int
+
+  """
+  Sheet name for the payment schedule.
+  """
+  sheetName: String
+
+  """
+  Parcel name for the payment schedule.
+  """
+  parcelName: String
+
+  """
+  Action area - Area (in hectares) of the action.
+  """
+  actionArea: Float
+
+  """
+  Action MTL - Length (in metres) of the action.
+  """
+  actionMTL: Int
+
+  """
+  Action units - Number of units of the action.
+  """
+  actionUnits: Float
+
+  """
+  Parcel total area - Total area (in hectares) of the parcel.
+  """
+  parcelTotalArea: Float
+
+  """
+  Payment schedule start date for the payment schedule.
+  """
+  startDate: Date
+
+  """
+  Payment schedule end date for the payment schedule.
+  """
+  endDate: Date
+}

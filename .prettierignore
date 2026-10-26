@@ -1,3 +1,7 @@
 package-lock.json
 node_modules
 coverage
+
+# Verbatim copies from DEFRA/fcp-dal-api; must stay byte-identical to upstream
+src/graphql/schema/upstream/
+src/data/static/permission-groups.json

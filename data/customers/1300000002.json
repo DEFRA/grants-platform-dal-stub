@@ -1,0 +1,37 @@
+{
+  "crn": "1300000002",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Benjamin",
+      "middle": "John",
+      "last": "Carter"
+    },
+    "phone": {
+      "mobile": "07130000000",
+      "landline": "01130000000"
+    },
+    "email": {
+      "address": "benjamin.carter+1300000002@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "102 Test Lane",
+      "line2": "Test Park",
+      "line3": "Stubton",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "102",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Stubton",
+      "county": "Testshire",
+      "postalCode": "ZZ102 9ZZ",
+      "uprn": "900000000102",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000004"
+}

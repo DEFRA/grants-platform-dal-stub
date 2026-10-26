@@ -1,0 +1,22 @@
+"""
+Stub-authored root type. Mirrors the signatures of the matching fields in
+fcp-dal-api `app/graphql/types/*/query.gql`, limited to the operations this
+stub answers. Auth and variable-validation directives are omitted because the
+stub does not enforce them.
+"""
+type Query {
+  """
+  Get a business by SBI (Single Business Identifier, a 9-digit number).
+  """
+  business(sbi: ID!): Business
+
+  """
+  Get a customer by CRN (Customer Reference Number, a 10-digit number).
+  """
+  customer(crn: ID!): Customer
+
+  """
+  Reference data: every permission group with its levels and functions.
+  """
+  permissionGroups: [PermissionGroup]
+}

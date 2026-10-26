@@ -1,17 +1,19 @@
 import Hapi from '@hapi/hapi'
 
 import { secureContext } from '@defra/hapi-secure-context'
+import { metrics } from '@defra/cdp-metrics'
 
 import { config } from '#/config.js'
 import { router } from '#/plugins/router.js'
 import { requestLogger } from '#/plugins/request-logger.js'
-import { mongoDb } from '#/plugins/mongodb.js'
+import { graphql } from '#/plugins/graphql.js'
 import { failAction } from '#/common/helpers/fail-action.js'
 import { pulse } from '#/plugins/pulse.js'
 import { requestTracing } from '#/plugins/request-tracing.js'
-import { metrics } from '@defra/cdp-metrics'
+import { DataStore } from '#/data/store.js'
+import { IdMapping } from '#/data/id-mapping.js'
 
-export async function createServer() {
+export async function createServer({ dataPath, idMapping } = {}) {
   const server = Hapi.server({
     host: config.get('host'),
     port: config.get('port'),
@@ -38,25 +40,30 @@ export async function createServer() {
     }
   })
 
+  const store = await DataStore.load(dataPath ?? config.get('data.path'))
+  const mapping = idMapping ?? new IdMapping(config.get('idMapping'))
+
   // Hapi Plugins:
   // requestLogger  - automatically logs incoming requests
   // requestTracing - trace header logging and propagation
   // secureContext  - loads CA certificates from environment config
   // pulse          - provides shutdown handlers
-  // mongoDb        - sets up mongo connection pool and attaches to `server` and `request` objects
-  // router         - routes used in the app
+  // graphql        - the DAL schema served from the synthetic fixtures
+  // router         - health route
   await server.register([
     requestLogger,
     requestTracing,
     metrics,
     secureContext,
     pulse,
-    {
-      plugin: mongoDb,
-      options: config.get('mongo')
-    },
+    { plugin: graphql, options: { store, idMapping: mapping } },
     router
   ])
+
+  server.logger.info(
+    { ...store.counts, idMappings: mapping.size },
+    'Loaded synthetic fixtures'
+  )
 
   return server
 }

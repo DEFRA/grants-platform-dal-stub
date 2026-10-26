@@ -1,0 +1,37 @@
+{
+  "crn": "1300000001",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Alice",
+      "middle": "Louise",
+      "last": "Carter"
+    },
+    "phone": {
+      "mobile": "07130000000",
+      "landline": "01130000000"
+    },
+    "email": {
+      "address": "alice.carter+1300000001@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "101 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "101",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ101 9ZZ",
+      "uprn": "900000000101",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000003"
+}

@@ -1,0 +1,25 @@
+{
+  "sbi": "200000002",
+  "crn": "1200000003",
+  "role": "Business Partner",
+  "permissionGroups": [
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_APPLICATIONS",
+      "level": "VIEW",
+      "functions": [
+        "View CS Scheme eligibility",
+        "View Applications",
+        "View land, features and covers",
+        "View CS agreement offer"
+      ]
+    },
+    {
+      "id": "BUSINESS_DETAILS",
+      "level": "VIEW",
+      "functions": [
+        "View business details",
+        "View people associated with the business"
+      ]
+    }
+  ]
+}

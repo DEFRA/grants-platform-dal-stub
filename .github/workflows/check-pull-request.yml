@@ -37,7 +37,7 @@ jobs:
       - name: Test Docker Image Build
         run: |
           set +e
-          docker build --no-cache --tag cdp-node-backend-template .
+          docker build --no-cache --tag grants-platform-dal-stub .
           exit $?
 
 #      - name: SonarCloud Scan
@@ -46,3 +46,49 @@ jobs:
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  fixtures:
+    # Everything under data/ must be synthetic. The loader in src/data/store.js
+    # enforces the identifier ranges and scans every field for issued-looking CRNs
+    # and SBIs; this job runs it so a bad fixture fails the PR under its own name.
+    name: Fixtures contain only synthetic data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run check:fixtures
+
+  upstream-schema:
+    # The .gql files under src/graphql/schema/upstream are verbatim copies from
+    # DEFRA/fcp-dal-api. This job fails when they have drifted from upstream main,
+    # or when upstream has a file we have not classified, so the stub never builds
+    # on a stale copy of the real DAL schema. Fix: `npm run schema:sync`, review the
+    # diff, update resolvers if needed, and classify any new file in
+    # scripts/sync-upstream-schema.js.
+    name: Vendored DAL schema matches fcp-dal-api
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # The Actions token lifts the anonymous GitHub API rate limit. It can read the
+      # upstream repository while that repository is public; if upstream is private
+      # the check reports that and passes.
+      - run: npm run schema:check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

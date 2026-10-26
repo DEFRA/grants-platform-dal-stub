@@ -1,5 +1,5 @@
 ARG PARENT_VERSION=3.2.4-node24.22.1
-ARG PORT=3000
+ARG PORT=3008
 ARG PORT_DEBUG=9229
 
 FROM defradigital/node-development:${PARENT_VERSION} AS development
@@ -14,6 +14,7 @@ EXPOSE ${PORT} ${PORT_DEBUG}
 COPY --chown=node:node package*.json ./
 RUN npm install
 COPY --chown=node:node ./src ./src
+COPY --chown=node:node ./data ./data
 
 CMD [ "npm", "run", "docker:dev" ]
 
@@ -29,6 +30,7 @@ USER node
 
 COPY --from=development /home/node/package*.json ./
 COPY --from=development /home/node/src ./src/
+COPY --from=development /home/node/data ./data/
 
 RUN npm ci --omit=dev
 
