@@ -8,8 +8,8 @@
       "last": "Carter"
     },
     "phone": {
-      "mobile": "07130000000",
-      "landline": "01130000000"
+      "mobile": "07700900101",
+      "landline": "01632960101"
     },
     "email": {
       "address": "alice.carter+1300000001@example.test"
@@ -27,7 +27,7 @@
       "street": "Test Lane",
       "city": "Mockford",
       "county": "Testshire",
-      "postalCode": "ZZ101 9ZZ",
+      "postalCode": "ZZ13 1ZZ",
       "uprn": "900000000101",
       "dependentLocality": null,
       "doubleDependentLocality": null

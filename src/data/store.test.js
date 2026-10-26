@@ -197,8 +197,8 @@ describe('DataStore', () => {
           name: 'Business',
           reference: '0300000001',
           frn: '0300000001',
-          phone: { mobile: '0730000000', landline: '0130000000' },
-          address: { postalCode: 'ZZ30 1ZZ', uprn: '9000003000' }
+          phone: { mobile: '07700900301', landline: '01632960301' },
+          address: { postalCode: 'ZZ30 1ZZ', uprn: '900000300001' }
         }
       })
     })
@@ -208,12 +208,13 @@ describe('DataStore', () => {
     expect(store.counts.businesses).toBe(1)
   })
 
-  test('rejects postcodes and email addresses that are not synthetic', async () => {
+  test('rejects postcodes, phone numbers and email addresses that are not synthetic', async () => {
     const dir = await load({
       'businesses/300000001.json': business('300000001', {
         info: {
           name: 'Business',
           email: { address: 'contact@realfarm.co.uk' },
+          phone: { mobile: '07300000001', landline: '01300000001' },
           address: { postalCode: 'SK13 5CB' }
         }
       }),
@@ -222,7 +223,8 @@ describe('DataStore', () => {
         info: {
           name: { first: 'A', last: 'B' },
           email: { address: 'a.b+1300000001@example.test' },
-          address: { postalCode: 'ZZ101 9ZZ' }
+          phone: { mobile: '07700900101' },
+          address: { postalCode: 'ZZ13 1ZZ' }
         }
       }
     })
@@ -230,6 +232,8 @@ describe('DataStore', () => {
     await expectProblems(
       dir,
       'businesses/300000001.json: info.email.address "contact@realfarm.co.uk" is not an example.test email address',
+      'businesses/300000001.json: info.phone.mobile "07300000001" is not in the 07700 900NNN range',
+      'businesses/300000001.json: info.phone.landline "01300000001" is not in the 01632 960NNN range',
       'businesses/300000001.json: info.address.postalCode "SK13 5CB" is not a synthetic (ZZ99 9ZZ) postcode'
     )
     const error = await DataStore.load(dir).catch((err) => err)

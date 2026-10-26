@@ -2,6 +2,8 @@ import {
   isSyntheticCrn,
   isSyntheticEmail,
   isSyntheticFrn,
+  isSyntheticLandline,
+  isSyntheticMobile,
   isSyntheticPostcode,
   isSyntheticSbi,
   syntheticRanges
@@ -69,19 +71,33 @@ describe('synthetic identifier ranges', () => {
     expect(isSyntheticFrn(frn)).toBe(false)
   })
 
-  test.each(['ZZ99 9ZZ', 'ZZ1 1ZZ', 'ZZ101 9ZZ', 'ZZ30 1AB'])(
+  test.each(['ZZ99 9ZZ', 'ZZ1 1ZZ', 'ZZ13 1ZZ', 'ZZ30 1AB'])(
     '%s is a synthetic postcode',
     (postcode) => {
       expect(isSyntheticPostcode(postcode)).toBe(true)
     }
   )
 
-  test.each(['BB7 4LQ', 'SK13 5CB', 'W50 5UY', 'ZZ99 9ZZZ', 'ZZ999ZZ', ''])(
-    '%s is not a synthetic postcode',
-    (postcode) => {
-      expect(isSyntheticPostcode(postcode)).toBe(false)
-    }
-  )
+  test.each([
+    'BB7 4LQ',
+    'SK13 5CB',
+    'W50 5UY',
+    'ZZ101 9ZZ', // not a valid UK format
+    'ZZ99 9CZ', // C is not used in inward codes
+    'ZZ999ZZ',
+    ''
+  ])('%s is not a synthetic postcode', (postcode) => {
+    expect(isSyntheticPostcode(postcode)).toBe(false)
+  })
+
+  test('phone numbers must be in the Ofcom drama ranges', () => {
+    expect(isSyntheticMobile('07700900123')).toBe(true)
+    expect(isSyntheticMobile('07700901123')).toBe(false)
+    expect(isSyntheticMobile('07300000001')).toBe(false)
+    expect(isSyntheticLandline('01632960123')).toBe(true)
+    expect(isSyntheticLandline('01632961123')).toBe(false)
+    expect(isSyntheticLandline('01300000001')).toBe(false)
+  })
 
   test('only example.test email addresses are synthetic', () => {
     expect(isSyntheticEmail('alice.carter+1300000001@example.test')).toBe(true)
@@ -94,6 +110,8 @@ describe('synthetic identifier ranges', () => {
     expect(syntheticRanges.sbi).toBeInstanceOf(RegExp)
     expect(syntheticRanges.frn).toBeInstanceOf(RegExp)
     expect(syntheticRanges.postcode).toBeInstanceOf(RegExp)
+    expect(syntheticRanges.mobile).toBeInstanceOf(RegExp)
+    expect(syntheticRanges.landline).toBeInstanceOf(RegExp)
     expect(syntheticRanges.emailDomain).toBe('@example.test')
   })
 })

@@ -7,6 +7,8 @@ import {
   isSyntheticCrn,
   isSyntheticEmail,
   isSyntheticFrn,
+  isSyntheticLandline,
+  isSyntheticMobile,
   isSyntheticPostcode,
   isSyntheticSbi
 } from './synthetic-ranges.js'
@@ -16,8 +18,6 @@ const COLLECTIONS = {
   customers: 'customers',
   relationships: 'relationships'
 }
-
-const IGNORED_DIGIT_FIELDS = new Set(['uprn', 'mobile', 'landline'])
 
 const PERMISSION_LEVELS = new Map(
   permissionGroupsReference.map((group) => [
@@ -198,8 +198,8 @@ async function readCollection(dir, problems) {
   return docs
 }
 
-// Any 9/10-digit run outside the synthetic ranges, any non-ZZ postcode, any
-// non-example.test email, anywhere in the document.
+// Any 9/10-digit run outside the synthetic ranges, and any postcode, phone
+// number or email outside the synthetic conventions, anywhere in the document.
 function fixtureValueProblems(value, keyPath = []) {
   if (value === null || value === undefined) {
     return []
@@ -212,25 +212,29 @@ function fixtureValueProblems(value, keyPath = []) {
     if (key === 'postalCode' && !isSyntheticPostcode(text)) {
       problems.push(`${where} "${text}" is not a synthetic (ZZ99 9ZZ) postcode`)
     }
+    if (key === 'mobile' && !isSyntheticMobile(text)) {
+      problems.push(`${where} "${text}" is not in the 07700 900NNN range`)
+    }
+    if (key === 'landline' && !isSyntheticLandline(text)) {
+      problems.push(`${where} "${text}" is not in the 01632 960NNN range`)
+    }
     if (text.includes('@') && !isSyntheticEmail(text)) {
       problems.push(`${where} "${text}" is not an example.test email address`)
     }
-    if (!IGNORED_DIGIT_FIELDS.has(key)) {
-      for (const [digits] of text.matchAll(/(?<!\d)\d{9,10}(?!\d)/g)) {
-        if (
-          digits.length === 10 &&
-          !isSyntheticCrn(digits) &&
-          !isSyntheticFrn(digits)
-        ) {
-          problems.push(
-            `${where} contains ${digits}, which looks like an issued CRN or FRN`
-          )
-        }
-        if (digits.length === 9 && !isSyntheticSbi(digits)) {
-          problems.push(
-            `${where} contains ${digits}, which looks like an issued SBI`
-          )
-        }
+    for (const [digits] of text.matchAll(/(?<!\d)\d{9,10}(?!\d)/g)) {
+      if (
+        digits.length === 10 &&
+        !isSyntheticCrn(digits) &&
+        !isSyntheticFrn(digits)
+      ) {
+        problems.push(
+          `${where} contains ${digits}, which looks like an issued CRN or FRN`
+        )
+      }
+      if (digits.length === 9 && !isSyntheticSbi(digits)) {
+        problems.push(
+          `${where} contains ${digits}, which looks like an issued SBI`
+        )
       }
     }
     return problems

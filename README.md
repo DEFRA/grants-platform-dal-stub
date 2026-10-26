@@ -118,19 +118,21 @@ reports a function as permitted when any customer of the business holds it.
 Defined once in `src/data/synthetic-ranges.js` and enforced by the loader, by
 `npm run check:fixtures` and in CI.
 
-| Kind     | Pattern              | Allowed values                                       |
-| -------- | -------------------- | ---------------------------------------------------- |
-| CRN      | `1[234]00000NNN`     | `1200000NNN`, `1300000NNN`, `1400000NNN`             |
-| SBI      | `[234]00000NNN`      | `200000NNN`, `300000NNN`, `400000NNN`                |
-| FRN      | `0` + synthetic SBI  | `0300000001` for `reference` / `frn`                 |
-| Postcode | `ZZ<1-3 digits> NAA` | `ZZ99 9ZZ`, `ZZ101 9ZZ` (`ZZ` is not an issued area) |
-| Email    | `*@example.test`     | `alice.carter+1300000001@example.test`               |
+| Kind     | Pattern                | Allowed values                                         |
+| -------- | ---------------------- | ------------------------------------------------------ |
+| CRN      | `1[234]00000NNN`       | `1200000NNN`, `1300000NNN`, `1400000NNN`               |
+| SBI      | `[234]00000NNN`        | `200000NNN`, `300000NNN`, `400000NNN`                  |
+| FRN      | `0` + synthetic SBI    | `0300000001` for `reference` / `frn`                   |
+| Postcode | `ZZ9 9AA` / `ZZ99 9AA` | `ZZ13 1ZZ` (valid format; Royal Mail has no `ZZ` area) |
+| Mobile   | `07700 900NNN`         | `07700900101` (Ofcom range reserved for fiction)       |
+| Landline | `01632 960NNN`         | `01632960101` (Ofcom range reserved for fiction)       |
+| Email    | `*@example.test`       | `alice.carter+1300000001@example.test`                 |
 
 Issued SBIs are 9 digits starting with `1`, and issued CRNs and FRNs are 10 digits starting
 `1`. The blocks above are obviously sequential and sit outside anything issued. The loader
 also rejects any 9- or 10-digit value elsewhere in a fixture that looks like an issued
-identifier, any `postalCode` outside the `ZZ` area, any email address not at `example.test`,
-and any relationship permission group whose id or level is not in the DAL's
+identifier, any `postalCode`, `mobile` or `landline` outside those ranges, any email address
+not at `example.test`, and any relationship permission group whose id or level is not in the DAL's
 `permission-groups.json`, so a real address or a typo in a persona's permissions fails
 `npm run check:fixtures` rather than surfacing in a journey.
 
@@ -140,10 +142,11 @@ and any relationship permission group whose id or level is not in the DAL's
 2. Add `data/businesses/<sbi>.json` and/or `data/customers/<crn>.json`, and a
    `data/relationships/<sbi>-<crn>.json` linking them with the permission groups the
    scenario needs (ids and levels are checked against `src/data/static/permission-groups.json`).
-3. Use obviously fake contact details. The loader insists on `@example.test` email addresses
-   and `ZZ99 9ZZ`-style postcodes; follow the existing fixtures for the rest (`Test Lane`,
-   `Testshire`, `07<sbi>` phone numbers, `9000000NNNNN` UPRNs). Never copy an address from
-   another data set, however anonymised it looks.
+3. Use contact details from the table above: valid in format, so consumers' validation
+   accepts them, but from ranges that are unallocated or reserved for fiction. The loader
+   insists on them. Follow the existing fixtures for the rest (`Test Lane`, `Testshire`,
+   `9000000NNNNN` UPRNs). Never copy an address from another data set, however
+   anonymised it looks.
 4. Run `npm run check:fixtures && npm test`.
 5. If the persona should be able to sign in locally, add the same CRN, SBI and names to
    the identity stub's users file in your consumer's local setup (for
