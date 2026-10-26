@@ -11,13 +11,13 @@ describe('parseIdMap', () => {
 
   test('parses comma separated from:to pairs, ignoring whitespace and empties', () => {
     const map = parseIdMap(
-      ' 1100000001:9300000001 , 1100000002 : 9300000002 ,, ',
+      ' 1100000001:9000000001 , 1100000002 : 9000000002 ,, ',
       options
     )
 
     expect([...map]).toEqual([
-      ['1100000001', '9300000001'],
-      ['1100000002', '9300000002']
+      ['1100000001', '9000000001'],
+      ['1100000002', '9000000002']
     ])
   })
 
@@ -29,18 +29,18 @@ describe('parseIdMap', () => {
 
   test.each([
     ['1100000001', 'expected "from:to"'],
-    ['1100000001:9300000001:extra', 'expected "from:to"'],
-    [':9300000001', 'expected "from:to"'],
+    ['1100000001:9000000001:extra', 'expected "from:to"'],
+    [':9000000001', 'expected "from:to"'],
     [
       '1100000001:1100000002',
       'target 1100000002 is outside the synthetic ranges'
     ],
     [
-      '9300000001:9300000002',
-      'source 9300000001 is already a synthetic identifier'
+      '9000000001:9000000002',
+      'source 9000000001 is already a synthetic identifier'
     ],
     [
-      '1100000001:9300000001,1100000001:9300000002',
+      '1100000001:9000000001,1100000001:9000000002',
       'Duplicate CRN mapping for 1100000001'
     ]
   ])('rejects %j', (value, message) => {
@@ -56,24 +56,24 @@ describe('IdMapping', () => {
     expect(mapping.targets).toEqual({ crn: [], sbi: [] })
     expect(mapping.resolveCrn('1100000001')).toBe('1100000001')
     expect(mapping.resolveSbi(199999999)).toBe('199999999')
-    expect(mapping.echoCrn('9300000001')).toBe('9300000001')
+    expect(mapping.echoCrn('9000000001')).toBe('9000000001')
     expect(mapping.echoSbi('300000001')).toBe('300000001')
   })
 
   test('resolves mapped identifiers to synthetic ones and echoes a unique source back', () => {
     const mapping = new IdMapping({
-      crn: '1100000001:9300000001',
+      crn: '1100000001:9000000001',
       sbi: '100000001:300000001,100000002:300000002'
     })
 
     expect(mapping.size).toBe(3)
     expect(mapping.targets).toEqual({
-      crn: ['9300000001'],
+      crn: ['9000000001'],
       sbi: ['300000001', '300000002']
     })
-    expect(mapping.resolveCrn('1100000001')).toBe('9300000001')
+    expect(mapping.resolveCrn('1100000001')).toBe('9000000001')
     expect(mapping.resolveSbi('100000002')).toBe('300000002')
-    expect(mapping.echoCrn('9300000001')).toBe('1100000001')
+    expect(mapping.echoCrn('9000000001')).toBe('1100000001')
     expect(mapping.echoSbi('300000001')).toBe('100000001')
     // Identifiers outside the map pass through untouched in both directions.
     expect(mapping.resolveSbi('300000050')).toBe('300000050')
@@ -92,20 +92,20 @@ describe('IdMapping', () => {
   })
 
   test('validates SBI entries against the SBI ranges', () => {
-    expect(() => new IdMapping({ sbi: '100000001:9300000001' })).toThrow(
+    expect(() => new IdMapping({ sbi: '100000001:9000000001' })).toThrow(
       'Invalid SBI mapping entry'
     )
   })
 
   describe('validateAgainst', () => {
     const store = {
-      getCustomer: (crn) => (crn === '9300000001' ? {} : null),
+      getCustomer: (crn) => (crn === '9000000001' ? {} : null),
       getBusiness: (sbi) => (sbi === '300000001' ? {} : null)
     }
 
     test('passes when every target has a fixture', () => {
       const mapping = new IdMapping({
-        crn: '1100000001:9300000001,1100000002:9300000001',
+        crn: '1100000001:9000000001,1100000002:9000000001',
         sbi: '100000001:300000001'
       })
 
@@ -114,7 +114,7 @@ describe('IdMapping', () => {
 
     test('throws listing every target without a fixture', () => {
       const mapping = new IdMapping({
-        crn: '1100000001:9300000001,1100000002:9300000099',
+        crn: '1100000001:9000000001,1100000002:9000000099',
         sbi: '100000001:300000099'
       })
 
@@ -128,7 +128,7 @@ describe('IdMapping', () => {
 
       expect(error).toBeInstanceOf(IdMappingValidationError)
       expect(error.problems).toEqual([
-        'CRN map target 9300000099 has no customer fixture',
+        'CRN map target 9000000099 has no customer fixture',
         'SBI map target 300000099 has no business fixture'
       ])
       expect(error.message).toContain('Identifier mapping validation failed')
@@ -138,7 +138,7 @@ describe('IdMapping', () => {
 
 describe('RequestIdMapping', () => {
   const mapping = new IdMapping({
-    crn: '1100000001:9300000001,1100000002:9300000001',
+    crn: '1100000001:9000000001,1100000002:9000000001',
     sbi: '100000001:300000001'
   })
 
@@ -149,8 +149,8 @@ describe('RequestIdMapping', () => {
   test('echoes identifiers exactly as the request supplied them', () => {
     const request = mapping.forRequest()
 
-    expect(request.resolveCrn('1100000002')).toBe('9300000001')
-    expect(request.echoCrn('9300000001')).toBe('1100000002')
+    expect(request.resolveCrn('1100000002')).toBe('9000000001')
+    expect(request.echoCrn('9000000001')).toBe('1100000002')
     expect(request.resolveSbi('100000001')).toBe('300000001')
     expect(request.echoSbi(300000001)).toBe('100000001')
   })
@@ -166,8 +166,8 @@ describe('RequestIdMapping', () => {
     const request = mapping.forRequest()
 
     expect(request.echoSbi('300000001')).toBe('100000001') // unique source
-    expect(request.echoCrn('9300000001')).toBe('9300000001') // two sources
-    expect(request.echoCrn(9300000002)).toBe('9300000002') // unmapped
+    expect(request.echoCrn('9000000001')).toBe('9000000001') // two sources
+    expect(request.echoCrn(9000000002)).toBe('9000000002') // unmapped
   })
 
   test('keeps the first identifier used for a synthetic one within a request', () => {
@@ -175,12 +175,12 @@ describe('RequestIdMapping', () => {
     request.resolveCrn('1100000001')
     request.resolveCrn('1100000002')
 
-    expect(request.echoCrn('9300000001')).toBe('1100000001')
+    expect(request.echoCrn('9000000001')).toBe('1100000001')
   })
 
   test('does not leak what one request supplied into another', () => {
     mapping.forRequest().resolveCrn('1100000002')
 
-    expect(mapping.forRequest().echoCrn('9300000001')).toBe('9300000001')
+    expect(mapping.forRequest().echoCrn('9000000001')).toBe('9000000001')
   })
 })

@@ -11,12 +11,11 @@ import {
 
 describe('synthetic identifier ranges', () => {
   test.each([
-    '9200000001',
-    '9200000003',
-    '9300000001',
-    '9300000100',
-    '9400000009',
-    9300000001
+    '9000000001',
+    '9000000005',
+    '9000000100',
+    '9000000999',
+    9000000001
   ])('%s is a synthetic CRN', (crn) => {
     expect(isSyntheticCrn(crn)).toBe(true)
   })
@@ -24,10 +23,10 @@ describe('synthetic identifier ranges', () => {
   test.each([
     '1199999999', // valid CRN format, outside the synthetic blocks
     '1100000000', // valid CRN format, outside the synthetic blocks
-    '9500000001', // block not reserved
-    '1300000001', // valid format, not in the 9[234] block
-    '930000001', // too short
-    '93000000011', // too long
+    '9100000001', // outside the block
+    '1300000001', // valid format, not in the block
+    '900000001', // too short
+    '90000000011', // too long
     'abc',
     ''
   ])('%s is not a synthetic CRN', (crn) => {
@@ -63,7 +62,7 @@ describe('synthetic identifier ranges', () => {
   )
 
   test.each([
-    '9300000001', // a synthetic CRN is not an FRN
+    '9000000001', // a synthetic CRN is not an FRN
     '1100000001', // issued format
     '0100000001', // 0 followed by an issued-looking SBI
     '300000001', // the SBI alone
@@ -101,7 +100,7 @@ describe('synthetic identifier ranges', () => {
   })
 
   test('only example.test email addresses are synthetic', () => {
-    expect(isSyntheticEmail('alice.carter+9300000001@example.test')).toBe(true)
+    expect(isSyntheticEmail('alice.carter+9000000001@example.test')).toBe(true)
     expect(isSyntheticEmail('alice@example.com')).toBe(false)
     expect(isSyntheticEmail('alice@farm.co.uk')).toBe(false)
   })
