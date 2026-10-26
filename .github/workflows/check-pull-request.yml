@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - minimal
     types:
       - opened
       - reopened
@@ -12,40 +11,51 @@ on:
       - ready_for_review
 
 jobs:
-  pr-validator:
-    name: Run Pull Request Checks
+  checkdeps:
+    name: Check lock file
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Test code and Create Test Coverage Reports
+      - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Security audit
-        run: npm run security-audit
+      - name: Check lockfile sync
+        run: |
+          npm install --package-lock-only && git diff --exit-code package-lock.json || \
+          (echo "ERROR: You need to run npm install and commit package-lock.json" && exit 1)
 
-      - run: |
-          npm ci
+  test:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: |
           npm run format:check
           npm run lint
           npm test
 
-      - name: Test Docker Image Build
-        run: |
-          set +e
-          docker build --no-cache --tag grants-platform-dal-stub .
-          exit $?
-
-#      - name: SonarCloud Scan
-#        if: github.actor != 'dependabot[bot]'
-#        uses: SonarSource/sonarqube-scan-action@v5.3.1 #  (or check latest version on https://github.com/marketplace/actions/official-sonarqube-scan)
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/lcov.info
 
   fixtures:
     # Everything under data/ must be synthetic. The loader in src/data/store.js
@@ -57,14 +67,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      - run: npm run check:fixtures
+      - name: Check fixtures
+        run: npm run check:fixtures
 
   upstream-schema:
     # The .gql files under src/graphql/schema/upstream are verbatim copies from
@@ -72,23 +85,96 @@ jobs:
     # or when upstream has a file we have not classified, so the stub never builds
     # on a stale copy of the real DAL schema. Fix: `npm run schema:sync`, review the
     # diff, update resolvers if needed, and classify any new file in
-    # scripts/sync-upstream-schema.js.
+    # scripts/sync-upstream-schema.js. While the upstream repository is not readable
+    # the check reports that and passes.
     name: Vendored DAL schema matches fcp-dal-api
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      # The Actions token lifts the anonymous GitHub API rate limit. It can read the
-      # upstream repository while that repository is public; if upstream is private
-      # the check reports that and passes.
-      - run: npm run schema:check
+      - name: Compare with upstream
+        run: npm run schema:check
         env:
+          # Lifts the anonymous GitHub API rate limit; can read upstream while it is public.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Build production image
+        run: docker build --no-cache --tag grants-platform-dal-stub .
+
+      - name: Smoke test the image
+        run: |
+          docker run -d --name stub -p 3008:3008 grants-platform-dal-stub
+          for i in $(seq 1 30); do curl -sf http://localhost:3008/health && break; sleep 1; done
+          curl -sf -X POST http://localhost:3008/graphql -H 'content-type: application/json' \
+            -d '{"query":"{ business(sbi: \"300000001\") { sbi info { name } } }"}' | grep -q '"sbi":"300000001"'
+          docker rm -f stub
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: npm audit (critical)
+        run: npm run security-audit
+
+# To add the scans the other grants repositories run, once the secrets are available
+# to this repository (SNYK_TOKEN; SONAR_TOKEN plus a SonarCloud project matching
+# sonar-project.properties, see https://github.com/DEFRA/cdp-documentation/blob/main/howto/sonarcloud.md):
+#
+#  snyk:
+#    name: Snyk Security Scan
+#    runs-on: ubuntu-latest
+#    if: github.actor != 'dependabot[bot]'
+#    steps:
+#      - uses: actions/checkout@v7
+#      - uses: actions/setup-node@v7
+#        with:
+#          node-version-file: .nvmrc
+#          cache: npm
+#      - run: npm ci
+#      - uses: snyk/actions/node@master
+#        env:
+#          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#
+#  sonarcloud:
+#    name: SonarCloud Scan
+#    runs-on: ubuntu-latest
+#    needs: test
+#    if: github.actor != 'dependabot[bot]'
+#    steps:
+#      - uses: actions/checkout@v7
+#        with:
+#          fetch-depth: 0
+#      - uses: actions/download-artifact@v4
+#        with:
+#          name: coverage
+#          path: coverage
+#      - uses: SonarSource/sonarqube-scan-action@v5.3.1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
