@@ -1,5 +1,8 @@
 import {
   isSyntheticCrn,
+  isSyntheticEmail,
+  isSyntheticFrn,
+  isSyntheticPostcode,
   isSyntheticSbi,
   syntheticRanges
 } from './synthetic-ranges.js'
@@ -49,8 +52,48 @@ describe('synthetic identifier ranges', () => {
     expect(isSyntheticSbi(sbi)).toBe(false)
   })
 
+  test.each(['0300000001', '0200000099', '0400000100'])(
+    '%s is a synthetic FRN (0 followed by a synthetic SBI)',
+    (frn) => {
+      expect(isSyntheticFrn(frn)).toBe(true)
+    }
+  )
+
+  test.each([
+    '1300000001', // a synthetic CRN is not an FRN
+    '1100000001', // issued format
+    '0100000001', // 0 followed by an issued-looking SBI
+    '300000001', // the SBI alone
+    ''
+  ])('%s is not a synthetic FRN', (frn) => {
+    expect(isSyntheticFrn(frn)).toBe(false)
+  })
+
+  test.each(['ZZ99 9ZZ', 'ZZ1 1ZZ', 'ZZ101 9ZZ', 'ZZ30 1AB'])(
+    '%s is a synthetic postcode',
+    (postcode) => {
+      expect(isSyntheticPostcode(postcode)).toBe(true)
+    }
+  )
+
+  test.each(['BB7 4LQ', 'SK13 5CB', 'W50 5UY', 'ZZ99 9ZZZ', 'ZZ999ZZ', ''])(
+    '%s is not a synthetic postcode',
+    (postcode) => {
+      expect(isSyntheticPostcode(postcode)).toBe(false)
+    }
+  )
+
+  test('only example.test email addresses are synthetic', () => {
+    expect(isSyntheticEmail('alice.carter+1300000001@example.test')).toBe(true)
+    expect(isSyntheticEmail('alice@example.com')).toBe(false)
+    expect(isSyntheticEmail('alice@farm.co.uk')).toBe(false)
+  })
+
   test('exposes the patterns for reuse', () => {
     expect(syntheticRanges.crn).toBeInstanceOf(RegExp)
     expect(syntheticRanges.sbi).toBeInstanceOf(RegExp)
+    expect(syntheticRanges.frn).toBeInstanceOf(RegExp)
+    expect(syntheticRanges.postcode).toBeInstanceOf(RegExp)
+    expect(syntheticRanges.emailDomain).toBe('@example.test')
   })
 })

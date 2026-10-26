@@ -1,5 +1,5 @@
 import { createServer } from '#/server.js'
-import { IdMapping } from '#/data/id-mapping.js'
+import { IdMapping, IdMappingValidationError } from '#/data/id-mapping.js'
 
 /**
  * Exercises the stub with the query shapes DAL consumers send: permissions,
@@ -133,7 +133,7 @@ describe('POST /graphql', () => {
       expect(business.info.email.address).toMatch(/@example\.test$/)
       expect(business.info.address).toEqual(
         expect.objectContaining({
-          postalCode: 'W50 5UY',
+          postalCode: 'ZZ30 1ZZ',
           uprn: expect.any(String)
         })
       )
@@ -256,6 +256,37 @@ describe('POST /graphql', () => {
       expect(response.statusCode).toBe(404)
       expect(response.body.errors[0].extensions.code).toBe('NOT_FOUND')
     })
+
+    test.each([
+      [
+        'business(sbi) with a leading zero',
+        '{ business(sbi: "030000001") { sbi } }'
+      ],
+      [
+        'business(sbi) with 10 digits',
+        '{ business(sbi: "3000000001") { sbi } }'
+      ],
+      [
+        'customer(crn) that is not numeric',
+        '{ customer(crn: "not-a-crn") { crn } }'
+      ],
+      [
+        'customer.business(sbi) that is too short',
+        `{ customer(crn: "${CS_PERSONA_CRN}") { business(sbi: "30000001") { sbi } } }`
+      ],
+      [
+        'business.customer(crn) with a leading zero',
+        `{ business(sbi: "${CS_PERSONA_SBI}") { customer(crn: "0130000001") { crn } } }`
+      ]
+    ])(
+      'malformed %s is a BAD_REQUEST error with HTTP 400',
+      async (_description, query) => {
+        const response = await postGraphql(server, { query })
+
+        expect(response.statusCode).toBe(400)
+        expect(response.body.errors[0].extensions.code).toBe('BAD_REQUEST')
+      }
+    )
 
     test('invalid query is a GRAPHQL_VALIDATION_FAILED error with HTTP 400', async () => {
       const response = await postGraphql(server, {
@@ -424,6 +455,32 @@ describe('POST /graphql with an identifier mapping', () => {
     expect(business.customers.map((c) => c.crn)).toContain(REAL_CRN)
   })
 
+  test('a synthetic id used directly is echoed as itself even when a mapping points at it', async () => {
+    const response = await postGraphql(server, {
+      query: `{
+        customer(crn: "${CS_PERSONA_CRN}") {
+          crn
+          business(sbi: "${CS_PERSONA_SBI}") { sbi }
+          businesses { sbi }
+        }
+        business(sbi: "${CS_PERSONA_SBI}") {
+          sbi
+          customers { crn }
+        }
+      }`
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body.errors).toBeUndefined()
+    const { customer, business } = response.body.data
+    expect(customer.crn).toBe(CS_PERSONA_CRN)
+    expect(customer.business.sbi).toBe(CS_PERSONA_SBI)
+    expect(customer.businesses).toEqual([{ sbi: CS_PERSONA_SBI }])
+    expect(business.sbi).toBe(CS_PERSONA_SBI)
+    expect(business.customers.map((c) => c.crn)).toContain(CS_PERSONA_CRN)
+    expect(business.customers.map((c) => c.crn)).not.toContain(REAL_CRN)
+  })
+
   test('unmapped synthetic identifiers keep working alongside the mapping', async () => {
     const response = await postGraphql(server, {
       query: `{ business(sbi: "${SBI_WITHOUT_AGREEMENTS}") { sbi } }`
@@ -431,5 +488,77 @@ describe('POST /graphql with an identifier mapping', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.body.data.business.sbi).toBe(SBI_WITHOUT_AGREEMENTS)
+  })
+})
+
+describe('POST /graphql with several sign-ins mapped to one persona', () => {
+  const FIRST_CRN = '1100000001'
+  const SECOND_CRN = '1100000002'
+  const REAL_SBI = '100000001'
+  let server
+
+  beforeAll(async () => {
+    server = await createServer({
+      idMapping: new IdMapping({
+        crn: `${FIRST_CRN}:${CS_PERSONA_CRN},${SECOND_CRN}:${CS_PERSONA_CRN}`,
+        sbi: `${REAL_SBI}:${CS_PERSONA_SBI}`
+      })
+    })
+    await server.initialize()
+  })
+
+  afterAll(async () => {
+    await server.stop()
+  })
+
+  test.each([FIRST_CRN, SECOND_CRN])(
+    'sign-in %s reaches the persona and is echoed back as itself',
+    async (crn) => {
+      const response = await postGraphql(server, {
+        query: `{
+          customer(crn: "${crn}") {
+            crn
+            info { name { last } }
+            business(sbi: "${REAL_SBI}") { sbi permissionGroups { id } }
+          }
+        }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.errors).toBeUndefined()
+      const { customer } = response.body.data
+      expect(customer.crn).toBe(crn)
+      expect(customer.info.name.last).toBe('Carter')
+      expect(customer.business.sbi).toBe(REAL_SBI)
+      expect(customer.business.permissionGroups).not.toHaveLength(0)
+    }
+  )
+
+  test('a shared persona the request did not name is returned with its synthetic CRN', async () => {
+    const response = await postGraphql(server, {
+      query: `{ business(sbi: "${REAL_SBI}") { sbi customers { crn } } }`
+    })
+
+    expect(response.statusCode).toBe(200)
+    const { business } = response.body.data
+    expect(business.sbi).toBe(REAL_SBI)
+    expect(business.customers.map((c) => c.crn)).toContain(CS_PERSONA_CRN)
+  })
+})
+
+describe('createServer with a mapping whose target has no fixture', () => {
+  test('refuses to start and names the missing fixtures', async () => {
+    const error = await createServer({
+      idMapping: new IdMapping({
+        crn: '1100000009:1300000099',
+        sbi: '100000009:300000099'
+      })
+    }).catch((err) => err)
+
+    expect(error).toBeInstanceOf(IdMappingValidationError)
+    expect(error.problems).toEqual([
+      'CRN map target 1300000099 has no customer fixture',
+      'SBI map target 300000099 has no business fixture'
+    ])
   })
 })

@@ -12,22 +12,22 @@
       "landline": "01300000001"
     },
     "address": {
-      "line1": "2 Station Road",
-      "line2": "Business Park",
-      "line3": "Maidstone",
-      "line4": "Somerset",
+      "line1": "1 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
       "line5": "",
       "street": "Test Lane",
-      "city": "Maidstone",
-      "postalCode": "W50 5UY",
-      "uprn": "481124619099",
+      "city": "Mockford",
+      "postalCode": "ZZ30 1ZZ",
+      "uprn": "900000300001",
       "buildingName": null,
       "buildingNumberRange": "1",
       "county": "Testshire",
       "dependentLocality": null,
       "doubleDependentLocality": null,
       "flatName": null,
-      "pafOrganisationName": "York Park House"
+      "pafOrganisationName": "Green Farm"
     },
     "vat": "GB300000001",
     "legalStatus": {

@@ -37,7 +37,7 @@ export const graphql = {
           path: '/graphql',
           context: async ({ request }) => ({
             store,
-            idMapping,
+            idMapping: idMapping.forRequest(),
             logger: request.logger
           })
         }

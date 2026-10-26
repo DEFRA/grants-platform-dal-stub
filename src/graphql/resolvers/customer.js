@@ -1,3 +1,5 @@
+import { validSbi } from '../identifiers.js'
+
 /**
  * `parent` is a customer fixture document: the `Customer` GraphQL type stored
  * as-is under data/customers/<crn>.json. Businesses the customer can act for
@@ -22,7 +24,10 @@ export const Customer = {
   // The real DAL returns null, not an error, when the customer has no
   // relationship with the requested business.
   business({ crn }, { sbi }, { store, idMapping }) {
-    const relationship = store.getRelationship(idMapping.resolveSbi(sbi), crn)
+    const relationship = store.getRelationship(
+      idMapping.resolveSbi(validSbi(sbi)),
+      crn
+    )
     return relationship ? toCustomerBusiness(relationship, store) : null
   },
 

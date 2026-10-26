@@ -1,7 +1,15 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import { isSyntheticCrn, isSyntheticSbi } from './synthetic-ranges.js'
+import permissionGroupsReference from './static/permission-groups.json' with { type: 'json' }
+
+import {
+  isSyntheticCrn,
+  isSyntheticEmail,
+  isSyntheticFrn,
+  isSyntheticPostcode,
+  isSyntheticSbi
+} from './synthetic-ranges.js'
 
 const COLLECTIONS = {
   businesses: 'businesses',
@@ -9,23 +17,17 @@ const COLLECTIONS = {
   relationships: 'relationships'
 }
 
-// Fields that legitimately hold long digit strings that are not identifiers.
-const IGNORED_DIGIT_FIELDS = new Set([
-  'uprn',
-  'mobile',
-  'landline',
-  'reference',
-  'frn'
-])
+const IGNORED_DIGIT_FIELDS = new Set(['uprn', 'mobile', 'landline'])
 
-/**
- * In-memory copy of the fixture collections. Every file is validated on load:
- * identifiers must be synthetic, file names must match their content, every
- * relationship must point at an existing business and customer, and no field
- * anywhere may hold a 9- or 10-digit value that looks like an issued SBI or
- * CRN. A single bad file fails startup and `npm test`, which is the guardrail
- * that keeps every fixture synthetic.
- */
+const PERMISSION_LEVELS = new Map(
+  permissionGroupsReference.map((group) => [
+    group.id,
+    new Set(group.permissions.map((permission) => permission.level))
+  ])
+)
+
+// Fixtures loaded into memory. Anything outside the synthetic conventions
+// (see synthetic-ranges.js) fails the load, and so startup, tests and CI.
 export class DataStore {
   #businesses = new Map()
   #customers = new Map()
@@ -43,7 +45,7 @@ export class DataStore {
     )
     for (const { name, doc } of businesses) {
       problems.push(
-        ...realLookingIdentifiers(doc).map((p) => `businesses/${name}: ${p}`)
+        ...fixtureValueProblems(doc).map((p) => `businesses/${name}: ${p}`)
       )
       const sbi = String(doc.sbi ?? '')
       if (!isSyntheticSbi(sbi)) {
@@ -65,7 +67,7 @@ export class DataStore {
     )
     for (const { name, doc } of customers) {
       problems.push(
-        ...realLookingIdentifiers(doc).map((p) => `customers/${name}: ${p}`)
+        ...fixtureValueProblems(doc).map((p) => `customers/${name}: ${p}`)
       )
       const crn = String(doc.crn ?? '')
       if (!isSyntheticCrn(crn)) {
@@ -89,7 +91,7 @@ export class DataStore {
       const sbi = String(doc.sbi ?? '')
       const crn = String(doc.crn ?? '')
       const key = relationshipKey(sbi, crn)
-      const fileProblems = []
+      const fileProblems = fixtureValueProblems(doc)
       if (name !== `${key}.json`) {
         fileProblems.push(`file name does not match "${key}"`)
       }
@@ -99,9 +101,7 @@ export class DataStore {
       if (!store.#customers.has(crn)) {
         fileProblems.push(`no customer fixture for crn "${crn}"`)
       }
-      if (!Array.isArray(doc.permissionGroups)) {
-        fileProblems.push('permissionGroups must be an array')
-      }
+      fileProblems.push(...permissionGroupProblems(doc.permissionGroups))
       if (fileProblems.length > 0) {
         problems.push(
           ...fileProblems.map((problem) => `relationships/${name}: ${problem}`)
@@ -198,31 +198,39 @@ async function readCollection(dir, problems) {
   return docs
 }
 
-/**
- * Walks a fixture and reports any run of 9 or 10 digits outside the synthetic
- * ranges, wherever it sits (including inside longer text), so a stray
- * identifier in a name or address line is caught as well as one in an `sbi`
- * or `crn` field.
- */
-function realLookingIdentifiers(value, keyPath = []) {
+// Any 9/10-digit run outside the synthetic ranges, any non-ZZ postcode, any
+// non-example.test email, anywhere in the document.
+function fixtureValueProblems(value, keyPath = []) {
   if (value === null || value === undefined) {
     return []
   }
   if (typeof value === 'string' || typeof value === 'number') {
-    if (IGNORED_DIGIT_FIELDS.has(keyPath.at(-1))) {
-      return []
-    }
+    const text = String(value)
+    const key = keyPath.at(-1)
+    const where = keyPath.join('.')
     const problems = []
-    for (const [digits] of String(value).matchAll(/(?<!\d)\d{9,10}(?!\d)/g)) {
-      if (digits.length === 10 && !isSyntheticCrn(digits)) {
-        problems.push(
-          `${keyPath.join('.')} contains ${digits}, which looks like an issued CRN`
-        )
-      }
-      if (digits.length === 9 && !isSyntheticSbi(digits)) {
-        problems.push(
-          `${keyPath.join('.')} contains ${digits}, which looks like an issued SBI`
-        )
+    if (key === 'postalCode' && !isSyntheticPostcode(text)) {
+      problems.push(`${where} "${text}" is not a synthetic (ZZ99 9ZZ) postcode`)
+    }
+    if (text.includes('@') && !isSyntheticEmail(text)) {
+      problems.push(`${where} "${text}" is not an example.test email address`)
+    }
+    if (!IGNORED_DIGIT_FIELDS.has(key)) {
+      for (const [digits] of text.matchAll(/(?<!\d)\d{9,10}(?!\d)/g)) {
+        if (
+          digits.length === 10 &&
+          !isSyntheticCrn(digits) &&
+          !isSyntheticFrn(digits)
+        ) {
+          problems.push(
+            `${where} contains ${digits}, which looks like an issued CRN or FRN`
+          )
+        }
+        if (digits.length === 9 && !isSyntheticSbi(digits)) {
+          problems.push(
+            `${where} contains ${digits}, which looks like an issued SBI`
+          )
+        }
       }
     }
     return problems
@@ -231,8 +239,36 @@ function realLookingIdentifiers(value, keyPath = []) {
     return []
   }
   return Object.entries(value).flatMap(([key, item]) =>
-    realLookingIdentifiers(item, [...keyPath, key])
+    fixtureValueProblems(item, [...keyPath, key])
   )
+}
+
+function permissionGroupProblems(groups) {
+  if (!Array.isArray(groups)) {
+    return ['permissionGroups must be an array']
+  }
+  const seen = new Set()
+  return groups.flatMap((group, index) => {
+    const where = `permissionGroups[${index}]`
+    const levels = PERMISSION_LEVELS.get(group?.id)
+    if (!levels) {
+      return [`${where}.id "${group?.id}" is not a permission group id`]
+    }
+    const problems = []
+    if (!levels.has(group.level)) {
+      problems.push(
+        `${where}.level "${group.level}" is not a level of ${group.id}`
+      )
+    }
+    if (group.functions !== undefined && !Array.isArray(group.functions)) {
+      problems.push(`${where}.functions must be an array`)
+    }
+    if (seen.has(group.id)) {
+      problems.push(`${where}.id "${group.id}" appears more than once`)
+    }
+    seen.add(group.id)
+    return problems
+  })
 }
 
 function pushTo(map, key, value) {

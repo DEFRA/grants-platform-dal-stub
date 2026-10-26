@@ -1,4 +1,5 @@
 import { NotFound } from '../errors.js'
+import { validCrn } from '../identifiers.js'
 
 /**
  * `parent` is a business fixture document: the `Business` GraphQL type stored
@@ -48,7 +49,10 @@ export const Business = {
   },
 
   customer({ sbi }, { crn }, { store, idMapping }) {
-    const relationship = store.getRelationship(sbi, idMapping.resolveCrn(crn))
+    const relationship = store.getRelationship(
+      sbi,
+      idMapping.resolveCrn(validCrn(crn))
+    )
     if (!relationship) {
       throw new NotFound('Customer not found')
     }

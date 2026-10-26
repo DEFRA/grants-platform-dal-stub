@@ -74,10 +74,10 @@ export const config = convict({
       env: 'LOG_FORMAT'
     },
     redact: {
-      doc: 'Log paths to redact',
+      doc: 'Log paths to redact. Consumers forward the Defra ID token in a header, so no request header is logged.',
       format: Array,
       default: isProduction
-        ? ['req.headers.authorization', 'req.headers.cookie', 'res.headers']
+        ? ['req.headers', 'res.headers']
         : ['req', 'res', 'responseTime']
     }
   },

@@ -29,8 +29,8 @@ endpoint, not of code.
   `fcp-dal-api`, checked against upstream on every pull request. Identifiers are read from the
   query, exactly as the real DAL reads them, and only the requested fields are returned.
 - **One endpoint, `POST /graphql`**, the same path as the real DAL, for every consumer.
-- **DAL-shaped errors**: an unknown identifier is reported in `errors[]` with `extensions.code`
-  and a matching HTTP status, as the real DAL reports it.
+- **DAL-shaped errors**: an unknown or malformed identifier is reported in `errors[]` with
+  `extensions.code` and a matching HTTP status, as the real DAL reports it.
 - **Fixtures stored in the shape of the DAL types** (`Business`, `Customer`) plus a relationship
   document per business–customer pair, so each fact lives in one place.
 - **No authentication.** Consumers disable their service-to-service token when pointing at the
@@ -56,12 +56,12 @@ docker compose up --build -d   # http://localhost:3008/graphql
 | `GET /health`   | Health check                              |
 | `POST /graphql` | The DAL schema. Introspection is enabled. |
 
-| Environment variable | Default  | Purpose                                                                       |
-| -------------------- | -------- | ----------------------------------------------------------------------------- |
-| `PORT`               | `3008`   | Port to listen on; the port consumers' local stacks expect the DAL stub on    |
-| `DATA_PATH`          | `./data` | Directory holding the fixture collections                                     |
-| `CRN_MAP`            | empty    | Real-to-synthetic CRN map, see [below](#real-to-synthetic-identifier-mapping) |
-| `SBI_MAP`            | empty    | Real-to-synthetic SBI map, see [below](#real-to-synthetic-identifier-mapping) |
+| Environment variable | Default  | Purpose                                                                    |
+| -------------------- | -------- | -------------------------------------------------------------------------- |
+| `PORT`               | `3008`   | Port to listen on; the port consumers' local stacks expect the DAL stub on |
+| `DATA_PATH`          | `./data` | Directory holding the fixture collections                                  |
+| `CRN_MAP`            | empty    | Real-to-synthetic CRN map, see [below](#identifier-mapping)                |
+| `SBI_MAP`            | empty    | Real-to-synthetic SBI map, see [below](#identifier-mapping)                |
 
 ## Consuming it
 
@@ -74,6 +74,8 @@ its current consumers send. Behaviour that mirrors the real DAL:
 
 - Unknown SBI or CRN: `errors[0].extensions.code === "NOT_FOUND"` with HTTP 404 and
   `data.business` / `data.customer` set to `null`.
+- Malformed SBI or CRN (wrong length, or a leading zero): `errors[0].extensions.code === "BAD_REQUEST"`
+  with HTTP 400, as the DAL's `@validateVariable` directive answers.
 - `business.customer(crn)` for a CRN not associated with the business: `NOT_FOUND`.
 - `customer.business(sbi)` for an SBI not associated with the customer: `null`, no error.
 - `land.parcels(date)`: the `date` argument is accepted and ignored.
@@ -116,23 +118,32 @@ reports a function as permitted when any customer of the business holds it.
 Defined once in `src/data/synthetic-ranges.js` and enforced by the loader, by
 `npm run check:fixtures` and in CI.
 
-| Kind | Pattern          | Blocks                                   |
-| ---- | ---------------- | ---------------------------------------- |
-| CRN  | `1[234]00000NNN` | `1200000NNN`, `1300000NNN`, `1400000NNN` |
-| SBI  | `[234]00000NNN`  | `200000NNN`, `300000NNN`, `400000NNN`    |
+| Kind     | Pattern              | Allowed values                                       |
+| -------- | -------------------- | ---------------------------------------------------- |
+| CRN      | `1[234]00000NNN`     | `1200000NNN`, `1300000NNN`, `1400000NNN`             |
+| SBI      | `[234]00000NNN`      | `200000NNN`, `300000NNN`, `400000NNN`                |
+| FRN      | `0` + synthetic SBI  | `0300000001` for `reference` / `frn`                 |
+| Postcode | `ZZ<1-3 digits> NAA` | `ZZ99 9ZZ`, `ZZ101 9ZZ` (`ZZ` is not an issued area) |
+| Email    | `*@example.test`     | `alice.carter+1300000001@example.test`               |
 
-Issued SBIs are 9 digits starting with `1`, and issued CRNs are 10 digits starting `11`. The
-blocks above are obviously sequential and sit outside anything issued. The loader also
-rejects any 9- or 10-digit value elsewhere in a fixture that looks like an issued identifier.
+Issued SBIs are 9 digits starting with `1`, and issued CRNs and FRNs are 10 digits starting
+`1`. The blocks above are obviously sequential and sit outside anything issued. The loader
+also rejects any 9- or 10-digit value elsewhere in a fixture that looks like an issued
+identifier, any `postalCode` outside the `ZZ` area, any email address not at `example.test`,
+and any relationship permission group whose id or level is not in the DAL's
+`permission-groups.json`, so a real address or a typo in a persona's permissions fails
+`npm run check:fixtures` rather than surfacing in a journey.
 
 ### Adding or changing fixtures
 
 1. Pick unused identifiers inside the ranges above.
 2. Add `data/businesses/<sbi>.json` and/or `data/customers/<crn>.json`, and a
    `data/relationships/<sbi>-<crn>.json` linking them with the permission groups the
-   scenario needs (ids and levels as in `src/data/static/permission-groups.json`).
-3. Use obviously fake contact details: `*.example.test` email addresses, `ZZ99 9ZZ`-style
-   postcodes, `07<sbi>` phone numbers.
+   scenario needs (ids and levels are checked against `src/data/static/permission-groups.json`).
+3. Use obviously fake contact details. The loader insists on `@example.test` email addresses
+   and `ZZ99 9ZZ`-style postcodes; follow the existing fixtures for the rest (`Test Lane`,
+   `Testshire`, `07<sbi>` phone numbers, `9000000NNNNN` UPRNs). Never copy an address from
+   another data set, however anonymised it looks.
 4. Run `npm run check:fixtures && npm test`.
 5. If the persona should be able to sign in locally, add the same CRN, SBI and names to
    the identity stub's users file in your consumer's local setup (for
@@ -160,19 +171,23 @@ them obviously fake. Add more only when a scenario genuinely needs it.
 
 Some environments sign users in with a Defra ID instance whose CRNs and SBIs are not in these
 fixtures. For those environments, configure a mapping from those identifiers to synthetic ones
-in the environment's private configuration (never in this repository):
+as secrets in the environment's CDP configuration. The sources are valid sign-in identifiers,
+so keep them out of committed configuration files, and never put them in this repository:
 
 ```env
 CRN_MAP=<crn>:1300000001,<crn>:1300000002
 SBI_MAP=<sbi>:300000001,<sbi>:300000002
 ```
 
-Incoming identifiers are translated to the synthetic ones before fixture lookup and
-translated back in the response (`business.sbi`, `customer.crn`,
-`customer.businesses[].sbi`, `business.customers[].crn`), so the response is consistent
-with the request. Unmapped identifiers pass through unchanged. The server refuses to
-start if a map entry's target is outside the synthetic ranges, if its source is itself
-synthetic, or if two sources point at the same synthetic identifier.
+Incoming identifiers are translated to the synthetic ones before fixture lookup. In the
+response (`business.sbi`, `customer.crn`, `customer.businesses[].sbi`,
+`business.customers[].crn`) an identifier the request supplied is echoed exactly as
+supplied, so a synthetic identifier asked for directly stays synthetic. An identifier the
+request did not supply is translated back when exactly one source maps to it, and returned
+as the synthetic value otherwise. Several sources may share one target, so several
+sign-ins can use the same persona. Unmapped identifiers pass through unchanged. The server
+refuses to start if a map entry's target is outside the synthetic ranges or has no fixture,
+or if its source is itself synthetic.
 
 ## Keeping the schema in step with the real DAL
 
@@ -188,12 +203,14 @@ npm run schema:sync    # overwrite the copies from fcp-dal-api main, then review
 ```
 
 The check runs on every pull request as its own job and fails the PR on any drift, on a
-vendored file that has been renamed or removed upstream, or on an upstream file that is
-not yet classified in `scripts/sync-upstream-schema.js`. If the upstream repository cannot
-be read (for example while it is private) the job reports that and passes, since the vendored
-copies are still what the stub serves; the comparison resumes by itself once the repository
-is readable again. After syncing, update the commit
-recorded in `UPSTREAM.md` and add resolvers for any new fields the consumers need.
+vendored file that has been renamed or removed upstream, on an upstream file that is not
+yet classified in `scripts/sync-upstream-schema.js`, or on a local file under `upstream/`
+that is not a vendored copy. If the upstream repository cannot be read the job passes with
+a warning annotation on the pull request, since the vendored copies are still what the stub
+serves; the comparison resumes by itself once the repository is readable again.
+`UPSTREAM_REPO`, `UPSTREAM_REF` and `UPSTREAM_SCHEMA_TOKEN` override the repository, ref
+and token the scripts use. After syncing, update the commit recorded in `UPSTREAM.md` and
+add resolvers for any new fields the consumers need.
 
 ## Development
 

@@ -42,6 +42,7 @@ export async function createServer({ dataPath, idMapping } = {}) {
 
   const store = await DataStore.load(dataPath ?? config.get('data.path'))
   const mapping = idMapping ?? new IdMapping(config.get('idMapping'))
+  mapping.validateAgainst(store)
 
   // Hapi Plugins:
   // requestLogger  - automatically logs incoming requests

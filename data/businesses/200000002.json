@@ -3,26 +3,26 @@
   "organisationId": "7400099",
   "info": {
     "name": "Hope Valley Farm Ltd",
-    "reference": "0300000099",
+    "reference": "0200000002",
     "email": {
-      "address": "contact+300000099@example.test"
+      "address": "contact+200000002@example.test"
     },
     "phone": {
-      "mobile": "07300000099",
-      "landline": "02011223344"
+      "mobile": "07200000002",
+      "landline": "01200000002"
     },
     "address": {
-      "line1": "100 Chapel Street",
+      "line1": "3 Test Lane",
       "line2": "Test Park",
-      "line3": "Danby",
-      "line4": "North York Moors",
+      "line3": "Mockford",
+      "line4": "Testshire",
       "line5": "",
-      "street": "Cuckoo Hill",
-      "city": "Gabba",
-      "postalCode": "SM50 4BA",
-      "uprn": "581124619099",
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ20 2ZZ",
+      "uprn": "900000200002",
       "buildingName": null,
-      "buildingNumberRange": "York House",
+      "buildingNumberRange": "3",
       "county": "Testshire",
       "dependentLocality": null,
       "doubleDependentLocality": null,

@@ -171,6 +171,95 @@ describe('DataStore', () => {
     )
   })
 
+  test('flags an issued-looking identifier anywhere in a document', async () => {
+    const dir = await load({
+      'businesses/300000001.json': business('300000001', {
+        info: { name: 'Farm 1100000001', reference: '1100000002' }
+      }),
+      'customers/1300000001.json': {
+        ...customer('1300000001'),
+        notes: ['lives next to 106238911']
+      }
+    })
+
+    await expectProblems(
+      dir,
+      'businesses/300000001.json: info.name contains 1100000001, which looks like an issued CRN or FRN',
+      'businesses/300000001.json: info.reference contains 1100000002, which looks like an issued CRN or FRN',
+      'customers/1300000001.json: notes.0 contains 106238911, which looks like an issued SBI'
+    )
+  })
+
+  test('accepts synthetic FRNs, UPRNs and phone numbers', async () => {
+    const dir = await load({
+      'businesses/300000001.json': business('300000001', {
+        info: {
+          name: 'Business',
+          reference: '0300000001',
+          frn: '0300000001',
+          phone: { mobile: '0730000000', landline: '0130000000' },
+          address: { postalCode: 'ZZ30 1ZZ', uprn: '9000003000' }
+        }
+      })
+    })
+
+    const store = await DataStore.load(dir)
+
+    expect(store.counts.businesses).toBe(1)
+  })
+
+  test('rejects postcodes and email addresses that are not synthetic', async () => {
+    const dir = await load({
+      'businesses/300000001.json': business('300000001', {
+        info: {
+          name: 'Business',
+          email: { address: 'contact@realfarm.co.uk' },
+          address: { postalCode: 'SK13 5CB' }
+        }
+      }),
+      'customers/1300000001.json': {
+        ...customer('1300000001'),
+        info: {
+          name: { first: 'A', last: 'B' },
+          email: { address: 'a.b+1300000001@example.test' },
+          address: { postalCode: 'ZZ101 9ZZ' }
+        }
+      }
+    })
+
+    await expectProblems(
+      dir,
+      'businesses/300000001.json: info.email.address "contact@realfarm.co.uk" is not an example.test email address',
+      'businesses/300000001.json: info.address.postalCode "SK13 5CB" is not a synthetic (ZZ99 9ZZ) postcode'
+    )
+    const error = await DataStore.load(dir).catch((err) => err)
+    expect(error.problems.filter((p) => p.startsWith('customers/'))).toEqual([])
+  })
+
+  test('rejects permission groups with unknown ids or levels', async () => {
+    const dir = await load({
+      'businesses/300000001.json': business('300000001'),
+      'customers/1300000001.json': customer('1300000001'),
+      'relationships/300000001-1300000001.json': relationship(
+        '300000001',
+        '1300000001',
+        [
+          { id: 'NOT_A_GROUP', level: 'VIEW', functions: [] },
+          { id: 'BUSINESS_DETAILS', level: 'EVERYTHING', functions: [] },
+          { id: 'BUSINESS_DETAILS', level: 'VIEW', functions: 'View' }
+        ]
+      )
+    })
+
+    await expectProblems(
+      dir,
+      'relationships/300000001-1300000001.json: permissionGroups[0].id "NOT_A_GROUP" is not a permission group id',
+      'relationships/300000001-1300000001.json: permissionGroups[1].level "EVERYTHING" is not a level of BUSINESS_DETAILS',
+      'relationships/300000001-1300000001.json: permissionGroups[2].functions must be an array',
+      'relationships/300000001-1300000001.json: permissionGroups[2].id "BUSINESS_DETAILS" appears more than once'
+    )
+  })
+
   test('rejects malformed JSON and reports the file', async () => {
     const dir = await load({ 'businesses/300000001.json': '{ not json' })
 

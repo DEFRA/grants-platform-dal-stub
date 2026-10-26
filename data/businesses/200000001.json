@@ -3,30 +3,30 @@
   "organisationId": "7400100",
   "info": {
     "name": "High Fell Farm",
-    "reference": "0300000100",
+    "reference": "0200000001",
     "email": {
-      "address": "contact+300000100@example.test"
+      "address": "contact+200000001@example.test"
     },
     "phone": {
-      "landline": "02011223344",
-      "mobile": "07200000001"
+      "mobile": "07200000001",
+      "landline": "01200000001"
     },
     "address": {
-      "line1": "1 Moorfield",
-      "line2": "Glossop",
-      "line3": "High Peak",
-      "line4": "Derbyshire",
+      "line1": "2 Test Lane",
+      "line2": "Test Park",
+      "line3": "Fakenham Test",
+      "line4": "Testshire",
       "line5": "",
-      "street": "1 Moorfield",
-      "city": "Chesham",
-      "postalCode": "ZZ13 5CB",
-      "uprn": "681124619099",
-      "buildingName": "Holloway",
-      "buildingNumberRange": "1",
+      "street": "Test Lane",
+      "city": "Fakenham Test",
+      "postalCode": "ZZ20 1ZZ",
+      "uprn": "900000200001",
+      "buildingName": null,
+      "buildingNumberRange": "2",
       "county": "Testshire",
       "dependentLocality": null,
       "doubleDependentLocality": null,
-      "flatName": "04",
+      "flatName": null,
       "pafOrganisationName": "High Fell Farm"
     },
     "vat": "GB200000001",

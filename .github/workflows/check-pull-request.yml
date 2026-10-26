@@ -86,7 +86,7 @@ jobs:
     # on a stale copy of the real DAL schema. Fix: `npm run schema:sync`, review the
     # diff, update resolvers if needed, and classify any new file in
     # scripts/sync-upstream-schema.js. While the upstream repository is not readable
-    # the check reports that and passes.
+    # the check passes with a warning annotation on the PR.
     name: Vendored DAL schema matches fcp-dal-api
     runs-on: ubuntu-latest
     steps:
@@ -107,6 +107,8 @@ jobs:
         env:
           # Lifts the anonymous GitHub API rate limit; can read upstream while it is public.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: token that can read upstream when GITHUB_TOKEN cannot.
+          UPSTREAM_SCHEMA_TOKEN: ${{ secrets.UPSTREAM_SCHEMA_TOKEN }}
 
   docker:
     name: Docker Build
