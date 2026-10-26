@@ -1,7 +1,7 @@
 {
-  "name": "cdp-node-backend-template",
-  "version": "0.1.0",
-  "description": "CDP Node.js Backend Template",
+  "name": "grants-platform-dal-stub",
+  "version": "0.0.0",
+  "description": "grants-platform-dal-stub",
   "main": "src/index.js",
   "type": "module",
   "engines": {

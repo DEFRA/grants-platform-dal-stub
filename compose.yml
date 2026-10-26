@@ -39,7 +39,7 @@ services:
 
   ################################################################################
 
-  cdp-node-backend-template:
+  grants-platform-dal-stub:
     build:
       context: .
       target: development
