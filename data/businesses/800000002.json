@@ -1,11 +1,11 @@
 {
-  "sbi": "200000001",
+  "sbi": "800000002",
   "organisationId": "7400100",
   "info": {
     "name": "High Fell Farm",
-    "reference": "0200000001",
+    "reference": "0800000002",
     "email": {
-      "address": "contact+200000001@example.test"
+      "address": "contact+800000002@example.test"
     },
     "phone": {
       "mobile": "07700900201",
@@ -29,7 +29,7 @@
       "flatName": null,
       "pafOrganisationName": "High Fell Farm"
     },
-    "vat": "GB200000001",
+    "vat": "GB800000002",
     "legalStatus": {
       "code": 102111,
       "type": "Sole Proprietorship"

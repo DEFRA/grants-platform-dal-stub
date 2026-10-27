@@ -8,9 +8,9 @@ import { IdMapping, IdMappingValidationError } from '#/data/id-mapping.js'
  */
 
 const CS_PERSONA_CRN = '9000000001'
-const CS_PERSONA_SBI = '300000001'
-const SBI_WITH_AGREEMENTS = '300000001'
-const SBI_WITHOUT_AGREEMENTS = '200000001'
+const CS_PERSONA_SBI = '800000001'
+const SBI_WITH_AGREEMENTS = '800000001'
+const SBI_WITHOUT_AGREEMENTS = '800000002'
 const OTHER_CRN = '9000000005'
 
 // The Apollo integration writes the response as a JSON string, so parse it.
@@ -260,7 +260,7 @@ describe('POST /graphql', () => {
     test.each([
       [
         'business(sbi) with a leading zero',
-        '{ business(sbi: "030000001") { sbi } }'
+        '{ business(sbi: "080000001") { sbi } }'
       ],
       [
         'business(sbi) with 10 digits',
@@ -272,7 +272,7 @@ describe('POST /graphql', () => {
       ],
       [
         'customer.business(sbi) that is too short',
-        `{ customer(crn: "${CS_PERSONA_CRN}") { business(sbi: "30000001") { sbi } } }`
+        `{ customer(crn: "${CS_PERSONA_CRN}") { business(sbi: "80000001") { sbi } } }`
       ],
       [
         'business.customer(crn) with a leading zero',
@@ -290,7 +290,7 @@ describe('POST /graphql', () => {
 
     test('invalid query is a GRAPHQL_VALIDATION_FAILED error with HTTP 400', async () => {
       const response = await postGraphql(server, {
-        query: '{ business(sbi: "300000001") { noSuchField } }'
+        query: '{ business(sbi: "800000001") { noSuchField } }'
       })
 
       expect(response.statusCode).toBe(400)
@@ -551,14 +551,14 @@ describe('createServer with a mapping whose target has no fixture', () => {
     const error = await createServer({
       idMapping: new IdMapping({
         crn: '1100000009:9000000099',
-        sbi: '100000009:300000099'
+        sbi: '100000009:800000099'
       })
     }).catch((err) => err)
 
     expect(error).toBeInstanceOf(IdMappingValidationError)
     expect(error.problems).toEqual([
       'CRN map target 9000000099 has no customer fixture',
-      'SBI map target 300000099 has no business fixture'
+      'SBI map target 800000099 has no business fixture'
     ])
   })
 })

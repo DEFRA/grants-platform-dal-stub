@@ -1,8 +1,8 @@
 import { BadRequest } from './errors.js'
 
 // Same patterns as the @validateVariable directives on the DAL's crn/sbi arguments.
-const CRN_PATTERN = /^[1-9][0-9]{9}$/
-const SBI_PATTERN = /^[1-9][0-9]{8}$/
+const CRN_PATTERN = /^[1-9]\d{9}$/
+const SBI_PATTERN = /^[1-9]\d{8}$/
 
 export function validCrn(crn) {
   const value = String(crn)

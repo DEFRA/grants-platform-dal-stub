@@ -35,7 +35,7 @@ jobs:
 
       - name: Test code and Create Test Coverage Reports
         run: |
-          npm ci
+          npm ci --ignore-scripts
           npm test
 
       - name: Publish Hot Fix

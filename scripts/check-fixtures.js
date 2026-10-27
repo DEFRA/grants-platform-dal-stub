@@ -1,11 +1,6 @@
 #!/usr/bin/env node
-/**
- * Loads the fixture collections exactly as the server does and exits non-zero
- * if anything is wrong. All validation lives in src/data/store.js (synthetic
- * identifier ranges, file names, relationship integrity, and a scan for issued-
- * looking identifiers in any field); this script only gives CI a clearly named
- * check so a fixture problem is reported as such rather than as a failing test.
- */
+// Loads the fixtures exactly as the server does and exits non-zero on any problem,
+// so CI reports a bad fixture under its own name rather than as a failing test.
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -25,7 +20,9 @@ try {
     `Fixtures OK: ${businesses} businesses, ${customers} customers, ${relationships} relationships, all identifiers synthetic`
   )
 } catch (err) {
-  if (!(err instanceof DataStoreValidationError)) throw err
+  if (!(err instanceof DataStoreValidationError)) {
+    throw err
+  }
   console.error(err.message)
   process.exitCode = 1
 }

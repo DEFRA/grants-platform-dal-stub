@@ -1,11 +1,11 @@
 {
-  "sbi": "200000002",
+  "sbi": "800000003",
   "organisationId": "7400099",
   "info": {
     "name": "Hope Valley Farm Ltd",
-    "reference": "0200000002",
+    "reference": "0800000003",
     "email": {
-      "address": "contact+200000002@example.test"
+      "address": "contact+800000003@example.test"
     },
     "phone": {
       "mobile": "07700900202",
@@ -29,7 +29,7 @@
       "flatName": null,
       "pafOrganisationName": "Hope Valley Farm Ltd"
     },
-    "vat": "GB200000002",
+    "vat": "GB800000003",
     "legalStatus": {
       "code": 102111,
       "type": "Sole Proprietorship"

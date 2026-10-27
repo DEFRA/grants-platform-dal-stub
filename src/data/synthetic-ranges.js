@@ -3,7 +3,7 @@
 // a range that is unallocated or reserved for fiction. Do not widen them.
 //
 //   CRN       9000000NNN (issued CRNs start 1)
-//   SBI       200000NNN, 300000NNN, 400000NNN (issued SBIs start 1)
+//   SBI       800000NNN (issued SBIs start 1)
 //   FRN       0 followed by a synthetic SBI
 //   Postcode  ZZ9 9AA / ZZ99 9AA (Royal Mail has no ZZ area)
 //   Mobile    07700 900NNN (Ofcom drama range)
@@ -11,8 +11,8 @@
 //   Email     anything at example.test
 
 const CRN_PATTERN = /^9000000\d{3}$/
-const SBI_PATTERN = /^[234]00000\d{3}$/
-const FRN_PATTERN = /^0[234]00000\d{3}$/
+const SBI_PATTERN = /^800000\d{3}$/
+const FRN_PATTERN = /^0800000\d{3}$/
 const POSTCODE_PATTERN = /^ZZ\d{1,2} \d[ABD-HJLNP-UW-Z]{2}$/
 const MOBILE_PATTERN = /^07700900\d{3}$/
 const LANDLINE_PATTERN = /^01632960\d{3}$/

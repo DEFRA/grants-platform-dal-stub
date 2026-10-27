@@ -103,7 +103,7 @@ Relationship documents may also carry `messages[]` for `customer.businesses[].me
 
 **Every query in the schema is answerable.** A test generates a selection of every field
 reachable from `Business` and `Customer` from the schema itself and fails if the primary
-persona (`9000000001` / `300000001`) returns an error, so a field added upstream cannot break
+persona (`9000000001` / `800000001`) returns an error, so a field added upstream cannot break
 a consumer. The fixtures populate the fields consumers use: business name, reference, VAT,
 type, legal status, registration numbers, contact details and address; land parcels
 (`sheetId`/`parcelId`); county parish holding numbers; agreements with payment schedules;
@@ -121,15 +121,15 @@ Defined once in `src/data/synthetic-ranges.js` and enforced by the loader, by
 | Kind     | Pattern                | Allowed values                                         |
 | -------- | ---------------------- | ------------------------------------------------------ |
 | CRN      | `9000000NNN`           | `9000000001` to `9000000999`                           |
-| SBI      | `[234]00000NNN`        | `200000NNN`, `300000NNN`, `400000NNN`                  |
-| FRN      | `0` + synthetic SBI    | `0300000001` for `reference` / `frn`                   |
+| SBI      | `800000NNN`            | `800000001` to `800000999`                             |
+| FRN      | `0` + synthetic SBI    | `0800000001` for `reference` / `frn`                   |
 | Postcode | `ZZ9 9AA` / `ZZ99 9AA` | `ZZ13 1ZZ` (valid format; Royal Mail has no `ZZ` area) |
 | Mobile   | `07700 900NNN`         | `07700900101` (Ofcom range reserved for fiction)       |
 | Landline | `01632 960NNN`         | `01632960101` (Ofcom range reserved for fiction)       |
 | Email    | `*@example.test`       | `alice.carter+9000000001@example.test`                 |
 
 Issued SBIs are 9 digits starting with `1`, and issued CRNs and FRNs are 10 digits starting
-`1`. Synthetic CRNs start `90` to sit well away from the issued block, and every block above is
+`1`. Synthetic SBIs start `8` and CRNs `90`, well away from the issued blocks, and every block above is
 obviously sequential. The loader
 also rejects any 9- or 10-digit value elsewhere in a fixture that looks like an issued
 identifier, any `postalCode`, `mobile` or `landline` outside those ranges, any email address
@@ -165,11 +165,11 @@ them obviously fake. Add more only when a scenario genuinely needs it.
 
 | CRN          | Name            | SBI                                                          | Permissions                                                             | Notes                                            |
 | ------------ | --------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------ |
-| `9000000001` | Alice Carter    | `300000001` Green Farm                                       | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 5 parcels |
-| `9000000002` | Benjamin Carter | `300000001`                                                  | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                  |
-| `9000000003` | Chloe Carter    | `300000001`                                                  | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                  |
-| `9000000004` | Daniel Carter   | `300000001`                                                  | No permission groups                                                    |                                                  |
-| `9000000005` | Nadia Khan      | `200000001` High Fell Farm, `200000002` Hope Valley Farm Ltd | Full on High Fell Farm, `VIEW` only on Hope Valley                      | Multi-business customer; neither has agreements  |
+| `9000000001` | Alice Carter    | `800000001` Green Farm                                       | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 5 parcels |
+| `9000000002` | Benjamin Carter | `800000001`                                                  | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                  |
+| `9000000003` | Chloe Carter    | `800000001`                                                  | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                  |
+| `9000000004` | Daniel Carter   | `800000001`                                                  | No permission groups                                                    |                                                  |
+| `9000000005` | Nadia Khan      | `800000002` High Fell Farm, `800000003` Hope Valley Farm Ltd | Full on High Fell Farm, `VIEW` only on Hope Valley                      | Multi-business customer; neither has agreements  |
 
 ## Identifier mapping
 
@@ -180,7 +180,7 @@ so keep them out of committed configuration files, and never put them in this re
 
 ```env
 CRN_MAP=<crn>:9000000001,<crn>:9000000002
-SBI_MAP=<sbi>:300000001,<sbi>:300000002
+SBI_MAP=<sbi>:800000001,<sbi>:800000002
 ```
 
 Incoming identifiers are translated to the synthetic ones before fixture lookup. In the
@@ -242,8 +242,8 @@ docker run -p 3008:3008 grants-platform-dal-stub
 ### Continuous integration
 
 Every pull request runs the lock-file check, format/lint/tests, the fixture check, the
-upstream schema check, a production image build and smoke test, `npm audit`, a Snyk scan
-and a SonarCloud scan (`.github/workflows/check-pull-request.yml`). Pushes to `main` build
+upstream schema check, a production image build and smoke test, a Snyk scan and a
+SonarCloud scan (`.github/workflows/check-pull-request.yml`). Pushes to `main` build
 and publish the image through the CDP build action and upload coverage to SonarCloud. A
 failed publish, or a failed SonarCloud quality gate on `main`, is posted to Slack by
 `notify-slack-on-failure.yml`, which reuses the workflow in

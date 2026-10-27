@@ -33,28 +33,24 @@ describe('synthetic identifier ranges', () => {
     expect(isSyntheticCrn(crn)).toBe(false)
   })
 
-  test.each([
-    '200000001',
-    '200000003',
-    '300000001',
-    '300000100',
-    '400000009',
-    300000001
-  ])('%s is a synthetic SBI', (sbi) => {
-    expect(isSyntheticSbi(sbi)).toBe(true)
-  })
+  test.each(['800000001', '800000003', '800000100', '800000999', 800000001])(
+    '%s is a synthetic SBI',
+    (sbi) => {
+      expect(isSyntheticSbi(sbi)).toBe(true)
+    }
+  )
 
   test.each([
     '199999999', // valid SBI format, outside the synthetic blocks
-    '201234567', // synthetic prefix but not a sequential block number
-    '500000001', // block not reserved
-    '30000001', // too short
+    '801234567', // synthetic prefix but not a sequential block number
+    '700000001', // outside the block
+    '80000001', // too short
     ''
   ])('%s is not a synthetic SBI', (sbi) => {
     expect(isSyntheticSbi(sbi)).toBe(false)
   })
 
-  test.each(['0300000001', '0200000099', '0400000100'])(
+  test.each(['0800000001', '0800000099', '0800000100'])(
     '%s is a synthetic FRN (0 followed by a synthetic SBI)',
     (frn) => {
       expect(isSyntheticFrn(frn)).toBe(true)
@@ -65,7 +61,7 @@ describe('synthetic identifier ranges', () => {
     '9000000001', // a synthetic CRN is not an FRN
     '1100000001', // issued format
     '0100000001', // 0 followed by an issued-looking SBI
-    '300000001', // the SBI alone
+    '800000001', // the SBI alone
     ''
   ])('%s is not a synthetic FRN', (frn) => {
     expect(isSyntheticFrn(frn)).toBe(false)

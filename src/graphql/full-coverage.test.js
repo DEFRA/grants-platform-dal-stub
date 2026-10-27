@@ -12,7 +12,7 @@ import { CustomerBusiness } from '#/graphql/resolvers/customer.js'
  * DAL does for a business or customer without that data.
  */
 
-const SBI = '300000001'
+const SBI = '800000001'
 const CRN = '9000000001'
 
 const REQUIRED_PATHS = {

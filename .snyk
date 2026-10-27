@@ -1,0 +1,12 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities
+version: v1.25.0
+ignore:
+  'SNYK-JS-BODYPARSER-21431495':
+    - '@apollo/server > body-parser':
+        reason: "Checked 2026-10-27 on @apollo/server@5.5.1: body-parser is only used by the Express integrations of Apollo Server. The stub serves GraphQL through @as-integrations/hapi and body-parser is never loaded (verified by starting the server and listing the loaded modules). Fixed body-parser@2.4.0 was published 2026-10-22T11:39:38Z; the seven-day cooldown set by min-release-age in .npmrc ends 2026-10-29T11:39:38Z. Remove this ignore and run npm update body-parser when eligible."
+        expires: '2026-10-30'
+  'SNYK-JS-HAPICONTENT-21691242':
+    - '@hapi/hapi > @hapi/subtext > *':
+        reason: "Checked 2026-10-27 on @hapi/hapi@21.4.10: the regex fix (hapijs/content#38) only changes behaviour for Content-Type values that contain a line break, and for Content-Disposition parsing. The HTTP parser in Node rejects header values containing CR or LF and caps headers at 16 KB before Hapi sees them, and multipart payloads are disabled, so neither path is reachable (verified with raw-socket requests against the running stub). Fixed @hapi/content@6.0.3 was published 2026-10-21T16:25:10Z; the seven-day cooldown set by min-release-age in .npmrc ends 2026-10-28T16:25:10Z. Remove this ignore and run npm update @hapi/content when eligible."
+        expires: '2026-10-29'
+patch: {}

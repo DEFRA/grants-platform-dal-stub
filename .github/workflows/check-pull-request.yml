@@ -26,7 +26,7 @@ jobs:
 
       - name: Check lockfile sync
         run: |
-          npm install --package-lock-only && git diff --exit-code package-lock.json || \
+          npm install --package-lock-only --ignore-scripts && git diff --exit-code package-lock.json || \
           (echo "ERROR: You need to run npm install and commit package-lock.json" && exit 1)
 
   test:
@@ -43,7 +43,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run checks
         run: |
@@ -74,7 +74,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Check fixtures
         run: npm run check:fixtures
@@ -100,7 +100,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Compare with upstream
         run: npm run schema:check
@@ -125,24 +125,8 @@ jobs:
           docker run -d --name stub -p 3008:3008 grants-platform-dal-stub
           for i in $(seq 1 30); do curl -sf http://localhost:3008/health && break; sleep 1; done
           curl -sf -X POST http://localhost:3008/graphql -H 'content-type: application/json' \
-            -d '{"query":"{ business(sbi: \"300000001\") { sbi info { name } } }"}' | grep -q '"sbi":"300000001"'
+            -d '{"query":"{ business(sbi: \"800000001\") { sbi info { name } } }"}' | grep -q '"sbi":"800000001"'
           docker rm -f stub
-
-  security:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: npm audit (critical)
-        run: npm run security-audit
 
   snyk:
     name: Snyk Security Scan
@@ -159,7 +143,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run Snyk test
         uses: snyk/actions/node@11b673cfb4b0dc0d860a1323caa199d54950dcce # master

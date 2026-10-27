@@ -15,6 +15,15 @@ const UPSTREAM_REF = process.env.UPSTREAM_REF || 'main'
 const TYPES_DIR = 'app/graphql/types'
 const STATIC_DIR = 'app/data-sources/static'
 
+const HTTP_UNAUTHORIZED = 401
+const HTTP_FORBIDDEN = 403
+const HTTP_NOT_FOUND = 404
+const UNREADABLE_STATUSES = new Set([
+  HTTP_UNAUTHORIZED,
+  HTTP_FORBIDDEN,
+  HTTP_NOT_FOUND
+])
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const localSchemaDir = 'src/graphql/schema/upstream'
 
@@ -34,28 +43,32 @@ const VENDORED_TYPES = [
   'permissions/permissions.gql'
 ]
 
+const ROOT_FIELDS_IN_STUB = 'root fields live in schema/stub/query.gql'
+const MUTATIONS_NOT_IMPLEMENTED = 'mutations not implemented'
+const NOT_SERVED = 'not served by the stub'
+
 // Not copied, with the reason. Anything upstream that is in neither list fails the check.
 const EXCLUDED_TYPES = {
   'base.gql':
     'Query/Mutation roots; the stub has its own in schema/stub/query.gql',
   'common-inputs.gql': 'mutation inputs',
-  'business/query.gql': 'root fields live in schema/stub/query.gql',
-  'customer/query.gql': 'root fields live in schema/stub/query.gql',
-  'permissions/query.gql': 'root fields live in schema/stub/query.gql',
-  'business/mutation/additional-details.gql': 'mutations not implemented',
-  'business/mutation/all-fields.gql': 'mutations not implemented',
-  'business/mutation/bank-details.gql': 'mutations not implemented',
-  'business/mutation/create.gql': 'mutations not implemented',
-  'business/mutation/details.gql': 'mutations not implemented',
-  'business/mutation/permissions.gql': 'mutations not implemented',
-  'customer/mutation.gql': 'mutations not implemented',
-  'business/bank-accounts.gql': 'not served by the stub',
-  'business/payments.gql': 'not served by the stub',
-  'business/search.gql': 'not served by the stub',
-  'customer/search.gql': 'not served by the stub',
-  'permissions/internal-user.gql': 'not served by the stub',
-  'reference-data/query.gql': 'not served by the stub',
-  'reference-data/reference-data.gql': 'not served by the stub'
+  'business/query.gql': ROOT_FIELDS_IN_STUB,
+  'customer/query.gql': ROOT_FIELDS_IN_STUB,
+  'permissions/query.gql': ROOT_FIELDS_IN_STUB,
+  'business/mutation/additional-details.gql': MUTATIONS_NOT_IMPLEMENTED,
+  'business/mutation/all-fields.gql': MUTATIONS_NOT_IMPLEMENTED,
+  'business/mutation/bank-details.gql': MUTATIONS_NOT_IMPLEMENTED,
+  'business/mutation/create.gql': MUTATIONS_NOT_IMPLEMENTED,
+  'business/mutation/details.gql': MUTATIONS_NOT_IMPLEMENTED,
+  'business/mutation/permissions.gql': MUTATIONS_NOT_IMPLEMENTED,
+  'customer/mutation.gql': MUTATIONS_NOT_IMPLEMENTED,
+  'business/bank-accounts.gql': NOT_SERVED,
+  'business/payments.gql': NOT_SERVED,
+  'business/search.gql': NOT_SERVED,
+  'customer/search.gql': NOT_SERVED,
+  'permissions/internal-user.gql': NOT_SERVED,
+  'reference-data/query.gql': NOT_SERVED,
+  'reference-data/reference-data.gql': NOT_SERVED
 }
 
 const VENDORED = {
@@ -86,7 +99,7 @@ class UpstreamUnreachable extends Error {}
 
 async function fetchJson(url) {
   const response = await fetch(url, { headers })
-  if ([401, 403, 404].includes(response.status)) {
+  if (UNREADABLE_STATUSES.has(response.status)) {
     throw new UpstreamUnreachable(
       `${response.status} ${response.statusText} fetching ${url}`
     )
@@ -100,7 +113,7 @@ async function fetchJson(url) {
 async function fetchRaw(upstreamPath) {
   const url = `https://raw.githubusercontent.com/${UPSTREAM_REPO}/${UPSTREAM_REF}/${upstreamPath}`
   const response = await fetch(url, { headers })
-  if (response.status === 404) {
+  if (response.status === HTTP_NOT_FOUND) {
     return null
   }
   if (!response.ok) {
@@ -139,91 +152,108 @@ async function listLocalSchemaFiles() {
     )
 }
 
-async function main() {
-  const check = process.argv.includes('--check')
-  const problems = []
-  const updated = []
-
+async function strayLocalFileProblems() {
   const vendoredLocal = new Set(Object.values(VENDORED))
-  for (const localPath of await listLocalSchemaFiles()) {
-    if (!vendoredLocal.has(localPath)) {
-      problems.push(
+  return (await listLocalSchemaFiles())
+    .filter((localPath) => !vendoredLocal.has(localPath))
+    .map(
+      (localPath) =>
         `${localPath} is not a vendored copy of any upstream file; add it to VENDORED_TYPES or remove it`
-      )
-    }
-  }
+    )
+}
 
-  let upstreamFiles
-  try {
-    upstreamFiles = await listUpstreamSchemaFiles()
-  } catch (err) {
-    if (!(err instanceof UpstreamUnreachable)) {
-      throw err
-    }
-    const message = `Upstream schema check skipped: ${UPSTREAM_REPO}@${UPSTREAM_REF} is not readable (${err.message})`
-    console.warn(message)
-    if (process.env.GITHUB_ACTIONS === 'true') {
-      console.log(`::warning title=Upstream schema check skipped::${message}`)
-    }
-    report({ check, problems, updated, compared: false })
-    return
-  }
-
-  for (const upstreamPath of upstreamFiles) {
-    if (!(upstreamPath in VENDORED) && !(upstreamPath in EXCLUDED)) {
-      problems.push(
+function classificationProblems(upstreamFiles) {
+  const unclassified = upstreamFiles
+    .filter(
+      (upstreamPath) =>
+        !(upstreamPath in VENDORED) && !(upstreamPath in EXCLUDED)
+    )
+    .map(
+      (upstreamPath) =>
         `new upstream file ${upstreamPath}: add it to VENDORED_TYPES (and copy it) or to EXCLUDED_TYPES with a reason`
-      )
-    }
-  }
-
-  for (const upstreamPath of Object.keys(EXCLUDED)) {
-    if (!upstreamFiles.includes(upstreamPath)) {
-      problems.push(
+    )
+  const gone = Object.keys(EXCLUDED)
+    .filter((upstreamPath) => !upstreamFiles.includes(upstreamPath))
+    .map(
+      (upstreamPath) =>
         `${upstreamPath} is in EXCLUDED_TYPES but no longer exists upstream`
-      )
-    }
+    )
+  return [...unclassified, ...gone]
+}
+
+async function readVendored([upstreamPath, localPath]) {
+  const absolute = path.join(root, localPath)
+  const [upstream, local] = await Promise.all([
+    fetchRaw(upstreamPath),
+    fs.readFile(absolute, 'utf8').catch(() => null)
+  ])
+  return { upstreamPath, localPath, absolute, upstream, local }
+}
+
+function vendoredProblem({ upstreamPath, localPath, upstream, local }, check) {
+  if (upstream === null) {
+    return `${upstreamPath} no longer exists upstream; update VENDORED_TYPES and ${localPath}`
   }
+  if (check && local !== upstream) {
+    return `${localPath} differs from upstream ${upstreamPath}`
+  }
+  return null
+}
 
-  for (const [upstreamPath, localPath] of Object.entries(VENDORED)) {
-    const upstream = await fetchRaw(upstreamPath)
-    if (upstream === null) {
-      problems.push(
-        `${upstreamPath} no longer exists upstream; update VENDORED_TYPES and ${localPath}`
+// Compares every vendored file with upstream; without --check, overwrites the stale ones.
+async function syncVendored(check) {
+  const files = await Promise.all(Object.entries(VENDORED).map(readVendored))
+  const problems = files
+    .map((file) => vendoredProblem(file, check))
+    .filter(Boolean)
+  const stale = check
+    ? []
+    : files.filter(
+        (file) => file.upstream !== null && file.local !== file.upstream
       )
-      continue
-    }
-    const absolute = path.join(root, localPath)
-    const local = await fs.readFile(absolute, 'utf8').catch(() => null)
-    if (local === upstream) continue
-
-    if (check) {
-      problems.push(`${localPath} differs from upstream ${upstreamPath}`)
-    } else {
+  await Promise.all(
+    stale.map(async ({ absolute, upstream }) => {
       await fs.mkdir(path.dirname(absolute), { recursive: true })
       await fs.writeFile(absolute, upstream)
-      updated.push(localPath)
-    }
-  }
+    })
+  )
+  return { problems, updated: stale.map((file) => file.localPath) }
+}
 
-  report({ check, problems, updated, compared: true })
+function warnSkipped(err) {
+  const message = `Upstream schema check skipped: ${UPSTREAM_REPO}@${UPSTREAM_REF} is not readable (${err.message})`
+  console.warn(message)
+  if (process.env.GITHUB_ACTIONS === 'true') {
+    console.log(`::warning title=Upstream schema check skipped::${message}`)
+  }
+}
+
+function summary({ check, updated, compared }) {
+  if (updated.length > 0) {
+    return `Review the diff, update resolvers if needed, and record the upstream commit in ${localSchemaDir}/UPSTREAM.md`
+  }
+  if (!check && compared) {
+    return 'Vendored files already up to date'
+  }
+  return null
 }
 
 function report({ check, problems, updated, compared }) {
-  if (updated.length > 0) {
-    for (const file of updated) console.log(`updated ${file}`)
-    console.log(
-      `Review the diff, update resolvers if needed, and record the upstream commit in ${localSchemaDir}/UPSTREAM.md`
-    )
-  } else if (!check && compared) {
-    console.log('Vendored files already up to date')
+  for (const file of updated) {
+    console.log(`updated ${file}`)
+  }
+  const line = summary({ check, updated, compared })
+  if (line) {
+    console.log(line)
   }
 
   if (problems.length > 0) {
     console.error(
       `Upstream schema check against ${UPSTREAM_REPO}@${UPSTREAM_REF} FAILED:`
     )
-    for (const problem of problems) console.error(`  - ${problem}`)
+    for (const problem of problems) {
+      console.error(`  - ${problem}`)
+    }
     process.exitCode = 1
     return
   }
@@ -232,6 +262,28 @@ function report({ check, problems, updated, compared }) {
       `Upstream schema check passed: ${Object.keys(VENDORED).length} vendored and ${Object.keys(EXCLUDED).length} excluded files accounted for at ${UPSTREAM_REPO}@${UPSTREAM_REF}`
     )
   }
+}
+
+async function main() {
+  const check = process.argv.includes('--check')
+  const problems = await strayLocalFileProblems()
+
+  let upstreamFiles
+  try {
+    upstreamFiles = await listUpstreamSchemaFiles()
+  } catch (err) {
+    if (!(err instanceof UpstreamUnreachable)) {
+      throw err
+    }
+    warnSkipped(err)
+    report({ check, problems, updated: [], compared: false })
+    return
+  }
+
+  problems.push(...classificationProblems(upstreamFiles))
+  const { problems: vendoredProblems, updated } = await syncVendored(check)
+  problems.push(...vendoredProblems)
+  report({ check, problems, updated, compared: true })
 }
 
 await main()

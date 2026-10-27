@@ -19,6 +19,19 @@ const COLLECTIONS = {
   relationships: 'relationships'
 }
 
+const SBI_LENGTH = 9
+const CRN_LENGTH = 10
+const IDENTIFIER_RUN = /(?<!\d)\d{9,10}(?!\d)/g
+
+const CONTACT_CHECKS = new Map([
+  [
+    'postalCode',
+    [isSyntheticPostcode, 'is not a synthetic (ZZ99 9ZZ) postcode']
+  ],
+  ['mobile', [isSyntheticMobile, 'is not in the 07700 900NNN range']],
+  ['landline', [isSyntheticLandline, 'is not in the 01632 960NNN range']]
+])
+
 const PERMISSION_LEVELS = new Map(
   permissionGroupsReference.map((group) => [
     group.id,
@@ -39,85 +52,13 @@ export class DataStore {
     const store = new DataStore()
     const problems = []
 
-    const businesses = await readCollection(
-      path.join(dataPath, COLLECTIONS.businesses),
-      problems
-    )
-    for (const { name, doc } of businesses) {
-      problems.push(
-        ...fixtureValueProblems(doc).map((p) => `businesses/${name}: ${p}`)
-      )
-      const sbi = String(doc.sbi ?? '')
-      if (!isSyntheticSbi(sbi)) {
-        problems.push(
-          `businesses/${name}: sbi "${sbi}" is outside the synthetic ranges`
-        )
-      } else if (name !== `${sbi}.json`) {
-        problems.push(
-          `businesses/${name}: file name does not match sbi "${sbi}"`
-        )
-      } else {
-        store.#businesses.set(sbi, { ...doc, sbi })
-      }
-    }
-
-    const customers = await readCollection(
-      path.join(dataPath, COLLECTIONS.customers),
-      problems
-    )
-    for (const { name, doc } of customers) {
-      problems.push(
-        ...fixtureValueProblems(doc).map((p) => `customers/${name}: ${p}`)
-      )
-      const crn = String(doc.crn ?? '')
-      if (!isSyntheticCrn(crn)) {
-        problems.push(
-          `customers/${name}: crn "${crn}" is outside the synthetic ranges`
-        )
-      } else if (name !== `${crn}.json`) {
-        problems.push(
-          `customers/${name}: file name does not match crn "${crn}"`
-        )
-      } else {
-        store.#customers.set(crn, { ...doc, crn })
-      }
-    }
-
-    const relationships = await readCollection(
-      path.join(dataPath, COLLECTIONS.relationships),
-      problems
-    )
-    for (const { name, doc } of relationships) {
-      const sbi = String(doc.sbi ?? '')
-      const crn = String(doc.crn ?? '')
-      const key = relationshipKey(sbi, crn)
-      const fileProblems = fixtureValueProblems(doc)
-      if (name !== `${key}.json`) {
-        fileProblems.push(`file name does not match "${key}"`)
-      }
-      if (!store.#businesses.has(sbi)) {
-        fileProblems.push(`no business fixture for sbi "${sbi}"`)
-      }
-      if (!store.#customers.has(crn)) {
-        fileProblems.push(`no customer fixture for crn "${crn}"`)
-      }
-      fileProblems.push(...permissionGroupProblems(doc.permissionGroups))
-      if (fileProblems.length > 0) {
-        problems.push(
-          ...fileProblems.map((problem) => `relationships/${name}: ${problem}`)
-        )
-        continue
-      }
-      const relationship = { ...doc, sbi, crn }
-      store.#relationships.set(key, relationship)
-      pushTo(store.#relationshipsBySbi, sbi, relationship)
-      pushTo(store.#relationshipsByCrn, crn, relationship)
-    }
+    await store.#loadBusinesses(dataPath, problems)
+    await store.#loadCustomers(dataPath, problems)
+    await store.#loadRelationships(dataPath, problems)
 
     if (problems.length > 0) {
       throw new DataStoreValidationError(problems)
     }
-
     return store
   }
 
@@ -160,6 +101,78 @@ export class DataStore {
   listRelationships() {
     return [...this.#relationships.values()]
   }
+
+  async #loadBusinesses(dataPath, problems) {
+    const docs = await readCollection(
+      path.join(dataPath, COLLECTIONS.businesses),
+      problems
+    )
+    for (const { name, doc } of docs) {
+      const sbi = String(doc.sbi ?? '')
+      const fileProblems = fixtureValueProblems(doc)
+      const problem = keyProblem('sbi', sbi, name, isSyntheticSbi)
+      if (problem) {
+        fileProblems.push(problem)
+      } else {
+        this.#businesses.set(sbi, { ...doc, sbi })
+      }
+      problems.push(...fileProblems.map((p) => `businesses/${name}: ${p}`))
+    }
+  }
+
+  async #loadCustomers(dataPath, problems) {
+    const docs = await readCollection(
+      path.join(dataPath, COLLECTIONS.customers),
+      problems
+    )
+    for (const { name, doc } of docs) {
+      const crn = String(doc.crn ?? '')
+      const fileProblems = fixtureValueProblems(doc)
+      const problem = keyProblem('crn', crn, name, isSyntheticCrn)
+      if (problem) {
+        fileProblems.push(problem)
+      } else {
+        this.#customers.set(crn, { ...doc, crn })
+      }
+      problems.push(...fileProblems.map((p) => `customers/${name}: ${p}`))
+    }
+  }
+
+  async #loadRelationships(dataPath, problems) {
+    const docs = await readCollection(
+      path.join(dataPath, COLLECTIONS.relationships),
+      problems
+    )
+    for (const { name, doc } of docs) {
+      const sbi = String(doc.sbi ?? '')
+      const crn = String(doc.crn ?? '')
+      const fileProblems = this.#relationshipProblems(name, doc, sbi, crn)
+      if (fileProblems.length > 0) {
+        problems.push(...fileProblems.map((p) => `relationships/${name}: ${p}`))
+      } else {
+        const relationship = { ...doc, sbi, crn }
+        this.#relationships.set(relationshipKey(sbi, crn), relationship)
+        pushTo(this.#relationshipsBySbi, sbi, relationship)
+        pushTo(this.#relationshipsByCrn, crn, relationship)
+      }
+    }
+  }
+
+  #relationshipProblems(name, doc, sbi, crn) {
+    const key = relationshipKey(sbi, crn)
+    const problems = fixtureValueProblems(doc)
+    if (name !== `${key}.json`) {
+      problems.push(`file name does not match "${key}"`)
+    }
+    if (!this.#businesses.has(sbi)) {
+      problems.push(`no business fixture for sbi "${sbi}"`)
+    }
+    if (!this.#customers.has(crn)) {
+      problems.push(`no customer fixture for crn "${crn}"`)
+    }
+    problems.push(...permissionGroupProblems(doc.permissionGroups))
+    return problems
+  }
 }
 
 export class DataStoreValidationError extends Error {
@@ -179,23 +192,49 @@ async function readCollection(dir, problems) {
   try {
     names = await fs.readdir(dir)
   } catch (err) {
-    if (err.code === 'ENOENT') {
-      problems.push(`missing collection directory ${dir}`)
-      return []
+    if (err.code !== 'ENOENT') {
+      throw err
     }
-    throw err
+    problems.push(`missing collection directory ${dir}`)
+    return []
   }
 
+  const results = await Promise.all(
+    names
+      .filter((name) => name.endsWith('.json'))
+      .sort()
+      .map(async (name) => {
+        try {
+          const doc = JSON.parse(
+            await fs.readFile(path.join(dir, name), 'utf8')
+          )
+          return { name, doc }
+        } catch (err) {
+          return { name, error: err.message }
+        }
+      })
+  )
+
   const docs = []
-  for (const name of names.filter((n) => n.endsWith('.json')).sort()) {
-    try {
-      const doc = JSON.parse(await fs.readFile(path.join(dir, name), 'utf8'))
+  for (const { name, doc, error } of results) {
+    if (doc === undefined) {
+      problems.push(`${path.basename(dir)}/${name}: ${error}`)
+    } else {
       docs.push({ name, doc })
-    } catch (err) {
-      problems.push(`${path.basename(dir)}/${name}: ${err.message}`)
     }
   }
   return docs
+}
+
+// A document's key must be synthetic and match its file name.
+function keyProblem(field, value, name, isSynthetic) {
+  if (!isSynthetic(value)) {
+    return `${field} "${value}" is outside the synthetic ranges`
+  }
+  if (name !== `${value}.json`) {
+    return `file name does not match ${field} "${value}"`
+  }
+  return null
 }
 
 // Any 9/10-digit run outside the synthetic ranges, and any postcode, phone
@@ -205,39 +244,7 @@ function fixtureValueProblems(value, keyPath = []) {
     return []
   }
   if (typeof value === 'string' || typeof value === 'number') {
-    const text = String(value)
-    const key = keyPath.at(-1)
-    const where = keyPath.join('.')
-    const problems = []
-    if (key === 'postalCode' && !isSyntheticPostcode(text)) {
-      problems.push(`${where} "${text}" is not a synthetic (ZZ99 9ZZ) postcode`)
-    }
-    if (key === 'mobile' && !isSyntheticMobile(text)) {
-      problems.push(`${where} "${text}" is not in the 07700 900NNN range`)
-    }
-    if (key === 'landline' && !isSyntheticLandline(text)) {
-      problems.push(`${where} "${text}" is not in the 01632 960NNN range`)
-    }
-    if (text.includes('@') && !isSyntheticEmail(text)) {
-      problems.push(`${where} "${text}" is not an example.test email address`)
-    }
-    for (const [digits] of text.matchAll(/(?<!\d)\d{9,10}(?!\d)/g)) {
-      if (
-        digits.length === 10 &&
-        !isSyntheticCrn(digits) &&
-        !isSyntheticFrn(digits)
-      ) {
-        problems.push(
-          `${where} contains ${digits}, which looks like an issued CRN or FRN`
-        )
-      }
-      if (digits.length === 9 && !isSyntheticSbi(digits)) {
-        problems.push(
-          `${where} contains ${digits}, which looks like an issued SBI`
-        )
-      }
-    }
-    return problems
+    return scalarProblems(String(value), keyPath)
   }
   if (typeof value !== 'object') {
     return []
@@ -245,6 +252,47 @@ function fixtureValueProblems(value, keyPath = []) {
   return Object.entries(value).flatMap(([key, item]) =>
     fixtureValueProblems(item, [...keyPath, key])
   )
+}
+
+function scalarProblems(text, keyPath) {
+  const where = keyPath.join('.')
+  return [
+    ...contactProblems(text, keyPath.at(-1), where),
+    ...identifierRunProblems(text, where)
+  ]
+}
+
+function contactProblems(text, key, where) {
+  const problems = []
+  const check = CONTACT_CHECKS.get(key)
+  if (check && !check[0](text)) {
+    problems.push(`${where} "${text}" ${check[1]}`)
+  }
+  if (text.includes('@') && !isSyntheticEmail(text)) {
+    problems.push(`${where} "${text}" is not an example.test email address`)
+  }
+  return problems
+}
+
+function identifierRunProblems(text, where) {
+  const problems = []
+  for (const [digits] of text.matchAll(IDENTIFIER_RUN)) {
+    if (
+      digits.length === CRN_LENGTH &&
+      !isSyntheticCrn(digits) &&
+      !isSyntheticFrn(digits)
+    ) {
+      problems.push(
+        `${where} contains ${digits}, which looks like an issued CRN or FRN`
+      )
+    }
+    if (digits.length === SBI_LENGTH && !isSyntheticSbi(digits)) {
+      problems.push(
+        `${where} contains ${digits}, which looks like an issued SBI`
+      )
+    }
+  }
+  return problems
 }
 
 function permissionGroupProblems(groups) {
