@@ -1,4 +1,5 @@
 import { ecsFormat } from '@elastic/ecs-pino-format'
+import { stdSerializers } from 'pino'
 import { config } from '#/config.js'
 import { getTraceId } from '@defra/hapi-tracing'
 
@@ -26,6 +27,14 @@ export const loggerOptions = {
   level: logConfig.level,
   ...formatters[logConfig.format],
   nesting: true,
+  // GET /graphql carries the query and variables in the URL; never log them.
+  wrapSerializers: false,
+  serializers: {
+    req(request) {
+      const { query, ...rest } = stdSerializers.req(request)
+      return rest
+    }
+  },
   mixin() {
     const mixinValues = {}
     const traceId = getTraceId()

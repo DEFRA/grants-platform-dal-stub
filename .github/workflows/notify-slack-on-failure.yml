@@ -1,0 +1,36 @@
+name: Notify Slack on Workflow Failure
+
+# Posts an alert to #grants-ui-support when one of the workflows listed below
+# finishes with a failure, or when the SonarCloud quality gate fails on main.
+# The logic lives in DEFRA/grants-ui and is reused here through workflow_call;
+# this file only holds the triggers and the list of watched workflows.
+#
+# Requires a SLACK_WEBHOOK_URL secret holding the channel's incoming webhook.
+#
+# To test the alert without breaking a pipeline, run this workflow manually
+# and pass the ID of any previous run (the number at the end of its URL).
+
+on:
+  workflow_run:
+    workflows:
+      - Publish
+      - Publish Hot Fix
+    types:
+      - completed
+  check_run:
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'ID of a previous workflow run to report on'
+        required: true
+        type: string
+
+permissions:
+  actions: read
+
+jobs:
+  notify:
+    uses: DEFRA/grants-ui/.github/workflows/notify-slack-on-failure.yml@main
+    secrets: inherit

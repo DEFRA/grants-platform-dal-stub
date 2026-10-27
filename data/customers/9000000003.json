@@ -1,0 +1,37 @@
+{
+  "crn": "9000000003",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Chloe",
+      "middle": "Anne",
+      "last": "Carter"
+    },
+    "phone": {
+      "mobile": "07700900103",
+      "landline": "01632960103"
+    },
+    "email": {
+      "address": "chloe.carter+9000000003@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "103 Test Lane",
+      "line2": "Test Park",
+      "line3": "Fakenham Test",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "103",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Fakenham Test",
+      "county": "Testshire",
+      "postalCode": "ZZ13 3ZZ",
+      "uprn": "900000000103",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000005"
+}

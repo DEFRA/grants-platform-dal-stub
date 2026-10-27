@@ -1,0 +1,124 @@
+"""
+Business Application.
+"""
+type Application {
+  """
+  Single Business Identifier (SBI) of the business.
+  """
+  sbi: ID!
+
+  """
+  The unique identifier for the application.
+  """
+  id: ID!
+
+  """
+  The unique identifier for the subject of this application.
+  """
+  subjectId: ID
+
+  """
+  The year this application is for.
+  """
+  year: Int
+
+  """
+  The title of the application.
+  """
+  name: String
+
+  """
+  The module code for the application.
+  """
+  moduleCode: String
+
+  """
+  The name of the scheme for the application.
+  """
+  scheme: String
+
+  """
+  The "Code P" status of the application.
+  """
+  statusCodeP: String
+
+  """
+  The "Code S" status of the application.
+  """
+  statusCodeS: String
+
+  """
+  The status of the application.
+  """
+  status: String
+
+  """
+  The date the application was submitted.
+  """
+  submissionDate: Date
+
+  """
+  The "P Status" of the application on the Portal.
+  """
+  portalStatusP: String
+
+  """
+  The "S Status" of the application on the Portal.
+  """
+  portalStatusS: String
+
+  """
+  The status of the application on the Portal.
+  """
+  portalStatus: String
+
+  """
+  Whether the application is active.
+  """
+  active: Boolean
+
+  """
+  The unique identifier for the latest transition (from the `transitionHistory`).
+  """
+  transitionId: ID
+
+  """
+  The name of the latest transition (from the `transitionHistory`).
+  """
+  transitionName: String
+
+  """
+  The unique identifiers for the agreements associated with this application.
+  """
+  agreementReferences: [ID]
+
+  """
+  The history of transitions for the application.
+  """
+  transitionHistory: [Transition]
+}
+
+"""
+A single transition from the history of transitions for an application.
+"""
+type Transition {
+  """
+  The unique identifier for the transition.
+  """
+  id: ID
+
+  """
+  The name of the transition.
+  """
+  name: String
+
+  """
+  The date and time of the transition.
+  """
+  timestamp: Date
+
+  """
+  The status of the application after the transition.
+  """
+  checkStatus: String
+}

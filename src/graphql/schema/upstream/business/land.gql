@@ -1,0 +1,193 @@
+"""
+A land parcel for a business.
+When a change happens to a land parcel a new version is created.
+"""
+type BusinessLandParcel {
+  """
+  Unique internal identifier of the land parcel.
+  """
+  id: ID!
+
+  """
+  Sheet ID of the land parcel, for example 'AB1234'
+  """
+  sheetId: String
+
+  """
+  Parcel ID of the land parcel, for example '1234'.
+  """
+  parcelId: String
+
+  """
+  Area (in hectares) of the land parcel.
+  """
+  area: Float
+
+  """
+  Indicates if a parcel has a pending Customer Notified Change (CNC).
+  CNC could be a boundary change, parcel merge, split etc.
+  """
+  pendingDigitisation: Boolean
+
+  """
+  Date when this version of the land parcel finished.
+  A date of 31/12/9999 indicates that this is the latest version of the parcel.
+  """
+  effectiveToDate: Date @excludeFromList
+
+  """
+  Date when this version of the land parcel came into effect.
+  """
+  effectiveFromDate: Date @excludeFromList
+}
+
+"""
+Summary of the land parcels for a business.
+"""
+type BusinessLandSummary {
+  """
+  Area (in hectares) of arable land.
+  """
+  arableLandArea: Float
+
+  """
+  Area (in hectares) of permanent crops.
+  """
+  permanentCropsArea: Float
+
+  """
+  Area of permanent grassland.
+  """
+  permanentGrasslandArea: Float
+
+  """
+  Total area of land for the business (in hectares).
+  """
+  totalArea: Float
+
+  """
+  Total number of parcels for the business.
+  """
+  totalParcels: Float
+}
+
+"""
+Land cover of a parcel for a business.
+"""
+type BusinessLandCover {
+  """
+  Unique internal identifier of the land cover.
+  """
+  id: ID!
+
+  """
+  Description of the land cover. For example, 'Arable Land', 'Permanent Grassland'
+  """
+  name: String
+
+  """
+  Area (in hectares) of the land cover.
+  """
+  area: Float
+
+  """
+  Internal code of the land cover. For example, '110' is the code for 'Arable Land'.
+  """
+  code: String
+
+  """
+  Indicates whether the land cover is Basic Payment Scheme (BPS) eligible.
+  """
+  isBpsEligible: Boolean
+}
+
+"""
+Land details for a business.
+
+Data Source: Land Management System (LMS)
+"""
+type BusinessLand {
+  """
+  Parcels of the business land for a particular date for a business.
+  The earliest date is 01/01/2015.
+  """
+  parcels(date: Date): [BusinessLandParcel]
+    @auth(requires: [CONSOLIDATED_VIEW, SINGLE_FRONT_DOOR, SFI_REFORM])
+
+  """
+  A single parcel of the business land based on its SheetId and ParcelId for a
+  particular date for a business.
+  The earliest date is 01/01/2015.
+  """
+  parcel(date: Date, sheetId: ID!, parcelId: ID!): BusinessLandParcel
+
+  """
+  Land covers of a single parcel based on its SheetId and ParcelId for a particular
+  date for a business.
+  The earliest date is 01/01/2015.
+  """
+  parcelCovers(date: Date, sheetId: ID!, parcelId: ID!): [BusinessLandCover]
+
+  """
+  Land uses of a single parcel based on its SheetId and ParcelId for a particular
+  date for a business.
+  The earliest date is 01/01/2015.
+  """
+  parcelLandUses(date: Date, sheetId: ID!, parcelId: ID!): [BusinessLandParcelUses]
+
+  """
+  Summary of the land for a particular date for a business.
+  The earliest date is 01/01/2015.
+  """
+  summary(date: Date): BusinessLandSummary
+}
+
+"""
+Land use of a parcel for a business.
+"""
+type BusinessLandParcelUses {
+  """
+  Code of the land use.
+  """
+  code: String!
+
+  """
+  Start date of the land use.
+  """
+  startDate: Date
+
+  """
+  End date of the land use.
+  """
+  endDate: Date
+
+  """
+  Date the land use was inserted.
+  """
+  insertDate: Date
+
+  """
+  Date the land use was deleted.
+  """
+  deleteDate: Date
+
+  """
+  Area of the land use.
+  """
+  area: Float
+
+  """
+  Length of the land use.
+  """
+  length: Float
+
+  """
+  Land use type. For example, 'SCRUB - UNGRAZEABLE'.
+  """
+  type: String
+
+  """
+  Campaign of the land use.
+  """
+  campaign: Int
+}

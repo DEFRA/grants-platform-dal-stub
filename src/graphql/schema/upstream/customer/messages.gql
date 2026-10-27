@@ -1,0 +1,38 @@
+"""
+Business message sent via the rural payments portal to a customer.
+
+Data Source: Rural Payments Portal (PRR)
+"""
+type CustomerBusinessMessage {
+  """
+  Unique identifier of the message.
+  """
+  id: ID!
+
+  """
+  Subject of the message.
+  """
+  subject: String
+
+  """
+  Date the message was sent.
+  """
+  date: Date
+
+  """
+  Body content of the message.
+  """
+  body: String
+
+  """
+  Indicates whether the customer has read the business message.
+  """
+  read: Boolean
+
+  """
+  Indicates whether the customer has marked the business message as deleted.
+  Messages in the portal are not deleted, they are moved to a deleted section
+  (more akin to archiving a message).
+  """
+  deleted: Boolean
+}

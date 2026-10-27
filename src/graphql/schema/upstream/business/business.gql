@@ -1,0 +1,297 @@
+"""
+Common details for a business.
+"""
+type BusinessInfo {
+  """
+  Name of the business.
+  """
+  name: String
+
+  """
+  Firm Reference Number (FRN) of the business.
+
+  A unique 10-digit number that is known to the customer, for example, 1234567890.
+  However a customer is more likely to be familiar with their Single Business Identified
+  (SBI). FRN is commonly used in RPA's payment systems. The format is the same as the
+  Customer Reference Number (CRN), which is also a 10-digit number.
+  """
+  reference: String @deprecated(reason: "The reference field is deprecated; use frn instead.")
+
+  """
+  Firm Reference Number (FRN) of the business.
+
+  A unique 10-digit number that is known to the customer, for example, 1234567890.
+  However a customer is more likely to be familiar with their Single Business Identified
+  (SBI). FRN is commonly used in RPA's payment systems. The format is the same as the
+  Customer Reference Number (CRN), which is also a 10-digit number.
+  """
+  frn: String
+
+  """
+  VAT number of the business. (a.k.a. `taxRegistrationNumber`)
+  """
+  vat: String
+
+  """
+  Trader number of the business.
+  """
+  traderNumber: String
+
+  """
+  Vendor number of the business.
+  """
+  vendorNumber: String
+
+  """
+  Address of the business.
+  """
+  address: Address
+
+  """
+  Correspondence address of the business.
+  """
+  correspondenceAddress: Address
+
+  """
+  States the correspondence address should be used as the business address.
+  """
+  isCorrespondenceAsBusinessAddress: Boolean
+
+  """
+  Email address of the business.
+  """
+  email: Email
+
+  """
+  Correspondence email of the business.
+  """
+  correspondenceEmail: Email
+
+  """
+  Telephone numbers of the business.
+  """
+  phone: Phone
+    @auth(requires: [CONSOLIDATED_VIEW, SINGLE_FRONT_DOOR, SFI_REFORM, LAND_APP_TECH_SPIKES_API])
+
+  """
+  Correspondence telephone numbers of the business.
+  """
+  correspondencePhone: Phone
+
+  """
+  Legal status of the business. For example, Sole Proprietorship.
+  """
+  legalStatus: BusinessType
+
+  """
+  Type of the business.
+  """
+  type: BusinessType
+
+  """
+  Various registration numbers for the business. For example, Companies House number.
+  """
+  registrationNumbers: BusinessRegistrationNumbers
+
+  """
+  Other SBIs by which the business is known.
+  """
+  additionalSbis: [ID]
+
+  """
+  The date the business info was last updated.
+  """
+  lastUpdated: Date
+
+  """
+  States the business address is also the financial address.
+  """
+  isFinancialToBusinessAddress: Boolean
+
+  """
+  States the business has land in Northern Ireland.
+  """
+  hasLandInNorthernIreland: Boolean
+
+  """
+  States the business has land in Scotland.
+  """
+  hasLandInScotland: Boolean
+
+  """
+  States the business has land in Wales.
+  """
+  hasLandInWales: Boolean
+
+  """
+  Whether the land for the business has been confirmed.
+  """
+  landConfirmed: Boolean
+
+  """
+  Whether the business has additional business activities.
+  """
+  hasAdditionalBusinessActivities: Boolean
+
+  """
+  The additional business activities for this business.
+  """
+  additionalBusinessActivities: [BusinessType]
+
+  """
+  Whether the "accountable people declaration" is complete.
+  """
+  isAccountablePeopleDeclarationCompleted: Boolean
+
+  """
+  The date the business started farming.
+  """
+  dateStartedFarming: Date
+
+  """
+  The status of the business.
+  """
+  status: EntityStatus
+}
+
+"""
+Various registration numbers of the business.
+"""
+type BusinessRegistrationNumbers {
+  """
+  Companies House number of the business.
+  """
+  companiesHouse: String
+
+  """
+  Charity Commission number of the business.
+  """
+  charityCommission: String
+}
+
+"""
+Type of the business represented by a code/description pair. For example, used for business type
+and legal status.
+""" # eslint-disable-next-line @graphql-eslint/naming-convention
+type BusinessType {
+  """
+  Code of the business type.
+  """
+  code: Int
+
+  """
+  Description of the business type.
+  """
+  type: String
+}
+
+"""
+Customers/contacts of the business.
+"""
+type BusinessCustomer {
+  """
+  Internal SitiAgri/Portal unique identifier of the customer.
+  """
+  personId: ID
+
+  """
+  First name of the customer.
+  """
+  firstName: String
+
+  """
+  Last name of the customer.
+  """
+  lastName: String
+
+  """
+  Unique Customer Reference Number (CRN) of the customer. 10-digit number that should
+  be known to to the customer, for example, 1234567890. This is the same format as the
+  Firm Reference Number (FRN).
+  """
+  crn: String
+
+  """
+  Role the customer has for the business. For example, 'Owner', 'Agent', 'Employee'.
+  """
+  role: String
+
+  """
+  Permissions the customer has for the business.
+  """
+  permissionGroups: [ActivePermissionGroup] @excludeFromList
+}
+
+"""
+Details for the business - 'business' and 'organisation' can be used interchangeably.
+"""
+type Business {
+  """
+  Internal SitiAgri/Portal unique identifier for the business.
+  """
+  organisationId: ID
+
+  """
+  Single Business Identifier (SBI) of the business.
+
+  A unique 9-digit number that identifies the business. There is also the Firm Reference
+  Number (FRN), a unique 10-digit number, that is less well known to customers.
+  """
+  sbi: ID!
+
+  """
+  Information of the business.
+  """
+  info: BusinessInfo
+
+  """
+  Land for the business.
+  """
+  land: BusinessLand
+
+  """
+  County Parish Holdings (CPH) of the business.
+  """
+  countyParishHoldings: [CountyParishHolding]
+
+  """
+  Customers associated with the business.
+  """
+  customers: [BusinessCustomer]
+
+  """
+  Customer associated with the business.
+  """
+  customer(crn: ID! @validateVariable(pattern: "^[1-9][0-9]{9}$")): BusinessCustomer
+
+  """
+  Agreements associated with the business.
+  """
+  agreements: [Agreement]
+
+  """
+  Applications associated with the business.
+  """
+  applications: [Application]
+
+  """
+  For each requested operation (function), whether the authenticated external user is permitted
+  to perform it for this business. The result can be used to show/hide functionality in a UI.
+
+  The known external-user functions are: addOrRemoveOrTransferLand, addRoleOrPrivilege,
+  amendApplication, amendBankAccountDetails, amendBusinessDetails, amendControlledBusinessInfo,
+  amendELMApplications, amendEntitlements, amendLegallyResponsiblePeople,
+  amendNewYoungFarmerProcess, applyForBPS, closeBusiness, confirmBusiness, deleteBusiness,
+  modifyRoleOrPrivilege, removeRoleOrPrivilege, submitApplication, submitELMApplications,
+  updateLandUse, viewApplication, viewBusinessBankAccount, viewBusinessDetails, viewCPH,
+  viewCSAgreements, viewCSApplications, viewCSClaims, viewCountrysideStewardship,
+  viewELMApplications, viewEntitlements, viewLand, viewLegallyResponsiblePeople. The above list is
+  not exhaustive - names added to the upstream but not yet listed here may also be supplied. If the
+  upstream recognises a requested function name, the appropriate true/false value for the user is
+  returned; otherwise the function is still included in the response, with `permitted` set to false.
+
+  NOTE: DAL does not enforce these permissions - the upstream systems do.
+  """
+  permittedFunctions(functions: [String!]!): [PermittedFunction!]
+    @auth(requires: [SINGLE_FRONT_DOOR])
+}

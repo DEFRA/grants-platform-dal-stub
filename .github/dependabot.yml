@@ -1,0 +1,37 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '10:30'
+      timezone: Europe/London
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 10
+    ignore:
+      # eslint 10 is blocked by neostandard, which peers eslint ^9.0.0.
+      # Remove when neostandard widens its eslint peer.
+      - dependency-name: eslint
+        versions: ['>=10.0.0']
+    groups:
+      weekly-dependencies:
+        applies-to: version-updates
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+      security-updates:
+        applies-to: security-updates
+        patterns:
+          - '*'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '10:30'
+      timezone: Europe/London

@@ -1,0 +1,174 @@
+{
+  "sbi": "800000001",
+  "organisationId": "7400001",
+  "info": {
+    "name": "Green Farm",
+    "reference": "0800000001",
+    "email": {
+      "address": "contact+800000001@example.test"
+    },
+    "phone": {
+      "mobile": "07700900301",
+      "landline": "01632960301"
+    },
+    "address": {
+      "line1": "1 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ30 1ZZ",
+      "uprn": "900000300001",
+      "buildingName": null,
+      "buildingNumberRange": "1",
+      "county": "Testshire",
+      "dependentLocality": null,
+      "doubleDependentLocality": null,
+      "flatName": null,
+      "pafOrganisationName": "Green Farm"
+    },
+    "vat": "GB800000001",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0001",
+      "charityCommission": "TC000001"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6246",
+        "parcelId": "1022",
+        "area": 1.6623
+      },
+      {
+        "sheetId": "SD8343",
+        "parcelId": "1056",
+        "area": 54.4566
+      },
+      {
+        "sheetId": "SD7858",
+        "parcelId": "1059",
+        "area": 1.4236
+      },
+      {
+        "sheetId": "SD5547",
+        "parcelId": "1063",
+        "area": 129.2422
+      },
+      {
+        "sheetId": "SD5964",
+        "parcelId": "1071",
+        "area": 41.8518
+      },
+      {
+        "sheetId": "SD6552",
+        "parcelId": "3806",
+        "area": 9.6177
+      },
+      {
+        "sheetId": "SD6551",
+        "parcelId": "3589",
+        "area": 10.0561
+      },
+      {
+        "sheetId": "SD6754",
+        "parcelId": "5225",
+        "area": 1.8954
+      },
+      {
+        "sheetId": "SD6649",
+        "parcelId": "8555",
+        "area": 13.0355
+      },
+      {
+        "sheetId": "SD6649",
+        "parcelId": "7230",
+        "area": 7.3061
+      }
+    ]
+  },
+  "agreements": [
+    {
+      "contractId": "TestContractId111",
+      "name": "SFI123",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2027-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "MOR1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8343",
+          "parcelName": "1056",
+          "actionArea": 50,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 54.4566,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2027-02-27T13:54:20.492Z"
+        }
+      ]
+    },
+    {
+      "contractId": "TestContractId222",
+      "name": "SFI123",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2024-12-19T10:40:05.244Z",
+      "endDate": "2027-07-21T05:12:15.156Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "CMOR1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5964",
+          "parcelName": "1071",
+          "actionArea": 40,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 41.8518,
+          "startDate": "2024-12-19T10:40:05.244Z",
+          "endDate": "2027-07-21T05:12:15.156Z"
+        },
+        {
+          "optionCode": "UP1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5964",
+          "parcelName": "1071",
+          "actionArea": 40,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 41.8518,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2027-02-27T13:54:20.492Z"
+        }
+      ]
+    }
+  ],
+  "countyParishHoldings": [
+    {
+      "cphNumber": "99/901/0001"
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+"""
+Basic information of a customer.
+"""
+type CustomerInfo {
+  """
+  Name of the customer.
+  """
+  name: CustomerName
+
+  """
+  Date of birth of the customer.
+  """
+  dateOfBirth: Date
+
+  """
+  Telephone number of the customer.
+  """
+  phone: Phone
+
+  """
+  Email address of the customer.
+  """
+  email: Email
+
+  """
+  Status of the customer record/account.
+  """
+  status: EntityStatus
+
+  """
+  Address of the customer.
+  """
+  address: Address
+
+  """
+  Do not contact status of the customer email address.
+  """
+  doNotContact: Boolean
+
+  """
+  Other IDs for this customer.
+  """
+  personalIdentifiers: [String]
+}
+
+"""
+Full name of a customer.
+"""
+type CustomerName {
+  """
+  The title of the customer (e.g., Mr., Mrs., Dr.).
+  """
+  title: String
+
+  """
+  Any other title of the customer.
+  """
+  otherTitle: String
+
+  """
+  First name of the customer.
+  """
+  first: String
+
+  """
+  Middle names of the customer.
+  """
+  middle: String
+
+  """
+  Last name of the customer.
+  """
+  last: String
+}
+
+"""
+Authenticate questions of the customer.
+
+Data source: Rural Payments Portal
+
+These are the memorable words (date, place, event) used to verify the
+customer when they call the RPA. Originally, these were held in the
+'Authenticate' system, but the data and functionality transferred to
+the portal.
+"""
+type CustomerAuthenticationQuestions {
+  """
+  Memorable date response for the customer.
+  """
+  memorableDate: String
+
+  """
+  Memorable event response for the customer.
+  """
+  memorableEvent: String
+
+  """
+  Memorable place response for the customer.
+  """
+  memorableLocation: String
+
+  """
+  The date the record was last updated.
+  """
+  updatedAt: Date
+
+  """
+  Indicates whether the authenticate questions record was found for the customer.
+  """
+  isFound: Boolean
+}
+
+"""
+Customer details.
+
+Data source: Rural Payments Portal
+"""
+type Customer {
+  """
+  Internal SitiAgri/Portal unique identifier of the customer.
+  """
+  personId: ID! #eslint-disable-line @graphql-eslint/no-typename-prefix
+  """
+  Customer Reference Number (CRN) of the customer. Unique 10-digit number used
+  to identify the customer. The customer should know their CRN, although their
+  Single Business Identifier (SBI) for their business is more commonly quoted.
+  """
+  crn: ID!
+
+  """
+  Basic information of the customer.
+  """
+  info: CustomerInfo
+
+  """
+  Security questions (memorable words) of the customer.
+  """
+  authenticationQuestions: CustomerAuthenticationQuestions
+    @auth(requires: [CONSOLIDATED_VIEW, SINGLE_FRONT_DOOR])
+
+  """
+  Businesses associated with the customer.
+  """
+  businesses: [CustomerBusiness]
+
+  """
+  A single business filtered by the businesses using Single Business Identifier (SBI) associated
+  with the customer.
+  """
+  business(sbi: ID! @validateVariable(pattern: "^[1-9][0-9]{8}$")): CustomerBusiness
+}
+
+"""
+A business associated with the customer.
+"""
+type CustomerBusiness {
+  """
+  Internal SitiAgri/Portal unique identifier of the customer.
+  """
+  organisationId: ID
+
+  """
+  Single Business Identifier (SBI) of the business. A unique 9-digit identifier
+  for the business.
+  """
+  sbi: ID!
+
+  """
+  Name of the business.
+  """
+  name: String!
+
+  """
+  Role that the customer has for the business.
+  """
+  role: String
+
+  """
+  Messages for the customer for the business. These message are those shown in the
+  Rural Payments Portal, and not any correspondence the customer may have had with
+  the Rural Payments Agency (RPA).
+
+  Retrieves messages from fromDate to today if provided; otherwise, returns all messages.
+  - fromDate: Optional. Include messages on or after this date up to the current date.
+  """
+  messages(fromDate: Date): [CustomerBusinessMessage] @excludeFromList
+
+  """
+  Permission groups for the customer for the business.
+  """
+  permissionGroups: [ActivePermissionGroup] @excludeFromList
+}

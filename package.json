@@ -1,7 +1,7 @@
 {
   "name": "grants-platform-dal-stub",
   "version": "0.0.0",
-  "description": "grants-platform-dal-stub",
+  "description": "Synthetic-data stub of the FCP Data Access Layer (DAL) GraphQL API for the grants platform",
   "main": "src/index.js",
   "type": "module",
   "engines": {
@@ -13,9 +13,12 @@
     "docker:dev": "npm run dev",
     "format": "prettier --write \"**/*.{cjs,js,json,md}\"",
     "format:check": "prettier --check \"**/*.{cjs,js,json,md}\"",
-    "git:pre-commit-hook": "npm run security-audit && npm run format:check && npm run lint && npm test",
-    "lint": "eslint --cache --cache-strategy content \"**/*.{cjs,js}\"",
+    "git:pre-commit-hook": "npm run security-audit && npm run format:check && npm run lint && npm run check:fixtures && npm test",
+    "lint": "eslint --cache --cache-strategy content \"**/*.{cjs,js,mjs}\"",
     "lint:fix": "npm run lint -- --fix",
+    "check:fixtures": "node scripts/check-fixtures.js",
+    "schema:check": "node scripts/sync-upstream-schema.js --check",
+    "schema:sync": "node scripts/sync-upstream-schema.js",
     "security-audit": "npm audit --audit-level=critical",
     "server:debug": "node --watch --inspect-brk=0.0.0.0 --env-file-if-exists=.env ./src",
     "server:watch": "node --watch --inspect=0.0.0.0 --env-file-if-exists=.env ./src",
@@ -30,7 +33,8 @@
   "author": "Defra DDTS",
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@aws-sdk/credential-providers": "3.1152.0",
+    "@apollo/server": "5.5.1",
+    "@as-integrations/hapi": "2.0.2",
     "@defra/cdp-auditing": "0.6.2",
     "@defra/cdp-metrics": "0.6.1",
     "@defra/hapi-secure-context": "0.4.0",
@@ -38,14 +42,12 @@
     "@elastic/ecs-pino-format": "1.5.0",
     "@hapi/boom": "10.0.1",
     "@hapi/hapi": "21.4.10",
-    "aws4": "1.13.2",
     "convict": "6.2.5",
     "convict-format-with-validator": "6.2.0",
+    "graphql": "16.11.0",
     "hapi-pino": "13.0.0",
     "hapi-pulse": "4.0.0",
     "joi": "18.2.9",
-    "mongo-locks": "3.2.0",
-    "mongodb": "7.7.0",
     "pino": "10.4.0",
     "pino-pretty": "13.2.0"
   },
@@ -56,8 +58,6 @@
     "neostandard": "0.13.0",
     "npm-run-all": "4.1.5",
     "prettier": "3.9.10",
-    "vitest": "4.1.11",
-    "vitest-fetch-mock": "0.4.5",
-    "vitest-mongodb": "1.0.3"
+    "vitest": "4.1.11"
   }
 }

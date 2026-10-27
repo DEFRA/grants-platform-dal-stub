@@ -1,0 +1,73 @@
+enum PermissionLevel {
+  NO_ACCESS
+  VIEW
+  AMEND
+  SUBMIT
+  MAKE_LEGAL_CHANGES
+  FULL_PERMISSION
+}
+
+enum PermissionGroupId {
+  BASIC_PAYMENT_SCHEME
+  BUSINESS_DETAILS
+  COUNTRYSIDE_STEWARDSHIP_AGREEMENTS
+  COUNTRYSIDE_STEWARDSHIP_APPLICATIONS
+  ENTITLEMENTS
+  ENVIRONMENTAL_LAND_MANAGEMENT_APPLICATIONS
+  LAND_DETAILS
+}
+
+type ActivePermissionGroup {
+  """
+  Permission group for the customer. For example, 'BUSINESS_DETAILS',
+  'COUNTRYSIDE_STEWARDSHIP_AGREEMENTS'.
+  """
+  id: PermissionGroupId!
+
+  """
+  Permission level customer has for the business. For example, 'VIEW', 'AMEND.
+  """
+  level: PermissionLevel
+
+  """
+  Functions that can be performed with given permission level.
+  """
+  functions: [String]
+}
+
+type PermissionGroup {
+  """
+  Permission group id.
+  """
+  id: PermissionGroupId!
+
+  """
+  Permission group name.
+  """
+  name: String!
+
+  """
+  Permissions within the group.
+  """
+  permissions: [Permission]
+}
+
+type Permission {
+  """
+  The permission level.
+  """
+  level: PermissionLevel
+
+  """
+  The functions that can be performed with given permission level.
+  """
+  functions: [String]
+
+  """
+  Check if this level is active for given customer and business.
+  """
+  active(
+    crn: ID! @validateVariable(pattern: "^[1-9][0-9]{9}$")
+    sbi: ID! @validateVariable(pattern: "^[1-9][0-9]{8}$")
+  ): Boolean
+}

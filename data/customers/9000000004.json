@@ -1,0 +1,37 @@
+{
+  "crn": "9000000004",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Daniel",
+      "middle": "Grace",
+      "last": "Carter"
+    },
+    "phone": {
+      "mobile": "07700900104",
+      "landline": "01632960104"
+    },
+    "email": {
+      "address": "daniel.carter+9000000004@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "104 Test Lane",
+      "line2": "Test Park",
+      "line3": "Exampleton",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "104",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Exampleton",
+      "county": "Testshire",
+      "postalCode": "ZZ13 4ZZ",
+      "uprn": "900000000104",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000006"
+}
