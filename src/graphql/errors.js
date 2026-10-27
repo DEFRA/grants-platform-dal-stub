@@ -1,23 +1,22 @@
 import { GraphQLError } from 'graphql'
 
-/**
- * Mirrors fcp-dal-api `app/errors/graphql.js`: the real DAL reports failures
- * through the GraphQL `errors` array with an `extensions.code` matching the
- * HTTP status text, and Apollo uses `extensions.http.status` for the HTTP
- * status of the response.
- */
+const HTTP_NOT_FOUND = 404
+
+// Same shape as fcp-dal-api app/errors/graphql.js: the code is the HTTP status
+// text upper-cased, and extensions.http sets the response status.
 export class NotFound extends GraphQLError {
   constructor(message, options) {
     super(message, options)
-    this.extensions.code = 'NOT_FOUND'
-    this.extensions.http = { status: 404 }
+    this.extensions.code = 'NOT FOUND'
+    this.extensions.http = { status: HTTP_NOT_FOUND }
   }
 }
 
-export class BadRequest extends GraphQLError {
+// What the DAL's @validateVariable directive throws from inside the resolver:
+// BAD_USER_INPUT, and therefore the usual HTTP 200.
+export class BadUserInput extends GraphQLError {
   constructor(message, options) {
     super(message, options)
-    this.extensions.code = 'BAD_REQUEST'
-    this.extensions.http = { status: 400 }
+    this.extensions.code = 'BAD_USER_INPUT'
   }
 }

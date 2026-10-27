@@ -7,8 +7,9 @@ import { validSbi } from '../identifiers.js'
  * business fixture so there is a single source of truth.
  */
 export const Customer = {
-  crn({ crn }, _args, { idMapping }) {
-    return idMapping.echoCrn(crn)
+  // Echo what the request asked for; otherwise the unique mapped source, if any.
+  crn({ crn, requestedCrn }, _args, { idMapping }) {
+    return requestedCrn ?? idMapping.echoCrn(crn)
   },
 
   personId({ personId, crn }) {
@@ -24,11 +25,14 @@ export const Customer = {
   // The real DAL returns null, not an error, when the customer has no
   // relationship with the requested business.
   business({ crn }, { sbi }, { store, idMapping }) {
+    const requestedSbi = validSbi(sbi)
     const relationship = store.getRelationship(
-      idMapping.resolveSbi(validSbi(sbi)),
+      idMapping.resolveSbi(requestedSbi),
       crn
     )
-    return relationship ? toCustomerBusiness(relationship, store) : null
+    return relationship
+      ? { ...toCustomerBusiness(relationship, store), requestedSbi }
+      : null
   },
 
   authenticationQuestions({ authenticationQuestions }) {
@@ -37,8 +41,8 @@ export const Customer = {
 }
 
 export const CustomerBusiness = {
-  sbi({ sbi }, _args, { idMapping }) {
-    return idMapping.echoSbi(sbi)
+  sbi({ sbi, requestedSbi }, _args, { idMapping }) {
+    return requestedSbi ?? idMapping.echoSbi(sbi)
   },
 
   // Like the real DAL: messages on or after fromDate when given, otherwise all.

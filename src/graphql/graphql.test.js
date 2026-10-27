@@ -12,6 +12,8 @@ const CS_PERSONA_SBI = '800000001'
 const SBI_WITH_AGREEMENTS = '800000001'
 const SBI_WITHOUT_AGREEMENTS = '800000002'
 const OTHER_CRN = '9000000005'
+const SBI_PATTERN_MESSAGE = "variable 'sbi' must match pattern ^[1-9][0-9]{8}$"
+const CRN_PATTERN_MESSAGE = "variable 'crn' must match pattern ^[1-9][0-9]{9}$"
 
 // The Apollo integration writes the response as a JSON string, so parse it.
 const postGraphql = async (server, payload, headers = {}) => {
@@ -214,7 +216,7 @@ describe('POST /graphql', () => {
   })
 
   describe('DAL-shaped errors', () => {
-    test('unknown SBI is a NOT_FOUND GraphQL error with HTTP 404', async () => {
+    test('unknown SBI is a NOT FOUND GraphQL error with HTTP 404', async () => {
       const response = await postGraphql(server, {
         query: '{ business(sbi: "999999999") { sbi } }'
       })
@@ -225,21 +227,21 @@ describe('POST /graphql', () => {
         expect.objectContaining({
           message: 'Business not found',
           path: ['business'],
-          extensions: { code: 'NOT_FOUND' }
+          extensions: { code: 'NOT FOUND' }
         })
       ])
     })
 
-    test('unknown CRN is a NOT_FOUND GraphQL error', async () => {
+    test('unknown CRN is a NOT FOUND GraphQL error', async () => {
       const response = await postGraphql(server, {
         query: '{ customer(crn: "9999999999") { crn } }'
       })
 
       expect(response.statusCode).toBe(404)
-      expect(response.body.errors[0].extensions.code).toBe('NOT_FOUND')
+      expect(response.body.errors[0].extensions.code).toBe('NOT FOUND')
     })
 
-    test('a CRN that is not associated with the business is NOT_FOUND on business.customer', async () => {
+    test('a CRN that is not associated with the business is NOT FOUND on business.customer', async () => {
       const response = await postGraphql(server, {
         query: `{ business(sbi: "${SBI_WITH_AGREEMENTS}") { customer(crn: "${OTHER_CRN}") { crn } } }`
       })
@@ -248,43 +250,52 @@ describe('POST /graphql', () => {
       expect(response.body.errors[0].message).toBe('Customer not found')
     })
 
-    test('unknown parcel is NOT_FOUND', async () => {
+    test('unknown parcel is NOT FOUND', async () => {
       const response = await postGraphql(server, {
         query: `{ business(sbi: "${SBI_WITH_AGREEMENTS}") { land { parcel(sheetId: "XX0000", parcelId: "0000") { id } } } }`
       })
 
       expect(response.statusCode).toBe(404)
-      expect(response.body.errors[0].extensions.code).toBe('NOT_FOUND')
+      expect(response.body.errors[0].extensions.code).toBe('NOT FOUND')
     })
 
     test.each([
       [
         'business(sbi) with a leading zero',
-        '{ business(sbi: "080000001") { sbi } }'
+        '{ business(sbi: "080000001") { sbi } }',
+        SBI_PATTERN_MESSAGE
       ],
       [
         'business(sbi) with 10 digits',
-        '{ business(sbi: "3000000001") { sbi } }'
+        '{ business(sbi: "3000000001") { sbi } }',
+        SBI_PATTERN_MESSAGE
       ],
       [
         'customer(crn) that is not numeric',
-        '{ customer(crn: "not-a-crn") { crn } }'
+        '{ customer(crn: "not-a-crn") { crn } }',
+        CRN_PATTERN_MESSAGE
       ],
       [
         'customer.business(sbi) that is too short',
-        `{ customer(crn: "${CS_PERSONA_CRN}") { business(sbi: "80000001") { sbi } } }`
+        `{ customer(crn: "${CS_PERSONA_CRN}") { business(sbi: "80000001") { sbi } } }`,
+        SBI_PATTERN_MESSAGE
       ],
       [
         'business.customer(crn) with a leading zero',
-        `{ business(sbi: "${CS_PERSONA_SBI}") { customer(crn: "0900000001") { crn } } }`
+        `{ business(sbi: "${CS_PERSONA_SBI}") { customer(crn: "0900000001") { crn } } }`,
+        CRN_PATTERN_MESSAGE
       ]
     ])(
-      'malformed %s is a BAD_REQUEST error with HTTP 400',
-      async (_description, query) => {
+      'malformed %s is a BAD_USER_INPUT error with HTTP 200, as the DAL directive answers',
+      async (_description, query, message) => {
         const response = await postGraphql(server, { query })
 
-        expect(response.statusCode).toBe(400)
-        expect(response.body.errors[0].extensions.code).toBe('BAD_REQUEST')
+        expect(response.statusCode).toBe(200)
+        expect(response.body.errors).toHaveLength(1)
+        expect(response.body.errors[0].extensions).toEqual({
+          code: 'BAD_USER_INPUT'
+        })
+        expect(response.body.errors[0].message).toBe(message)
       }
     )
 
@@ -455,7 +466,7 @@ describe('POST /graphql with an identifier mapping', () => {
     expect(business.customers.map((c) => c.crn)).toContain(REAL_CRN)
   })
 
-  test('a synthetic id used directly is echoed as itself even when a mapping points at it', async () => {
+  test('a synthetic id used directly is echoed as itself; lists still translate to the unique source', async () => {
     const response = await postGraphql(server, {
       query: `{
         customer(crn: "${CS_PERSONA_CRN}") {
@@ -475,10 +486,42 @@ describe('POST /graphql with an identifier mapping', () => {
     const { customer, business } = response.body.data
     expect(customer.crn).toBe(CS_PERSONA_CRN)
     expect(customer.business.sbi).toBe(CS_PERSONA_SBI)
-    expect(customer.businesses).toEqual([{ sbi: CS_PERSONA_SBI }])
+    expect(customer.businesses).toEqual([{ sbi: REAL_SBI }])
     expect(business.sbi).toBe(CS_PERSONA_SBI)
-    expect(business.customers.map((c) => c.crn)).toContain(CS_PERSONA_CRN)
-    expect(business.customers.map((c) => c.crn)).not.toContain(REAL_CRN)
+    expect(business.customers.map((c) => c.crn)).toContain(REAL_CRN)
+    expect(business.customers.map((c) => c.crn)).not.toContain(CS_PERSONA_CRN)
+  })
+
+  test('echoes do not depend on selection order', async () => {
+    const queries = [
+      `{ customer(crn: "${REAL_CRN}") { businesses { sbi } business(sbi: "${CS_PERSONA_SBI}") { sbi } } }`,
+      `{ customer(crn: "${REAL_CRN}") { business(sbi: "${CS_PERSONA_SBI}") { sbi } businesses { sbi } } }`
+    ]
+
+    for (const query of queries) {
+      const response = await postGraphql(server, { query })
+
+      expect(response.body.errors).toBeUndefined()
+      expect(response.body.data.customer).toEqual({
+        businesses: [{ sbi: REAL_SBI }],
+        business: { sbi: CS_PERSONA_SBI }
+      })
+    }
+  })
+
+  test('aliases asking for the mapped and the synthetic id each get what they asked for', async () => {
+    const response = await postGraphql(server, {
+      query: `{
+        mapped: business(sbi: "${REAL_SBI}") { sbi }
+        synthetic: business(sbi: "${CS_PERSONA_SBI}") { sbi }
+      }`
+    })
+
+    expect(response.body.errors).toBeUndefined()
+    expect(response.body.data).toEqual({
+      mapped: { sbi: REAL_SBI },
+      synthetic: { sbi: CS_PERSONA_SBI }
+    })
   })
 
   test('unmapped synthetic identifiers keep working alongside the mapping', async () => {

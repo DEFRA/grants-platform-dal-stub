@@ -1,25 +1,23 @@
-import { BadRequest } from './errors.js'
+import { BadUserInput } from './errors.js'
 
-// Same patterns as the @validateVariable directives on the DAL's crn/sbi arguments.
-const CRN_PATTERN = /^[1-9]\d{9}$/
-const SBI_PATTERN = /^[1-9]\d{8}$/
+// The checks the DAL's @validateVariable directive applies to crn and sbi
+// arguments. `source` is the pattern as written in the schema, so the message
+// matches the DAL's.
+const CRN = { pattern: /^[1-9]\d{9}$/, source: '^[1-9][0-9]{9}$' }
+const SBI = { pattern: /^[1-9]\d{8}$/, source: '^[1-9][0-9]{8}$' }
 
 export function validCrn(crn) {
-  const value = String(crn)
-  if (!CRN_PATTERN.test(value)) {
-    throw new BadRequest(
-      'Invalid crn: expected a 10-digit number not starting with 0'
-    )
-  }
-  return value
+  return validated('crn', crn, CRN)
 }
 
 export function validSbi(sbi) {
-  const value = String(sbi)
-  if (!SBI_PATTERN.test(value)) {
-    throw new BadRequest(
-      'Invalid sbi: expected a 9-digit number not starting with 0'
-    )
+  return validated('sbi', sbi, SBI)
+}
+
+function validated(name, value, { pattern, source }) {
+  const text = String(value)
+  if (!pattern.test(text)) {
+    throw new BadUserInput(`variable '${name}' must match pattern ${source}`)
   }
-  return value
+  return text
 }

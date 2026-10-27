@@ -1,19 +1,20 @@
 """
 Stub-authored root type. Mirrors the signatures of the matching fields in
 fcp-dal-api `app/graphql/types/*/query.gql`, limited to the operations this
-stub answers. Auth and variable-validation directives are omitted because the
-stub does not enforce them.
+stub answers. Auth directives are omitted because the stub does not enforce
+them; @validateVariable is kept so the schema matches, and the resolvers apply
+the same check.
 """
 type Query {
   """
   Get a business by SBI (Single Business Identifier, a 9-digit number).
   """
-  business(sbi: ID!): Business
+  business(sbi: ID! @validateVariable(pattern: "^[1-9][0-9]{8}$")): Business
 
   """
   Get a customer by CRN (Customer Reference Number, a 10-digit number).
   """
-  customer(crn: ID!): Customer
+  customer(crn: ID! @validateVariable(pattern: "^[1-9][0-9]{9}$")): Customer
 
   """
   Reference data: every permission group with its levels and functions.

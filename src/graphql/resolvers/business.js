@@ -7,8 +7,9 @@ import { validCrn } from '../identifiers.js'
  * per-customer role and permission groups.
  */
 export const Business = {
-  sbi({ sbi }, _args, { idMapping }) {
-    return idMapping.echoSbi(sbi)
+  // Echo what the request asked for; otherwise the unique mapped source, if any.
+  sbi({ sbi, requestedSbi }, _args, { idMapping }) {
+    return requestedSbi ?? idMapping.echoSbi(sbi)
   },
 
   land(business) {
@@ -49,20 +50,21 @@ export const Business = {
   },
 
   customer({ sbi }, { crn }, { store, idMapping }) {
+    const requestedCrn = validCrn(crn)
     const relationship = store.getRelationship(
       sbi,
-      idMapping.resolveCrn(validCrn(crn))
+      idMapping.resolveCrn(requestedCrn)
     )
     if (!relationship) {
       throw new NotFound('Customer not found')
     }
-    return toBusinessCustomer(relationship, store)
+    return { ...toBusinessCustomer(relationship, store), requestedCrn }
   }
 }
 
 export const BusinessCustomer = {
-  crn({ crn }, _args, { idMapping }) {
-    return idMapping.echoCrn(crn)
+  crn({ crn, requestedCrn }, _args, { idMapping }) {
+    return requestedCrn ?? idMapping.echoCrn(crn)
   }
 }
 

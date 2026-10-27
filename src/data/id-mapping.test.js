@@ -1,7 +1,6 @@
 import {
   IdMapping,
   IdMappingValidationError,
-  RequestIdMapping,
   parseIdMap
 } from './id-mapping.js'
 import { isSyntheticCrn } from './synthetic-ranges.js'
@@ -27,24 +26,42 @@ describe('parseIdMap', () => {
     expect(parseIdMap(undefined, options).size).toBe(0)
   })
 
-  test.each([
-    ['1100000001', 'expected "from:to"'],
-    ['1100000001:9000000001:extra', 'expected "from:to"'],
-    [':9000000001', 'expected "from:to"'],
+  const rejected = [
+    ['1100000001', 'CRN mapping entry 1: expected "from:to"'],
+    ['1100000001:9000000001:extra', 'CRN mapping entry 1: expected "from:to"'],
+    [':9000000001', 'CRN mapping entry 1: expected "from:to"'],
     [
       '1100000001:1100000002',
-      'target 1100000002 is outside the synthetic ranges'
+      'CRN mapping entry 1: target is outside the synthetic ranges'
     ],
     [
       '9000000001:9000000002',
-      'source 9000000001 is already a synthetic identifier'
+      'CRN mapping entry 1: source is already a synthetic identifier'
     ],
     [
       '1100000001:9000000001,1100000001:9000000002',
-      'Duplicate CRN mapping for 1100000001'
+      'CRN mapping entry 2: duplicates an earlier source'
     ]
-  ])('rejects %j', (value, message) => {
+  ]
+
+  test.each(rejected)('rejects %j', (value, message) => {
     expect(() => parseIdMap(value, options)).toThrow(message)
+  })
+
+  // Sources are sign-in identifiers and a startup failure reaches stderr unredacted.
+  test.each(rejected)('%j is not quoted in the error', (value) => {
+    const error = (() => {
+      try {
+        return parseIdMap(value, options)
+      } catch (err) {
+        return err
+      }
+    })()
+
+    expect(error).toBeInstanceOf(Error)
+    for (const digits of value.match(/\d+/g)) {
+      expect(error.message).not.toContain(digits)
+    }
   })
 })
 
@@ -93,7 +110,7 @@ describe('IdMapping', () => {
 
   test('validates SBI entries against the SBI ranges', () => {
     expect(() => new IdMapping({ sbi: '100000001:9000000001' })).toThrow(
-      'Invalid SBI mapping entry'
+      'SBI mapping entry 1: target is outside the synthetic ranges'
     )
   })
 
@@ -133,54 +150,5 @@ describe('IdMapping', () => {
       ])
       expect(error.message).toContain('Identifier mapping validation failed')
     })
-  })
-})
-
-describe('RequestIdMapping', () => {
-  const mapping = new IdMapping({
-    crn: '1100000001:9000000001,1100000002:9000000001',
-    sbi: '100000001:800000001'
-  })
-
-  test('is what forRequest returns', () => {
-    expect(mapping.forRequest()).toBeInstanceOf(RequestIdMapping)
-  })
-
-  test('echoes identifiers exactly as the request supplied them', () => {
-    const request = mapping.forRequest()
-
-    expect(request.resolveCrn('1100000002')).toBe('9000000001')
-    expect(request.echoCrn('9000000001')).toBe('1100000002')
-    expect(request.resolveSbi('100000001')).toBe('800000001')
-    expect(request.echoSbi(800000001)).toBe('100000001')
-  })
-
-  test('a synthetic id used directly stays synthetic', () => {
-    const request = mapping.forRequest()
-
-    expect(request.resolveSbi('800000001')).toBe('800000001')
-    expect(request.echoSbi('800000001')).toBe('800000001')
-  })
-
-  test('falls back to the mapping for identifiers the request did not supply', () => {
-    const request = mapping.forRequest()
-
-    expect(request.echoSbi('800000001')).toBe('100000001') // unique source
-    expect(request.echoCrn('9000000001')).toBe('9000000001') // two sources
-    expect(request.echoCrn(9000000002)).toBe('9000000002') // unmapped
-  })
-
-  test('keeps the first identifier used for a synthetic one within a request', () => {
-    const request = mapping.forRequest()
-    request.resolveCrn('1100000001')
-    request.resolveCrn('1100000002')
-
-    expect(request.echoCrn('9000000001')).toBe('1100000001')
-  })
-
-  test('does not leak what one request supplied into another', () => {
-    mapping.forRequest().resolveCrn('1100000002')
-
-    expect(mapping.forRequest().echoCrn('9000000001')).toBe('9000000001')
   })
 })

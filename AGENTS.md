@@ -37,7 +37,7 @@ Requests use the same schema, path and error shapes as the real DAL, so switchin
 
 - Files under `src/graphql/schema/upstream/` and `src/data/static/permission-groups.json` are verbatim upstream copies. Never edit them by hand: run `npm run schema:sync`, review the diff, update resolvers and record the upstream commit in `UPSTREAM.md`. The pull request check fails on drift.
 - The `Query` type is authored in `src/graphql/schema/stub/query.gql`, so the operations advertised are exactly the ones implemented. Add a root field and its resolver together.
-- Resolver behaviour mirrors the real DAL: unknown identifiers are `NOT_FOUND` (404), malformed identifiers are `BAD_REQUEST` (400) through `src/graphql/identifiers.js`, and fields without fixture data resolve to `null` or an empty list rather than invented values.
+- Resolver behaviour mirrors the real DAL: unknown identifiers are `NOT FOUND` (404), malformed identifiers are `BAD_USER_INPUT` (HTTP 200, the directive message) through `src/graphql/identifiers.js`, and fields without fixture data resolve to `null` or an empty list rather than invented values.
 - Every field reachable from `Business` and `Customer` must be answerable. `src/graphql/full-coverage.test.js` generates a selection from the schema and fails otherwise.
 - `business.customers`, `customer.businesses` and permission groups are derived from the relationship documents. Do not duplicate those facts in business or customer documents.
 - The synthetic ranges live in `src/data/synthetic-ranges.js` and are enforced by the loader at startup, by `npm run check:fixtures` and in CI. A fixture that fails the check is wrong; the range is not.

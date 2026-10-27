@@ -6,7 +6,8 @@ import { validCrn, validSbi } from '../identifiers.js'
 
 export const Query = {
   business(_parent, { sbi }, { store, idMapping, logger }) {
-    const syntheticSbi = idMapping.resolveSbi(validSbi(sbi))
+    const requestedSbi = validSbi(sbi)
+    const syntheticSbi = idMapping.resolveSbi(requestedSbi)
     const business = store.getBusiness(syntheticSbi)
     if (!business) {
       logger?.debug(
@@ -15,11 +16,12 @@ export const Query = {
       )
       throw new NotFound('Business not found')
     }
-    return business
+    return { ...business, requestedSbi }
   },
 
   customer(_parent, { crn }, { store, idMapping, logger }) {
-    const syntheticCrn = idMapping.resolveCrn(validCrn(crn))
+    const requestedCrn = validCrn(crn)
+    const syntheticCrn = idMapping.resolveCrn(requestedCrn)
     const customer = store.getCustomer(syntheticCrn)
     if (!customer) {
       logger?.debug(
@@ -28,7 +30,7 @@ export const Query = {
       )
       throw new NotFound('Customer not found')
     }
-    return customer
+    return { ...customer, requestedCrn }
   },
 
   permissionGroups() {

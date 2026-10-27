@@ -72,14 +72,15 @@ ignores `Authorization`, `x-forwarded-authorization`, `gateway-type` and `email`
 The stub answers any query that the vendored schema supports, including everything
 its current consumers send. Behaviour that mirrors the real DAL:
 
-- Unknown SBI or CRN: `errors[0].extensions.code === "NOT_FOUND"` with HTTP 404 and
+- Unknown SBI or CRN: `errors[0].extensions.code === "NOT FOUND"` with HTTP 404 and
   `data.business` / `data.customer` set to `null`.
-- Malformed SBI or CRN (wrong length, or a leading zero): `errors[0].extensions.code === "BAD_REQUEST"`
-  with HTTP 400, as the DAL's `@validateVariable` directive answers.
-- `business.customer(crn)` for a CRN not associated with the business: `NOT_FOUND`.
+- Malformed SBI or CRN (wrong length, or a leading zero): `errors[0].extensions.code === "BAD_USER_INPUT"`
+  with HTTP 200 and the message `variable 'sbi' must match pattern ^[1-9][0-9]{8}$`, as the
+  DAL's `@validateVariable` directive answers from inside the resolver.
+- `business.customer(crn)` for a CRN not associated with the business: `NOT FOUND`.
 - `customer.business(sbi)` for an SBI not associated with the customer: `null`, no error.
 - `land.parcels(date)`: the `date` argument is accepted and ignored.
-- `land.parcel` / `parcelCovers` / `parcelLandUses` for an unknown parcel: `NOT_FOUND`.
+- `land.parcel` / `parcelCovers` / `parcelLandUses` for an unknown parcel: `NOT FOUND`.
 - `permissionGroups`: the DAL's own reference data, vendored verbatim.
 
 Not implemented (not in the vendored schema): mutations, search, payments, bank accounts,
@@ -153,7 +154,7 @@ not at `example.test`, and any relationship permission group whose id or level i
    the identity stub's users file in your consumer's local setup (for
    [fcp-defra-id-stub](https://github.com/DEFRA/fcp-defra-id-stub), the file mounted as
    `AUTH_OVERRIDE_FILE`). The two stubs must agree, or sign-in succeeds and the first
-   DAL call returns `NOT_FOUND`.
+   DAL call returns `NOT FOUND`.
 
 Land parcel references (`sheetId`/`parcelId`) must match parcels seeded in
 the land service used alongside the stub for land journeys to work end to end.
@@ -184,14 +185,15 @@ SBI_MAP=<sbi>:800000001,<sbi>:800000002
 ```
 
 Incoming identifiers are translated to the synthetic ones before fixture lookup. In the
-response (`business.sbi`, `customer.crn`, `customer.businesses[].sbi`,
-`business.customers[].crn`) an identifier the request supplied is echoed exactly as
-supplied, so a synthetic identifier asked for directly stays synthetic. An identifier the
-request did not supply is translated back when exactly one source maps to it, and returned
-as the synthetic value otherwise. Several sources may share one target, so several
-sign-ins can use the same persona. Unmapped identifiers pass through unchanged. The server
-refuses to start if a map entry's target is outside the synthetic ranges or has no fixture,
-or if its source is itself synthetic.
+response, the object fetched by an identifier echoes it exactly as supplied (`business.sbi`
+for `business(sbi:)`, `customer.business.sbi` for `customer.business(sbi:)`, and so on), so
+a synthetic identifier asked for directly stays synthetic. Every other identifier field,
+including the lists `customer.businesses[].sbi` and `business.customers[].crn`, is translated
+back when exactly one source maps to it and returned as the synthetic value otherwise,
+whatever else the query selected. Several sources may share one target, so several sign-ins
+can use the same persona. Unmapped identifiers pass through unchanged. The server refuses to
+start if a map entry's target is outside the synthetic ranges or has no fixture, or if its
+source is itself synthetic; the error names the entry's position, never its values.
 
 ## Keeping the schema in step with the real DAL
 
