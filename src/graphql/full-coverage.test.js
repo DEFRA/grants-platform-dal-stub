@@ -100,7 +100,7 @@ function argsFor(fieldName, parcel) {
     case 'parcelLandUses':
       return `(sheetId: "${parcel.sheetId}", parcelId: "${parcel.parcelId}")`
     case 'permittedFunctions':
-      return '(functions: ["Submit CS Application", "Not a real function"])'
+      return '(functions: ["viewBusinessDetails", "notAFunction"])'
     case 'customer':
       return `(crn: "${CRN}")`
     case 'business':
@@ -208,15 +208,17 @@ describe('schema coverage for the primary persona', () => {
     }
   )
 
-  test('permittedFunctions reflects the functions held by the business customers', async () => {
+  test('permittedFunctions answers the DAL function names from the customers permission levels', async () => {
     const { body } = await post(
       server,
-      `{ business(sbi: "${SBI}") { permittedFunctions(functions: ["Submit CS Application", "Not a real function"]) { name permitted } } }`
+      `{ business(sbi: "${SBI}") { permittedFunctions(functions: ["viewBusinessDetails", "submitApplication", "Submit CS Application", "notAFunction"]) { name permitted } } }`
     )
 
     expect(body.data.business.permittedFunctions).toEqual([
-      { name: 'Submit CS Application', permitted: true },
-      { name: 'Not a real function', permitted: false }
+      { name: 'viewBusinessDetails', permitted: true },
+      { name: 'submitApplication', permitted: true },
+      { name: 'Submit CS Application', permitted: false },
+      { name: 'notAFunction', permitted: false }
     ])
   })
 })

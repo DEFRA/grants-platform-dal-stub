@@ -111,8 +111,11 @@ type, legal status, registration numbers, contact details and address; land parc
 customer name, contact details and address; and the per-business role and permission groups.
 Everything else (land covers and uses, applications, messages, authentication questions and
 so on) resolves to `null` or an empty list, as the real DAL does for a record without that
-data, and can be added to a fixture when a scenario needs it. `business.permittedFunctions`
-reports a function as permitted when any customer of the business holds it.
+data, and can be added to a fixture when a scenario needs it. `business.permittedFunctions` answers the DAL's documented function names (`viewBusinessDetails`,
+`submitApplication` and so on) from the permission group level that grants each one, listed in
+`src/data/permitted-functions.js`; a function is permitted when any customer of the business holds
+that level, whereas the real DAL answers for the signed-in user only. Land parcels carry an `area`
+in hectares, and `land.summary.totalArea` is `null` rather than `0` when any parcel has none.
 
 ### Synthetic identifier ranges
 
@@ -156,21 +159,24 @@ not at `example.test`, and any relationship permission group whose id or level i
    `AUTH_OVERRIDE_FILE`). The two stubs must agree, or sign-in succeeds and the first
    DAL call returns `NOT FOUND`.
 
-Land parcel references (`sheetId`/`parcelId`) must match parcels seeded in
-the land service used alongside the stub for land journeys to work end to end.
+Land parcel references (`sheetId`/`parcelId`) must match parcels seeded in the land service
+used alongside the stub for land journeys to work end to end. The fixtures use parcels from
+land-grants-api's `src/land-data/land_parcels/parcels.csv`, the file that seeds its local
+`land-grants-postgres-seeded` image, with `area` (hectares) taken from the same file, so
+they draw on the map and come back from the land service with covers and available actions.
 
 ### Test personas
 
 The data set is deliberately tiny: five customers across three businesses, every one of
 them obviously fake. Add more only when a scenario genuinely needs it.
 
-| CRN          | Name            | SBI                                                          | Permissions                                                             | Notes                                            |
-| ------------ | --------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------ |
-| `9000000001` | Alice Carter    | `800000001` Green Farm                                       | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 5 parcels |
-| `9000000002` | Benjamin Carter | `800000001`                                                  | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                  |
-| `9000000003` | Chloe Carter    | `800000001`                                                  | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                  |
-| `9000000004` | Daniel Carter   | `800000001`                                                  | No permission groups                                                    |                                                  |
-| `9000000005` | Nadia Khan      | `800000002` High Fell Farm, `800000003` Hope Valley Farm Ltd | Full on High Fell Farm, `VIEW` only on Hope Valley                      | Multi-business customer; neither has agreements  |
+| CRN          | Name            | SBI                                                          | Permissions                                                             | Notes                                             |
+| ------------ | --------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| `9000000001` | Alice Carter    | `800000001` Green Farm                                       | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 10 parcels |
+| `9000000002` | Benjamin Carter | `800000001`                                                  | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                   |
+| `9000000003` | Chloe Carter    | `800000001`                                                  | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                   |
+| `9000000004` | Daniel Carter   | `800000001`                                                  | No permission groups                                                    |                                                   |
+| `9000000005` | Nadia Khan      | `800000002` High Fell Farm, `800000003` Hope Valley Farm Ltd | Full on High Fell Farm, `VIEW` only on Hope Valley                      | Multi-business customer; neither has agreements   |
 
 ## Identifier mapping
 

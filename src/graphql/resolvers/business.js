@@ -1,3 +1,4 @@
+import { isPermitted } from '#/data/permitted-functions.js'
 import { NotFound } from '../errors.js'
 import { validCrn } from '../identifiers.js'
 
@@ -28,19 +29,17 @@ export const Business = {
     return applications ?? []
   },
 
-  /**
-   * The real DAL answers this for the signed-in user. The stub has no user
-   * context, so a function is permitted when any customer of the business holds
-   * it in one of their permission groups.
-   */
+  // The real DAL answers this for the signed-in user. The stub has no user
+  // context, so a function is permitted when any customer of the business holds
+  // the permission level that grants it (src/data/permitted-functions.js).
   permittedFunctions({ sbi }, { functions }, { store }) {
-    const held = new Set(
-      store
-        .getRelationshipsForBusiness(sbi)
-        .flatMap((relationship) => relationship.permissionGroups)
-        .flatMap((group) => group.functions ?? [])
-    )
-    return functions.map((name) => ({ name, permitted: held.has(name) }))
+    const held = store
+      .getRelationshipsForBusiness(sbi)
+      .flatMap((relationship) => relationship.permissionGroups)
+    return functions.map((name) => ({
+      name,
+      permitted: isPermitted(name, held)
+    }))
   },
 
   customers({ sbi }, _args, { store }) {
@@ -92,11 +91,13 @@ export const BusinessLand = {
 
   summary({ land }) {
     const parcels = land.parcels ?? []
+    const areas = parcels.map((parcel) => parcel.area)
     return {
       totalParcels: parcels.length,
-      totalArea: round(
-        parcels.reduce((sum, parcel) => sum + (parcel.area ?? 0), 0)
-      ),
+      // Unknown, not zero, when any parcel has no area.
+      totalArea: areas.every((area) => typeof area === 'number')
+        ? round(areas.reduce((sum, area) => sum + area, 0))
+        : null,
       arableLandArea: null,
       permanentCropsArea: null,
       permanentGrasslandArea: null,

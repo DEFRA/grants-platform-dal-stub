@@ -47,23 +47,43 @@
     "parcels": [
       {
         "sheetId": "SD7560",
-        "parcelId": "9193"
+        "parcelId": "9193",
+        "area": 25.3874
       },
       {
         "sheetId": "SD5848",
-        "parcelId": "9205"
+        "parcelId": "9205",
+        "area": 169.8586
       },
       {
         "sheetId": "SD5649",
-        "parcelId": "9215"
+        "parcelId": "9215",
+        "area": 764.229
       },
       {
         "sheetId": "SD6165",
-        "parcelId": "9218"
+        "parcelId": "9218",
+        "area": 4.6223
       },
       {
         "sheetId": "SD5763",
-        "parcelId": "9223"
+        "parcelId": "9223",
+        "area": 90.3876
+      },
+      {
+        "sheetId": "SD6154",
+        "parcelId": "7795",
+        "area": 3.7055
+      },
+      {
+        "sheetId": "SD6055",
+        "parcelId": "2219",
+        "area": 7.4579
+      },
+      {
+        "sheetId": "SD6154",
+        "parcelId": "8973",
+        "area": 10.0548
       }
     ]
   },

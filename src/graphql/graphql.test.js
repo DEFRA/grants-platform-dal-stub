@@ -364,11 +364,43 @@ describe('POST /graphql', () => {
         id: 'SD8343-1056',
         sheetId: 'SD8343',
         parcelId: '1056',
-        area: null
+        area: 54.4566
       })
       expect(land.parcelCovers).toEqual([])
       expect(land.parcelLandUses).toEqual([])
-      expect(land.summary.totalParcels).toBe(5)
+      expect(land.summary).toEqual({
+        totalParcels: 10,
+        totalArea: 270.5473
+      })
+    })
+
+    test('permittedFunctions follows the permission levels the customers hold', async () => {
+      const functions =
+        '["viewBusinessDetails", "viewApplication", "amendBusinessDetails", "submitApplication", "closeBusiness"]'
+      const response = await postGraphql(server, {
+        query: `{
+          viewOnly: business(sbi: "800000003") { permittedFunctions(functions: ${functions}) { name permitted } }
+          full: business(sbi: "${SBI_WITH_AGREEMENTS}") { permittedFunctions(functions: ${functions}) { name permitted } }
+        }`
+      })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.errors).toBeUndefined()
+      const permitted = (business) =>
+        business.permittedFunctions
+          .filter((f) => f.permitted)
+          .map((f) => f.name)
+      expect(permitted(response.body.data.viewOnly)).toEqual([
+        'viewBusinessDetails',
+        'viewApplication'
+      ])
+      expect(permitted(response.body.data.full)).toEqual([
+        'viewBusinessDetails',
+        'viewApplication',
+        'amendBusinessDetails',
+        'submitApplication',
+        'closeBusiness'
+      ])
     })
 
     test('permissionGroups reference data is served from the vendored DAL file', async () => {
