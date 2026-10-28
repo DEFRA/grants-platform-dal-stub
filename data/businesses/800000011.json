@@ -2,7 +2,7 @@
   "sbi": "800000011",
   "organisationId": "7410011",
   "info": {
-    "name": "Test Hazel Croft Farm",
+    "name": "Test Ivy Lodge Farm",
     "reference": "0800000011",
     "email": {
       "address": "contact+800000011@example.test"
@@ -12,13 +12,13 @@
       "landline": "01632960511"
     },
     "address": {
-      "pafOrganisationName": "Test Hazel Croft Farm Holdings",
-      "line1": "11 Test Lane",
+      "pafOrganisationName": "Test Ivy Lodge Farm Holdings",
+      "line1": "411 Test Lane",
       "line2": "Test Park",
       "line3": "Mockford",
       "line4": "Testshire",
       "line5": "",
-      "buildingNumberRange": "11",
+      "buildingNumberRange": "411",
       "buildingName": null,
       "flatName": null,
       "street": "Test Lane",

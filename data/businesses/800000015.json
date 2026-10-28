@@ -2,7 +2,7 @@
   "sbi": "800000015",
   "organisationId": "7410015",
   "info": {
-    "name": "Test Larch View Farm",
+    "name": "Test Nettle Dale Farm",
     "reference": "0800000015",
     "email": {
       "address": "contact+800000015@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960515"
     },
     "address": {
-      "line1": "Test Larch View Farm House",
+      "line1": "Test Nettle Dale Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

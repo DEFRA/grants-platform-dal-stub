@@ -2,7 +2,7 @@
   "sbi": "800000020",
   "organisationId": "7410020",
   "info": {
-    "name": "Test Quarry Side Farm",
+    "name": "Test Sycamore Fell Farm",
     "reference": "0800000020",
     "email": {
       "address": "contact+800000020@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960520"
     },
     "address": {
-      "line1": "Test Quarry Side Farm House",
+      "line1": "Test Sycamore Fell Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

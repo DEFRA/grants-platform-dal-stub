@@ -2,7 +2,7 @@
   "sbi": "800000024",
   "organisationId": "7410024",
   "info": {
-    "name": "Test Upper Clough Farm",
+    "name": "Test Alder Carr Farm",
     "reference": "0800000024",
     "email": {
       "address": "contact+800000024@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960524"
     },
     "address": {
-      "line1": "Test Upper Clough Farm House",
+      "line1": "Test Alder Carr Farm House",
       "line2": "Test Park",
       "line3": "Mockford",
       "line4": "Testshire",

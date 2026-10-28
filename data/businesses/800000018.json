@@ -2,7 +2,7 @@
   "sbi": "800000018",
   "organisationId": "7410018",
   "info": {
-    "name": "Test Oak Brow Farm",
+    "name": "Test Quarry Side Farm",
     "reference": "0800000018",
     "email": {
       "address": "contact+800000018@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960518"
     },
     "address": {
-      "line1": "Test Oak Brow Farm House",
+      "line1": "Test Quarry Side Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

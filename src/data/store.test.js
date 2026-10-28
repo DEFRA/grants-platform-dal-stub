@@ -248,18 +248,18 @@ describe('DataStore', () => {
   test('rejects business names and surnames without the synthetic markers', async () => {
     const dir = await load({
       'businesses/800000001.json': business('800000001', {
-        info: { name: 'Green Farm' }
+        info: { name: 'Sample Farm' }
       }),
       'customers/9000000001.json': {
         ...customer('9000000001'),
-        info: { name: { first: 'Alice', last: 'Carter' } }
+        info: { name: { first: 'Sam', last: 'Sample' } }
       }
     })
 
     await expectProblems(
       dir,
-      'businesses/800000001.json: info.name "Green Farm" does not start with "Test"',
-      'customers/9000000001.json: info.name.last "Carter" does not start with "Test-"'
+      'businesses/800000001.json: info.name "Sample Farm" does not start with "Test"',
+      'customers/9000000001.json: info.name.last "Sample" does not start with "Test-"'
     )
   })
 

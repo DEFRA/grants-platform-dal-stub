@@ -2,7 +2,7 @@
   "sbi": "800000017",
   "organisationId": "7410017",
   "info": {
-    "name": "Test Nettle Dale Farm",
+    "name": "Test Pine Hollow Farm",
     "reference": "0800000017",
     "email": {
       "address": "contact+800000017@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960517"
     },
     "address": {
-      "line1": "Test Nettle Dale Farm House",
+      "line1": "Test Pine Hollow Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

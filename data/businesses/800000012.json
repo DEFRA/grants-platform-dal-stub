@@ -2,7 +2,7 @@
   "sbi": "800000012",
   "organisationId": "7410012",
   "info": {
-    "name": "Test Ivy Lodge Farm",
+    "name": "Test Juniper Fold Farm",
     "reference": "0800000012",
     "email": {
       "address": "contact+800000012@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960512"
     },
     "address": {
-      "line1": "Test Ivy Lodge Farm House",
+      "line1": "Test Juniper Fold Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

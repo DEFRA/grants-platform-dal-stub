@@ -2,7 +2,7 @@
   "sbi": "800000022",
   "organisationId": "7410022",
   "info": {
-    "name": "Test Sycamore Fell Farm",
+    "name": "Test Valley Head Farm",
     "reference": "0800000022",
     "email": {
       "address": "contact+800000022@example.test"
@@ -12,13 +12,13 @@
       "landline": "01632960522"
     },
     "address": {
-      "pafOrganisationName": "Test Sycamore Fell Farm Holdings",
-      "line1": "22 Test Lane",
+      "pafOrganisationName": "Test Valley Head Farm Holdings",
+      "line1": "422 Test Lane",
       "line2": "Test Park",
       "line3": "Mockford",
       "line4": "Testshire",
       "line5": "",
-      "buildingNumberRange": "22",
+      "buildingNumberRange": "422",
       "buildingName": null,
       "flatName": null,
       "street": "Test Lane",
@@ -75,8 +75,8 @@
   "countyParishHoldings": [],
   "agreements": [
     {
-      "contractId": "TestContractId333",
-      "name": "SFI123",
+      "contractId": "TEST-CONTRACT-022-1",
+      "name": "TEST-SFI-022-1",
       "status": "SIGNED",
       "contractType": "SFI Expanded Offer",
       "schemeYear": 2025,

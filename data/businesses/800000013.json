@@ -2,7 +2,7 @@
   "sbi": "800000013",
   "organisationId": "7410013",
   "info": {
-    "name": "Test Juniper Fold Farm",
+    "name": "Test Kestrel Moor Farm",
     "reference": "0800000013",
     "email": {
       "address": "contact+800000013@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960513"
     },
     "address": {
-      "line1": "Test Juniper Fold Farm House",
+      "line1": "Test Kestrel Moor Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

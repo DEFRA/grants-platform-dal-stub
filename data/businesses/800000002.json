@@ -1,8 +1,8 @@
 {
   "sbi": "800000002",
-  "organisationId": "7400100",
+  "organisationId": "7420002",
   "info": {
-    "name": "Test High Fell Farm",
+    "name": "Test Bracken Edge Farm",
     "reference": "0800000002",
     "email": {
       "address": "contact+800000002@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960201"
     },
     "address": {
-      "line1": "2 Test Lane",
+      "line1": "402 Test Lane",
       "line2": "Test Park",
       "line3": "Fakenham Test",
       "line4": "Testshire",
@@ -22,12 +22,12 @@
       "postalCode": "ZZ20 1ZZ",
       "uprn": "900000200001",
       "buildingName": null,
-      "buildingNumberRange": "2",
+      "buildingNumberRange": "402",
       "county": "Testshire",
       "dependentLocality": null,
       "doubleDependentLocality": null,
       "flatName": null,
-      "pafOrganisationName": "Test High Fell Farm"
+      "pafOrganisationName": "Test Bracken Edge Farm"
     },
     "vat": "GB800000002",
     "legalStatus": {

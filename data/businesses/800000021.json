@@ -2,7 +2,7 @@
   "sbi": "800000021",
   "organisationId": "7410021",
   "info": {
-    "name": "Test Rowan Beck Farm",
+    "name": "Test Upper Clough Farm",
     "reference": "0800000021",
     "email": {
       "address": "contact+800000021@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960521"
     },
     "address": {
-      "line1": "Test Rowan Beck Farm House",
+      "line1": "Test Upper Clough Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

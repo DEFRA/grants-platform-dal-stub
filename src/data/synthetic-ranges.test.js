@@ -115,9 +115,12 @@ describe('synthetic identifier ranges', () => {
 })
 
 describe('synthetic names', () => {
-  test.each(['Test-Carter', 'Test-B'])('%s is a synthetic surname', (last) => {
-    expect(isSyntheticSurname(last)).toBe(true)
-  })
+  test.each(['Test-Lockwood', 'Test-B'])(
+    '%s is a synthetic surname',
+    (last) => {
+      expect(isSyntheticSurname(last)).toBe(true)
+    }
+  )
 
   test.each(['Carter', 'Testerson', 'test-carter', '', undefined])(
     '%s is not a synthetic surname',
@@ -127,8 +130,8 @@ describe('synthetic names', () => {
   )
 
   test.each([
-    'Test Green Farm',
-    'Test Hope Valley Farm Ltd',
+    'Test Alder Carr Farm',
+    'Test Clover Lea Farm Ltd',
     'Test Estates Ltd'
   ])('%s is a synthetic business name', (name) => {
     expect(isSyntheticBusinessName(name)).toBe(true)

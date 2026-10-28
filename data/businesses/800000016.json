@@ -2,7 +2,7 @@
   "sbi": "800000016",
   "organisationId": "7410016",
   "info": {
-    "name": "Test Maple Rise Farm",
+    "name": "Test Oak Brow Farm",
     "reference": "0800000016",
     "email": {
       "address": "contact+800000016@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960516"
     },
     "address": {
-      "line1": "Test Maple Rise Farm House",
+      "line1": "Test Oak Brow Farm House",
       "line2": "Test Park",
       "line3": null,
       "line4": null,

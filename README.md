@@ -131,8 +131,8 @@ Defined once in `src/data/synthetic-ranges.js` and enforced by the loader, by
 | Mobile   | `07700 900NNN`         | `07700900101` (Ofcom range reserved for fiction)       |
 | Landline | `01632 960NNN`         | `01632960101` (Ofcom range reserved for fiction)       |
 | Email    | `*@example.test`       | `alice.carter+9000000001@example.test`                 |
-| Surname  | `Test-` prefix         | `Test-Carter`                                          |
-| Business | starts with `Test`     | `Test Green Farm`, `Test Estates Ltd`                  |
+| Surname  | `Test-` prefix         | `Test-Lockwood`                                        |
+| Business | starts with `Test`     | `Test Alder Carr Farm`, `Test Estates Ltd`             |
 
 Issued SBIs are 9 digits starting with `1`, and issued CRNs and FRNs are 10 digits starting
 `1`. Synthetic SBIs start `8` and CRNs `90`, well away from the issued blocks, and every block above is
@@ -174,13 +174,13 @@ they draw on the map and come back from the land service with covers and availab
 The data set is deliberately tiny: five customers across three businesses, every one of
 them obviously fake. Add more only when a scenario genuinely needs it.
 
-| CRN          | Name                 | SBI                                                                    | Permissions                                                             | Notes                                             |
-| ------------ | -------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------- |
-| `9000000001` | Alice Test-Carter    | `800000001` Test Green Farm                                            | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 10 parcels |
-| `9000000002` | Benjamin Test-Carter | `800000001`                                                            | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                   |
-| `9000000003` | Chloe Test-Carter    | `800000001`                                                            | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                   |
-| `9000000004` | Daniel Test-Carter   | `800000001`                                                            | No permission groups                                                    |                                                   |
-| `9000000005` | Nadia Test-Khan      | `800000002` Test High Fell Farm, `800000003` Test Hope Valley Farm Ltd | Full on Test High Fell Farm, `VIEW` only on Hope Valley                 | Multi-business customer; neither has agreements   |
+| CRN          | Name                   | SBI                                                                      | Permissions                                                             | Notes                                             |
+| ------------ | ---------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| `9000000001` | Florence Test-Lockwood | `800000001` Test Alder Carr Farm                                         | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 10 parcels |
+| `9000000002` | Arthur Test-Lockwood   | `800000001`                                                              | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                   |
+| `9000000003` | Phoebe Test-Lockwood   | `800000001`                                                              | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                   |
+| `9000000004` | Hugo Test-Lockwood     | `800000001`                                                              | No permission groups                                                    |                                                   |
+| `9000000005` | Matilda Test-Stanhope  | `800000002` Test Bracken Edge Farm, `800000003` Test Clover Lea Farm Ltd | Full on Test Bracken Edge Farm, `VIEW` only on Clover Lea               | Multi-business customer; neither has agreements   |
 
 The personas `9000000006` to `9000000033` (businesses `800000004` to `800000024`) belong to the grants-ui acceptance suite. Each carries exactly the parcels, permission groups and agreements its scenarios depend on and nothing else. Scenarios on different grants share a persona, since application state, locks and audit events are keyed per grant; scenarios on the same grant never share an SBI, because each wipes its SBI's state for that grant and the suite runs in parallel. Treat them as owned by that suite and add new scenarios on new identifiers.
 

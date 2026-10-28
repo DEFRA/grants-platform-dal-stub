@@ -2,7 +2,7 @@
   "sbi": "800000023",
   "organisationId": "7410023",
   "info": {
-    "name": "Test Thistle Top Farm",
+    "name": "Test Yew Tree Farm",
     "reference": "0800000023",
     "email": {
       "address": "contact+800000023@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960523"
     },
     "address": {
-      "line1": "Test Thistle Top Farm House",
+      "line1": "Test Yew Tree Farm House",
       "line2": "Test Park",
       "line3": "Mockford",
       "line4": "Testshire",
