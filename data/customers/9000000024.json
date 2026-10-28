@@ -1,0 +1,37 @@
+{
+  "crn": "9000000024",
+  "info": {
+    "name": {
+      "title": "Mrs",
+      "first": "Everett",
+      "middle": null,
+      "last": "Test-Whitlock"
+    },
+    "phone": {
+      "mobile": "07700900324",
+      "landline": "01632960324"
+    },
+    "email": {
+      "address": "everett.test-whitlock+9000000024@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "524 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "524",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200124",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000124"
+}

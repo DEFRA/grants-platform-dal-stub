@@ -9,6 +9,8 @@
 //   Mobile    07700 900NNN (Ofcom drama range)
 //   Landline  01632 960NNN (Ofcom drama range)
 //   Email     anything at example.test
+//   Surname   Test-<name>, so every persona reads as made up
+//   Business  Test <name>, for the same reason
 
 const CRN_PATTERN = /^9000000\d{3}$/
 const SBI_PATTERN = /^800000\d{3}$/
@@ -17,6 +19,8 @@ const POSTCODE_PATTERN = /^ZZ\d{1,2} \d[ABD-HJLNP-UW-Z]{2}$/
 const MOBILE_PATTERN = /^07700900\d{3}$/
 const LANDLINE_PATTERN = /^01632960\d{3}$/
 const EMAIL_DOMAIN = '@example.test'
+const SURNAME_PREFIX = 'Test-'
+const BUSINESS_NAME_PATTERN = /^Test\b/
 
 export function isSyntheticCrn(crn) {
   return CRN_PATTERN.test(String(crn))
@@ -46,7 +50,17 @@ export function isSyntheticEmail(email) {
   return String(email).endsWith(EMAIL_DOMAIN)
 }
 
+export function isSyntheticSurname(surname) {
+  return String(surname).startsWith(SURNAME_PREFIX)
+}
+
+export function isSyntheticBusinessName(name) {
+  return BUSINESS_NAME_PATTERN.test(String(name))
+}
+
 export const syntheticRanges = {
+  surnamePrefix: SURNAME_PREFIX,
+  businessName: BUSINESS_NAME_PATTERN,
   crn: CRN_PATTERN,
   sbi: SBI_PATTERN,
   frn: FRN_PATTERN,

@@ -1,0 +1,71 @@
+{
+  "sbi": "800000014",
+  "organisationId": "7410014",
+  "info": {
+    "name": "Test Maple Rise Farm",
+    "reference": "0800000014",
+    "email": {
+      "address": "contact+800000014@example.test"
+    },
+    "phone": {
+      "mobile": "07700900514",
+      "landline": "01632960514"
+    },
+    "address": {
+      "pafOrganisationName": "Test Maple Rise Farm Holdings",
+      "line1": "414 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "414",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ14 1ZZ",
+      "uprn": "900000200014",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    },
+    "vat": "GB800000014",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0014",
+      "charityCommission": "TC000014"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6351",
+        "parcelId": "8781",
+        "area": 68.0498
+      },
+      {
+        "sheetId": "SD6352",
+        "parcelId": "8774",
+        "area": 11.1006
+      },
+      {
+        "sheetId": "SD6252",
+        "parcelId": "7537",
+        "area": 0.3361
+      }
+    ]
+  },
+  "countyParishHoldings": [
+    {
+      "cphNumber": "99/902/0014"
+    }
+  ],
+  "agreements": []
+}

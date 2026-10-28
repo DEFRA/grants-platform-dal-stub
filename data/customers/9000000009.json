@@ -1,0 +1,37 @@
+{
+  "crn": "9000000009",
+  "info": {
+    "name": {
+      "title": "Dr",
+      "first": "Oscar",
+      "middle": null,
+      "last": "Test-Dunmore"
+    },
+    "phone": {
+      "mobile": "07700900309",
+      "landline": "01632960309"
+    },
+    "email": {
+      "address": "oscar.test-dunmore+9000000009@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "509 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "509",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200109",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000109"
+}

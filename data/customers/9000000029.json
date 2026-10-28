@@ -1,0 +1,37 @@
+{
+  "crn": "9000000029",
+  "info": {
+    "name": {
+      "title": "Dr",
+      "first": "Lorcan",
+      "middle": null,
+      "last": "Test-Dormer"
+    },
+    "phone": {
+      "mobile": "07700900329",
+      "landline": "01632960329"
+    },
+    "email": {
+      "address": "lorcan.test-dormer+9000000029@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "529 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "529",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200129",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000129"
+}

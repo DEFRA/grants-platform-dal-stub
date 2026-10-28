@@ -1,0 +1,60 @@
+{
+  "sbi": "800000020",
+  "organisationId": "7410020",
+  "info": {
+    "name": "Test Sycamore Fell Farm",
+    "reference": "0800000020",
+    "email": {
+      "address": "contact+800000020@example.test"
+    },
+    "phone": {
+      "mobile": "07700900520",
+      "landline": "01632960520"
+    },
+    "address": {
+      "line1": "Test Sycamore Fell Farm House",
+      "line2": "Test Park",
+      "line3": null,
+      "line4": null,
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ20 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000020",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0020",
+      "charityCommission": "TC000020"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6351",
+        "parcelId": "8781",
+        "area": 68.0498
+      },
+      {
+        "sheetId": "SD6352",
+        "parcelId": "8774",
+        "area": 11.1006
+      },
+      {
+        "sheetId": "SD6252",
+        "parcelId": "7537",
+        "area": 0.3361
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

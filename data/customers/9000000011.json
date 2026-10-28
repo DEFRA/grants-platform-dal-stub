@@ -1,0 +1,37 @@
+{
+  "crn": "9000000011",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Theo",
+      "middle": null,
+      "last": "Test-Hollis"
+    },
+    "phone": {
+      "mobile": "07700900311",
+      "landline": "01632960311"
+    },
+    "email": {
+      "address": "theo.test-hollis+9000000011@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "511 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "511",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200111",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000111"
+}

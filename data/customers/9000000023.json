@@ -1,0 +1,37 @@
+{
+  "crn": "9000000023",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Delphine",
+      "middle": null,
+      "last": "Test-Vance"
+    },
+    "phone": {
+      "mobile": "07700900323",
+      "landline": "01632960323"
+    },
+    "email": {
+      "address": "delphine.test-vance+9000000023@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "523 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "523",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200123",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000123"
+}

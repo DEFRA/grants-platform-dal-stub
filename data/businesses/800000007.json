@@ -1,0 +1,331 @@
+{
+  "sbi": "800000007",
+  "organisationId": "7410007",
+  "info": {
+    "name": "Test Dale End Farm",
+    "reference": "0800000007",
+    "email": {
+      "address": "contact+800000007@example.test"
+    },
+    "phone": {
+      "mobile": "07700900507",
+      "landline": "01632960507"
+    },
+    "address": {
+      "line1": "Test Dale End Farm House",
+      "line2": "Test Park",
+      "line3": null,
+      "line4": null,
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ7 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000007",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0007",
+      "charityCommission": "TC000007"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4168",
+        "area": 1.0304
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6820",
+        "area": 0.2774
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "3262",
+        "area": 0.241
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "3759",
+        "area": 1.0161
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6828",
+        "area": 0.6516
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "7555",
+        "area": 5.2182
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "5715",
+        "area": 0.0266
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "6385",
+        "area": 0.2624
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6811",
+        "area": 0.0928
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4868",
+        "area": 0.0911
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "7738",
+        "area": 2.6185
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4776",
+        "area": 0.5578
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "7313",
+        "area": 0.246
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "7227",
+        "area": 0.1927
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "6999",
+        "area": 0.901
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5063",
+        "area": 0.5946
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5450",
+        "area": 2.3182
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4766",
+        "area": 0.0414
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5761",
+        "area": 0.6116
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4262",
+        "area": 0.0168
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6905",
+        "area": 0.2301
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "5717",
+        "area": 0.0453
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "6095",
+        "area": 0.5954
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6813",
+        "area": 0.4292
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5771",
+        "area": 3.9489
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6635",
+        "area": 0.0313
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4561",
+        "area": 0.0112
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6408",
+        "area": 0.0101
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6723",
+        "area": 0.0217
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6906",
+        "area": 0.2725
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "6455",
+        "area": 1.2072
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4763",
+        "area": 0.0213
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5698",
+        "area": 0.2933
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "3568",
+        "area": 0.0438
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "5611",
+        "area": 0.2582
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5039",
+        "area": 2.5674
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4982",
+        "area": 0.2188
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5268",
+        "area": 0.1259
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "6986",
+        "area": 0.4314
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "7589",
+        "area": 0.3269
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "4861",
+        "area": 0.037
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "3446",
+        "area": 2.5152
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5683",
+        "area": 0.7341
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6042",
+        "area": 0.5496
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "9194",
+        "area": 2.1703
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "5609",
+        "area": 0.1627
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "5805",
+        "area": 0.9003
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "5901",
+        "area": 0.272
+      },
+      {
+        "sheetId": "SK0972",
+        "parcelId": "6917",
+        "area": 0.1594
+      },
+      {
+        "sheetId": "SK0971",
+        "parcelId": "5993",
+        "area": 1.0241
+      },
+      {
+        "sheetId": "SD7323",
+        "parcelId": "4596",
+        "area": 17.5194
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": [
+    {
+      "status": "SIGNED",
+      "paymentSchedules": [
+        {
+          "optionCode": "CLIG3",
+          "sheetName": "SK0971",
+          "parcelName": "5761",
+          "actionArea": 0.6116,
+          "actionMTL": null,
+          "actionUnits": null,
+          "startDate": "2025-01-01T00:00:00Z",
+          "endDate": "2027-12-31T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "status": "SIGNED",
+      "paymentSchedules": [
+        {
+          "optionCode": "CLIG3",
+          "sheetName": "SK0971",
+          "parcelName": "4561",
+          "actionArea": 0.0025,
+          "actionMTL": null,
+          "actionUnits": null,
+          "startDate": "2025-01-01T00:00:00Z",
+          "endDate": "2027-12-31T00:00:00Z"
+        }
+      ]
+    }
+  ]
+}

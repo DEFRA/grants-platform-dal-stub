@@ -1,0 +1,60 @@
+{
+  "sbi": "800000008",
+  "organisationId": "7410008",
+  "info": {
+    "name": "Test Elm Ridge Farm",
+    "reference": "0800000008",
+    "email": {
+      "address": "contact+800000008@example.test"
+    },
+    "phone": {
+      "mobile": "07700900508",
+      "landline": "01632960508"
+    },
+    "address": {
+      "line1": "Test Elm Ridge Farm House",
+      "line2": "Test Park",
+      "line3": null,
+      "line4": null,
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ8 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000008",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0008",
+      "charityCommission": "TC000008"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6351",
+        "parcelId": "8781",
+        "area": 68.0498
+      },
+      {
+        "sheetId": "SD6352",
+        "parcelId": "8774",
+        "area": 11.1006
+      },
+      {
+        "sheetId": "SD6252",
+        "parcelId": "7537",
+        "area": 0.3361
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

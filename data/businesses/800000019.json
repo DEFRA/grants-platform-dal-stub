@@ -1,0 +1,57 @@
+{
+  "sbi": "800000019",
+  "organisationId": "7410019",
+  "info": {
+    "name": "Test Rowan Beck Farm",
+    "reference": "0800000019",
+    "email": {
+      "address": "contact+800000019@example.test"
+    },
+    "phone": {
+      "mobile": "07700900519",
+      "landline": "01632960519"
+    },
+    "address": {
+      "pafOrganisationName": "Test Rowan Beck Farm Holdings",
+      "line1": "419 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "419",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ19 1ZZ",
+      "uprn": "900000200019",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    },
+    "vat": "GB800000019",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0019",
+      "charityCommission": "TC000019"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "NZ6300",
+        "parcelId": "8335",
+        "area": 5.7792
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

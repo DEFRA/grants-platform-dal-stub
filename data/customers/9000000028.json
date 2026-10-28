@@ -1,0 +1,37 @@
+{
+  "crn": "9000000028",
+  "info": {
+    "name": {
+      "title": "Mrs",
+      "first": "Juniper",
+      "middle": null,
+      "last": "Test-Colfax"
+    },
+    "phone": {
+      "mobile": "07700900328",
+      "landline": "01632960328"
+    },
+    "email": {
+      "address": "juniper.test-colfax+9000000028@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "528 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "528",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200128",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000128"
+}

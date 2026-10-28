@@ -1,0 +1,37 @@
+{
+  "crn": "9000000014",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Evie",
+      "middle": "T",
+      "last": "Test-Kestrel"
+    },
+    "phone": {
+      "mobile": "07700900314",
+      "landline": "01632960314"
+    },
+    "email": {
+      "address": "evie.test-kestrel+9000000014@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "514 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "514",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200114",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000114"
+}

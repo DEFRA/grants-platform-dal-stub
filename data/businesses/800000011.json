@@ -1,0 +1,67 @@
+{
+  "sbi": "800000011",
+  "organisationId": "7410011",
+  "info": {
+    "name": "Test Ivy Lodge Farm",
+    "reference": "0800000011",
+    "email": {
+      "address": "contact+800000011@example.test"
+    },
+    "phone": {
+      "mobile": "07700900511",
+      "landline": "01632960511"
+    },
+    "address": {
+      "pafOrganisationName": "Test Ivy Lodge Farm Holdings",
+      "line1": "411 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "411",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ11 1ZZ",
+      "uprn": "900000200011",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    },
+    "vat": "GB800000011",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0011",
+      "charityCommission": "TC000011"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6351",
+        "parcelId": "8781",
+        "area": 68.0498
+      },
+      {
+        "sheetId": "SD6352",
+        "parcelId": "8774",
+        "area": 11.1006
+      },
+      {
+        "sheetId": "SD6252",
+        "parcelId": "7537",
+        "area": 0.3361
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

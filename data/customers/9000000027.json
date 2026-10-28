@@ -1,0 +1,37 @@
+{
+  "crn": "9000000027",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Idris",
+      "middle": "T",
+      "last": "Test-Bexley"
+    },
+    "phone": {
+      "mobile": "07700900327",
+      "landline": "01632960327"
+    },
+    "email": {
+      "address": "idris.test-bexley+9000000027@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "527 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "527",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200127",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000127"
+}

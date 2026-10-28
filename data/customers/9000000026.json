@@ -1,0 +1,37 @@
+{
+  "crn": "9000000026",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Gideon",
+      "middle": "T",
+      "last": "Test-Abbot"
+    },
+    "phone": {
+      "mobile": "07700900326",
+      "landline": "01632960326"
+    },
+    "email": {
+      "address": "gideon.test-abbot+9000000026@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "526 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "526",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200126",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000126"
+}

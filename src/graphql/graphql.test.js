@@ -127,11 +127,11 @@ describe('POST /graphql', () => {
       const { customer, business } = response.body.data
       expect(customer.info.name).toEqual({
         title: 'Ms',
-        first: 'Alice',
-        middle: 'Louise',
-        last: 'Carter'
+        first: 'Florence',
+        middle: 'Imogen',
+        last: 'Test-Lockwood'
       })
-      expect(business.info.name).toBe('Green Farm')
+      expect(business.info.name).toBe('Test Alder Carr Farm')
       expect(business.info.email.address).toMatch(/@example\.test$/)
       expect(business.info.address).toEqual(
         expect.objectContaining({
@@ -337,7 +337,7 @@ describe('POST /graphql', () => {
       expect(customer.businesses).toEqual([
         expect.objectContaining({
           sbi: CS_PERSONA_SBI,
-          name: 'Green Farm',
+          name: 'Test Alder Carr Farm',
           organisationId: business.organisationId
         })
       ])
@@ -485,7 +485,7 @@ describe('POST /graphql with an identifier mapping', () => {
     expect(response.body.errors).toBeUndefined()
     const { customer, business } = response.body.data
     expect(customer.crn).toBe(REAL_CRN)
-    expect(customer.info.name.last).toBe('Carter')
+    expect(customer.info.name.last).toBe('Test-Lockwood')
     expect(customer.business.sbi).toBe(REAL_SBI)
     expect(customer.business.permissionGroups).toContainEqual({
       id: 'COUNTRYSIDE_STEWARDSHIP_APPLICATIONS',
@@ -493,7 +493,7 @@ describe('POST /graphql with an identifier mapping', () => {
     })
     expect(customer.businesses).toEqual([{ sbi: REAL_SBI }])
     expect(business.sbi).toBe(REAL_SBI)
-    expect(business.info.name).toBe('Green Farm')
+    expect(business.info.name).toBe('Test Alder Carr Farm')
     expect(business.customer.crn).toBe(REAL_CRN)
     expect(business.customers.map((c) => c.crn)).toContain(REAL_CRN)
   })
@@ -603,7 +603,7 @@ describe('POST /graphql with several sign-ins mapped to one persona', () => {
       expect(response.body.errors).toBeUndefined()
       const { customer } = response.body.data
       expect(customer.crn).toBe(crn)
-      expect(customer.info.name.last).toBe('Carter')
+      expect(customer.info.name.last).toBe('Test-Lockwood')
       expect(customer.business.sbi).toBe(REAL_SBI)
       expect(customer.business.permissionGroups).not.toHaveLength(0)
     }

@@ -1,0 +1,37 @@
+{
+  "crn": "9000000018",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Freddie",
+      "middle": null,
+      "last": "Test-Pemberton"
+    },
+    "phone": {
+      "mobile": "07700900318",
+      "landline": "01632960318"
+    },
+    "email": {
+      "address": "freddie.test-pemberton+9000000018@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "518 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "518",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200118",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000118"
+}

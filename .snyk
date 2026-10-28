@@ -9,4 +9,8 @@ ignore:
     - '@hapi/hapi > @hapi/subtext > *':
         reason: "Checked 2026-10-27 on @hapi/hapi@21.4.10: the regex fix (hapijs/content#38) only changes behaviour for Content-Type values that contain a line break, and for Content-Disposition parsing. The HTTP parser in Node rejects header values containing CR or LF and caps headers at 16 KB before Hapi sees them, and multipart payloads are disabled, so neither path is reachable (verified with raw-socket requests against the running stub). Fixed @hapi/content@6.0.3 was published 2026-10-21T16:25:10Z; the seven-day cooldown set by min-release-age in .npmrc ends 2026-10-28T16:25:10Z. Remove this ignore and run npm update @hapi/content when eligible."
         expires: '2026-10-29'
+  'SNYK-JS-QS-21755395':
+    - '@apollo/server > body-parser > qs':
+        reason: "Checked 2026-10-28 on @apollo/server@5.5.1: qs is reached only through body-parser's urlencoded parser, and body-parser is imported solely by Apollo Server's standalone/Express entry (dist/esm/standalone), which this stub never imports. The stub serves GraphQL through @as-integrations/hapi, which has no body-parser or qs dependency, so no request input ever reaches qs. Fixed qs@6.16.2 was published 2026-10-27T19:27:00Z; the seven-day cooldown set by min-release-age in .npmrc ends 2026-11-03T19:27:00Z. Remove this ignore and run npm update qs when eligible."
+        expires: '2026-11-04'
 patch: {}

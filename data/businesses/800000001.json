@@ -1,8 +1,8 @@
 {
   "sbi": "800000001",
-  "organisationId": "7400001",
+  "organisationId": "7420001",
   "info": {
-    "name": "Green Farm",
+    "name": "Test Alder Carr Farm",
     "reference": "0800000001",
     "email": {
       "address": "contact+800000001@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960301"
     },
     "address": {
-      "line1": "1 Test Lane",
+      "line1": "401 Test Lane",
       "line2": "Test Park",
       "line3": "Mockford",
       "line4": "Testshire",
@@ -22,12 +22,12 @@
       "postalCode": "ZZ30 1ZZ",
       "uprn": "900000300001",
       "buildingName": null,
-      "buildingNumberRange": "1",
+      "buildingNumberRange": "401",
       "county": "Testshire",
       "dependentLocality": null,
       "doubleDependentLocality": null,
       "flatName": null,
-      "pafOrganisationName": "Green Farm"
+      "pafOrganisationName": "Test Alder Carr Farm"
     },
     "vat": "GB800000001",
     "legalStatus": {
@@ -99,8 +99,8 @@
   },
   "agreements": [
     {
-      "contractId": "TestContractId111",
-      "name": "SFI123",
+      "contractId": "TEST-CONTRACT-001-1",
+      "name": "TEST-SFI-001-1",
       "status": "SIGNED",
       "contractType": "SFI Expanded Offer",
       "schemeYear": 2025,
@@ -125,8 +125,8 @@
       ]
     },
     {
-      "contractId": "TestContractId222",
-      "name": "SFI123",
+      "contractId": "TEST-CONTRACT-001-2",
+      "name": "TEST-SFI-001-2",
       "status": "SIGNED",
       "contractType": "SFI Expanded Offer",
       "schemeYear": 2025,

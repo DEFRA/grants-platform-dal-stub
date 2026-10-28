@@ -1,0 +1,37 @@
+{
+  "crn": "9000000007",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Leo",
+      "middle": null,
+      "last": "Test-Bramble"
+    },
+    "phone": {
+      "mobile": "07700900307",
+      "landline": "01632960307"
+    },
+    "email": {
+      "address": "leo.test-bramble+9000000007@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "507 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "507",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200107",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000107"
+}

@@ -131,13 +131,16 @@ Defined once in `src/data/synthetic-ranges.js` and enforced by the loader, by
 | Mobile   | `07700 900NNN`         | `07700900101` (Ofcom range reserved for fiction)       |
 | Landline | `01632 960NNN`         | `01632960101` (Ofcom range reserved for fiction)       |
 | Email    | `*@example.test`       | `alice.carter+9000000001@example.test`                 |
+| Surname  | `Test-` prefix         | `Test-Lockwood`                                        |
+| Business | starts with `Test`     | `Test Alder Carr Farm`, `Test Estates Ltd`             |
 
 Issued SBIs are 9 digits starting with `1`, and issued CRNs and FRNs are 10 digits starting
 `1`. Synthetic SBIs start `8` and CRNs `90`, well away from the issued blocks, and every block above is
 obviously sequential. The loader
 also rejects any 9- or 10-digit value elsewhere in a fixture that looks like an issued
 identifier, any `postalCode`, `mobile` or `landline` outside those ranges, any email address
-not at `example.test`, and any relationship permission group whose id or level is not in the DAL's
+not at `example.test`, any business name not starting with `Test`, any surname without the `Test-`
+prefix, and any relationship permission group whose id or level is not in the DAL's
 `permission-groups.json`, so a real address or a typo in a persona's permissions fails
 `npm run check:fixtures` rather than surfacing in a journey.
 
@@ -150,7 +153,8 @@ not at `example.test`, and any relationship permission group whose id or level i
 3. Use contact details from the table above: valid in format, so consumers' validation
    accepts them, but from ranges that are unallocated or reserved for fiction. The loader
    insists on them. Follow the existing fixtures for the rest (`Test Lane`, `Testshire`,
-   `9000000NNNNN` UPRNs). Never copy an address from another data set, however
+   `9000000NNNNN` UPRNs); business names start with `Test` and surnames with `Test-`, so
+   every name is visibly made up. Never copy an address from another data set, however
    anonymised it looks.
 4. Run `npm run check:fixtures && npm test`.
 5. If the persona should be able to sign in locally, add the same CRN, SBI and names to
@@ -161,7 +165,7 @@ not at `example.test`, and any relationship permission group whose id or level i
 
 Land parcel references (`sheetId`/`parcelId`) must match parcels seeded in the land service
 used alongside the stub for land journeys to work end to end. The fixtures use parcels from
-land-grants-api's `src/land-data/land_parcels/parcels.csv`, the file that seeds its local
+land-grants-api's `src/land-data/land_parcels/parcels.csv` and `test_parcels.csv`, the files that seed its local
 `land-grants-postgres-seeded` image, with `area` (hectares) taken from the same file, so
 they draw on the map and come back from the land service with covers and available actions.
 
@@ -170,13 +174,15 @@ they draw on the map and come back from the land service with covers and availab
 The data set is deliberately tiny: five customers across three businesses, every one of
 them obviously fake. Add more only when a scenario genuinely needs it.
 
-| CRN          | Name            | SBI                                                          | Permissions                                                             | Notes                                             |
-| ------------ | --------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------- |
-| `9000000001` | Alice Carter    | `800000001` Green Farm                                       | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 10 parcels |
-| `9000000002` | Benjamin Carter | `800000001`                                                  | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                   |
-| `9000000003` | Chloe Carter    | `800000001`                                                  | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                   |
-| `9000000004` | Daniel Carter   | `800000001`                                                  | No permission groups                                                    |                                                   |
-| `9000000005` | Nadia Khan      | `800000002` High Fell Farm, `800000003` Hope Valley Farm Ltd | Full on High Fell Farm, `VIEW` only on Hope Valley                      | Multi-business customer; neither has agreements   |
+| CRN          | Name                   | SBI                                                                      | Permissions                                                             | Notes                                             |
+| ------------ | ---------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| `9000000001` | Florence Test-Lockwood | `800000001` Test Alder Carr Farm                                         | Every group at its highest level (`BUSINESS_DETAILS` `FULL_PERMISSION`) | Happy path. Two signed SFI agreements, 10 parcels |
+| `9000000002` | Arthur Test-Lockwood   | `800000001`                                                              | CS applications and agreements `AMEND`, `BUSINESS_DETAILS` `AMEND`      |                                                   |
+| `9000000003` | Phoebe Test-Lockwood   | `800000001`                                                              | CS applications and agreements `VIEW`, `BUSINESS_DETAILS` `VIEW`        |                                                   |
+| `9000000004` | Hugo Test-Lockwood     | `800000001`                                                              | No permission groups                                                    |                                                   |
+| `9000000005` | Matilda Test-Stanhope  | `800000002` Test Bracken Edge Farm, `800000003` Test Clover Lea Farm Ltd | Full on Test Bracken Edge Farm, `VIEW` only on Clover Lea               | Multi-business customer; neither has agreements   |
+
+The personas `9000000006` to `9000000033` (businesses `800000004` to `800000024`) belong to the grants-ui acceptance suite. Each carries exactly the parcels, permission groups and agreements its scenarios depend on and nothing else. Scenarios on different grants share a persona, since application state, locks and audit events are keyed per grant; scenarios on the same grant never share an SBI, because each wipes its SBI's state for that grant and the suite runs in parallel. Treat them as owned by that suite and add new scenarios on new identifiers.
 
 ## Identifier mapping
 

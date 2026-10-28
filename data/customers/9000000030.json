@@ -1,0 +1,37 @@
+{
+  "crn": "9000000030",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Marisol",
+      "middle": null,
+      "last": "Test-Eastwood"
+    },
+    "phone": {
+      "mobile": "07700900330",
+      "landline": "01632960330"
+    },
+    "email": {
+      "address": "marisol.test-eastwood+9000000030@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "530 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "530",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200130",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000130"
+}
