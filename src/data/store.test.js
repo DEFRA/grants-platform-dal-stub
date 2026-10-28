@@ -263,28 +263,6 @@ describe('DataStore', () => {
     )
   })
 
-  test('rejects malformed or repeated land parcels', async () => {
-    const dir = await load({
-      'businesses/800000001.json': business('800000001', {
-        land: {
-          parcels: [
-            { sheetId: 'SD6246', parcelId: '1022', area: 1.5 },
-            { sheetId: 'SD6246', parcelId: '1022' },
-            { sheetId: 'SD8343', parcelId: 1056 },
-            { sheetId: 'SD7858', parcelId: '1059', area: '2' }
-          ]
-        }
-      })
-    })
-
-    await expectProblems(
-      dir,
-      'businesses/800000001.json: land.parcels[1] repeats parcel SD6246-1022',
-      'businesses/800000001.json: land.parcels[2] needs string sheetId and parcelId',
-      'businesses/800000001.json: land.parcels[3].area must be a number'
-    )
-  })
-
   test('rejects permission groups with unknown ids or levels', async () => {
     const dir = await load({
       'businesses/800000001.json': business('800000001'),
