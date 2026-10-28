@@ -1,0 +1,49 @@
+{
+  "sbi": "800000009",
+  "organisationId": "7410009",
+  "info": {
+    "name": "Test Fern Bank Farm",
+    "reference": "0800000009",
+    "email": {
+      "address": "contact+800000009@example.test"
+    },
+    "phone": {
+      "mobile": "07700900509",
+      "landline": "01632960509"
+    },
+    "address": {
+      "line1": "Test Fern Bank Farm House",
+      "line2": "Test Park",
+      "line3": null,
+      "line4": null,
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ9 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000009",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0009",
+      "charityCommission": "TC000009"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "NY1215",
+        "parcelId": "1016"
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

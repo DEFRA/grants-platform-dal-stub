@@ -1,0 +1,37 @@
+{
+  "crn": "9000000031",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Elsie",
+      "middle": "T",
+      "last": "Test-Bexley"
+    },
+    "phone": {
+      "mobile": "07700900331",
+      "landline": "01632960331"
+    },
+    "email": {
+      "address": "elsie.test-bexley+9000000031@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "131 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "131",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200131",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000131"
+}

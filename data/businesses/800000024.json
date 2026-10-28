@@ -1,0 +1,78 @@
+{
+  "sbi": "800000024",
+  "organisationId": "7410024",
+  "info": {
+    "name": "Test Upper Clough Farm",
+    "reference": "0800000024",
+    "email": {
+      "address": "contact+800000024@example.test"
+    },
+    "phone": {
+      "mobile": "07700900524",
+      "landline": "01632960524"
+    },
+    "address": {
+      "line1": "Test Upper Clough Farm House",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ24 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000024",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0024",
+      "charityCommission": "TC000024"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD7560",
+        "parcelId": "9193",
+        "area": 25.3874
+      },
+      {
+        "sheetId": "SD5848",
+        "parcelId": "9205",
+        "area": 169.8586
+      },
+      {
+        "sheetId": "SD5649",
+        "parcelId": "9215",
+        "area": 764.229
+      },
+      {
+        "sheetId": "SD6165",
+        "parcelId": "9218",
+        "area": 4.6223
+      },
+      {
+        "sheetId": "SD5763",
+        "parcelId": "9223",
+        "area": 90.3876
+      },
+      {
+        "sheetId": "NT9009",
+        "parcelId": "1023"
+      },
+      {
+        "sheetId": "NU1514",
+        "parcelId": "2607"
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

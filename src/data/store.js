@@ -4,13 +4,15 @@ import path from 'node:path'
 import permissionGroupsReference from './static/permission-groups.json' with { type: 'json' }
 
 import {
+  isSyntheticBusinessName,
   isSyntheticCrn,
   isSyntheticEmail,
   isSyntheticFrn,
   isSyntheticLandline,
   isSyntheticMobile,
   isSyntheticPostcode,
-  isSyntheticSbi
+  isSyntheticSbi,
+  isSyntheticSurname
 } from './synthetic-ranges.js'
 
 const COLLECTIONS = {
@@ -110,6 +112,11 @@ export class DataStore {
     for (const { name, doc } of docs) {
       const sbi = String(doc.sbi ?? '')
       const fileProblems = fixtureValueProblems(doc)
+      if (!isSyntheticBusinessName(doc.info?.name)) {
+        fileProblems.push(
+          `info.name "${doc.info?.name}" does not start with "Test"`
+        )
+      }
       const problem = keyProblem('sbi', sbi, name, isSyntheticSbi)
       if (problem) {
         fileProblems.push(problem)
@@ -128,6 +135,11 @@ export class DataStore {
     for (const { name, doc } of docs) {
       const crn = String(doc.crn ?? '')
       const fileProblems = fixtureValueProblems(doc)
+      if (!isSyntheticSurname(doc.info?.name?.last)) {
+        fileProblems.push(
+          `info.name.last "${doc.info?.name?.last}" does not start with "Test-"`
+        )
+      }
       const problem = keyProblem('crn', crn, name, isSyntheticCrn)
       if (problem) {
         fileProblems.push(problem)

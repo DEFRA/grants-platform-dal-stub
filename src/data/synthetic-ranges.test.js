@@ -6,6 +6,8 @@ import {
   isSyntheticMobile,
   isSyntheticPostcode,
   isSyntheticSbi,
+  isSyntheticSurname,
+  isSyntheticBusinessName,
   syntheticRanges
 } from './synthetic-ranges.js'
 
@@ -110,4 +112,32 @@ describe('synthetic identifier ranges', () => {
     expect(syntheticRanges.landline).toBeInstanceOf(RegExp)
     expect(syntheticRanges.emailDomain).toBe('@example.test')
   })
+})
+
+describe('synthetic names', () => {
+  test.each(['Test-Carter', 'Test-B'])('%s is a synthetic surname', (last) => {
+    expect(isSyntheticSurname(last)).toBe(true)
+  })
+
+  test.each(['Carter', 'Testerson', 'test-carter', '', undefined])(
+    '%s is not a synthetic surname',
+    (last) => {
+      expect(isSyntheticSurname(last)).toBe(false)
+    }
+  )
+
+  test.each([
+    'Test Green Farm',
+    'Test Hope Valley Farm Ltd',
+    'Test Estates Ltd'
+  ])('%s is a synthetic business name', (name) => {
+    expect(isSyntheticBusinessName(name)).toBe(true)
+  })
+
+  test.each(['Green Farm', 'Green Test Farm', 'Testerson Farm', '', undefined])(
+    '%s is not a synthetic business name',
+    (name) => {
+      expect(isSyntheticBusinessName(name)).toBe(false)
+    }
+  )
 })

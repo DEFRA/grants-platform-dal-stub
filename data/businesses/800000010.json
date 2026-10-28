@@ -1,0 +1,77 @@
+{
+  "sbi": "800000010",
+  "organisationId": "7410010",
+  "info": {
+    "name": "Test Gorse Hill Farm",
+    "reference": "0800000010",
+    "email": {
+      "address": "contact+800000010@example.test"
+    },
+    "phone": {
+      "mobile": "07700900510",
+      "landline": "01632960510"
+    },
+    "address": {
+      "pafOrganisationName": "Test Gorse Hill Farm Holdings",
+      "line1": "10 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "10",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ10 1ZZ",
+      "uprn": "900000200010",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    },
+    "vat": "GB800000010",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0010",
+      "charityCommission": "TC000010"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD7560",
+        "parcelId": "9193",
+        "area": 25.3874
+      },
+      {
+        "sheetId": "SD5848",
+        "parcelId": "9205",
+        "area": 169.8586
+      },
+      {
+        "sheetId": "SD5649",
+        "parcelId": "9215",
+        "area": 764.229
+      },
+      {
+        "sheetId": "SD6165",
+        "parcelId": "9218",
+        "area": 4.6223
+      },
+      {
+        "sheetId": "SD5763",
+        "parcelId": "9223",
+        "area": 90.3876
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

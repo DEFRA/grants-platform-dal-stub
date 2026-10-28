@@ -7,11 +7,14 @@ import { DataStore, DataStoreValidationError } from './store.js'
 const business = (sbi, extra = {}) => ({
   sbi,
   organisationId: '1',
-  info: { name: `Business ${sbi}` },
+  info: { name: `Test Business ${sbi}` },
   land: { parcels: [] },
   ...extra
 })
-const customer = (crn) => ({ crn, info: { name: { first: 'A', last: 'B' } } })
+const customer = (crn) => ({
+  crn,
+  info: { name: { first: 'A', last: 'Test-B' } }
+})
 const relationship = (sbi, crn, permissionGroups = []) => ({
   sbi,
   crn,
@@ -79,7 +82,9 @@ describe('DataStore', () => {
       customers: 1,
       relationships: 2
     })
-    expect(store.getBusiness('800000001').info.name).toBe('Business 800000001')
+    expect(store.getBusiness('800000001').info.name).toBe(
+      'Test Business 800000001'
+    )
     expect(store.getBusiness(800000001)).not.toBeNull()
     expect(store.getBusiness('800000009')).toBeNull()
     expect(store.getCustomer('9000000001').crn).toBe('9000000001')
@@ -174,7 +179,7 @@ describe('DataStore', () => {
   test('flags an issued-looking identifier anywhere in a document', async () => {
     const dir = await load({
       'businesses/800000001.json': business('800000001', {
-        info: { name: 'Farm 1100000001', reference: '1100000002' }
+        info: { name: 'Test Farm 1100000001', reference: '1100000002' }
       }),
       'customers/9000000001.json': {
         ...customer('9000000001'),
@@ -194,7 +199,7 @@ describe('DataStore', () => {
     const dir = await load({
       'businesses/800000001.json': business('800000001', {
         info: {
-          name: 'Business',
+          name: 'Test Business',
           reference: '0800000001',
           frn: '0800000001',
           phone: { mobile: '07700900301', landline: '01632960301' },
@@ -212,7 +217,7 @@ describe('DataStore', () => {
     const dir = await load({
       'businesses/800000001.json': business('800000001', {
         info: {
-          name: 'Business',
+          name: 'Test Business',
           email: { address: 'contact@realfarm.co.uk' },
           phone: { mobile: '07300000001', landline: '01300000001' },
           address: { postalCode: 'SK13 5CB' }
@@ -221,7 +226,7 @@ describe('DataStore', () => {
       'customers/9000000001.json': {
         ...customer('9000000001'),
         info: {
-          name: { first: 'A', last: 'B' },
+          name: { first: 'A', last: 'Test-B' },
           email: { address: 'a.b+9000000001@example.test' },
           phone: { mobile: '07700900101' },
           address: { postalCode: 'ZZ13 1ZZ' }
@@ -238,6 +243,24 @@ describe('DataStore', () => {
     )
     const error = await DataStore.load(dir).catch((err) => err)
     expect(error.problems.filter((p) => p.startsWith('customers/'))).toEqual([])
+  })
+
+  test('rejects business names and surnames without the synthetic markers', async () => {
+    const dir = await load({
+      'businesses/800000001.json': business('800000001', {
+        info: { name: 'Green Farm' }
+      }),
+      'customers/9000000001.json': {
+        ...customer('9000000001'),
+        info: { name: { first: 'Alice', last: 'Carter' } }
+      }
+    })
+
+    await expectProblems(
+      dir,
+      'businesses/800000001.json: info.name "Green Farm" does not start with "Test"',
+      'customers/9000000001.json: info.name.last "Carter" does not start with "Test-"'
+    )
   })
 
   test('rejects permission groups with unknown ids or levels', async () => {

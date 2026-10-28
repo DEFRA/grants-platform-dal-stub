@@ -1,0 +1,37 @@
+{
+  "crn": "9000000012",
+  "info": {
+    "name": {
+      "title": "Mrs",
+      "first": "Noah",
+      "middle": null,
+      "last": "Test-Greystoke"
+    },
+    "phone": {
+      "mobile": "07700900312",
+      "landline": "01632960312"
+    },
+    "email": {
+      "address": "noah.test-greystoke+9000000012@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "112 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "112",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200112",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000112"
+}

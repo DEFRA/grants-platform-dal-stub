@@ -1,0 +1,70 @@
+{
+  "sbi": "800000023",
+  "organisationId": "7410023",
+  "info": {
+    "name": "Test Thistle Top Farm",
+    "reference": "0800000023",
+    "email": {
+      "address": "contact+800000023@example.test"
+    },
+    "phone": {
+      "mobile": "07700900523",
+      "landline": "01632960523"
+    },
+    "address": {
+      "line1": "Test Thistle Top Farm House",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ23 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000023",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0023",
+      "charityCommission": "TC000023"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD5349",
+        "parcelId": "3815",
+        "area": 6.3614
+      },
+      {
+        "sheetId": "SD6050",
+        "parcelId": "3851",
+        "area": 2.0376
+      },
+      {
+        "sheetId": "SD8042",
+        "parcelId": "3851",
+        "area": 5.3273
+      },
+      {
+        "sheetId": "SD6759",
+        "parcelId": "3857",
+        "area": 63.4202
+      },
+      {
+        "sheetId": "SD6159",
+        "parcelId": "3880",
+        "area": 652.0514
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

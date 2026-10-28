@@ -2,7 +2,7 @@
   "sbi": "800000002",
   "organisationId": "7400100",
   "info": {
-    "name": "High Fell Farm",
+    "name": "Test High Fell Farm",
     "reference": "0800000002",
     "email": {
       "address": "contact+800000002@example.test"
@@ -27,7 +27,7 @@
       "dependentLocality": null,
       "doubleDependentLocality": null,
       "flatName": null,
-      "pafOrganisationName": "High Fell Farm"
+      "pafOrganisationName": "Test High Fell Farm"
     },
     "vat": "GB800000002",
     "legalStatus": {

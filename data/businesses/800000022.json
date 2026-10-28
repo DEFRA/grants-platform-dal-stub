@@ -1,0 +1,194 @@
+{
+  "sbi": "800000022",
+  "organisationId": "7410022",
+  "info": {
+    "name": "Test Sycamore Fell Farm",
+    "reference": "0800000022",
+    "email": {
+      "address": "contact+800000022@example.test"
+    },
+    "phone": {
+      "mobile": "07700900522",
+      "landline": "01632960522"
+    },
+    "address": {
+      "pafOrganisationName": "Test Sycamore Fell Farm Holdings",
+      "line1": "22 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "22",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ22 1ZZ",
+      "uprn": "900000200022",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    },
+    "vat": "GB800000022",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0022",
+      "charityCommission": "TC000022"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6352",
+        "parcelId": "1073",
+        "area": 13.7223
+      },
+      {
+        "sheetId": "SD6246",
+        "parcelId": "1081",
+        "area": 86.9463
+      },
+      {
+        "sheetId": "SD7448",
+        "parcelId": "1081",
+        "area": 83.3218
+      },
+      {
+        "sheetId": "SD5656",
+        "parcelId": "1085",
+        "area": 58.8804
+      },
+      {
+        "sheetId": "SD8744",
+        "parcelId": "1090",
+        "area": 7.9778
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": [
+    {
+      "contractId": "TestContractId333",
+      "name": "SFI123",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2028-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "BND1",
+          "optionDescription": "Boundary maintenance",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD6352",
+          "parcelName": "1073",
+          "actionArea": null,
+          "actionMTL": 100,
+          "actionUnits": null,
+          "parcelTotalArea": 13.7223,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2028-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "BN12",
+          "optionDescription": "Stone wall restoration",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD6352",
+          "parcelName": "1073",
+          "actionArea": null,
+          "actionMTL": 120,
+          "actionUnits": null,
+          "parcelTotalArea": 13.7223,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2027-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "PA1",
+          "optionDescription": "Implementation plan",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD6246",
+          "parcelName": "1081",
+          "actionArea": null,
+          "actionMTL": null,
+          "actionUnits": 1,
+          "parcelTotalArea": 86.9463,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2028-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "FG12",
+          "optionDescription": "Wooden field gate",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD6246",
+          "parcelName": "1081",
+          "actionArea": null,
+          "actionMTL": null,
+          "actionUnits": 1,
+          "parcelTotalArea": 86.9463,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2027-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "UPL1",
+          "optionDescription": "Moderate livestock grazing on moorland",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5656",
+          "parcelName": "1085",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 58.8804,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "OFM3",
+          "optionDescription": "Management of field margins",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5656",
+          "parcelName": "1085",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 58.8804,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "SP1",
+          "optionDescription": "Sheep grazing on pasture",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5656",
+          "parcelName": "1085",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 58.8804,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        }
+      ]
+    }
+  ]
+}

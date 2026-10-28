@@ -1,0 +1,72 @@
+{
+  "sbi": "800000005",
+  "organisationId": "7410005",
+  "info": {
+    "name": "Test Birchwood Farm",
+    "reference": "0800000005",
+    "email": {
+      "address": "contact+800000005@example.test"
+    },
+    "phone": {
+      "mobile": "07700900505",
+      "landline": "01632960505"
+    },
+    "address": {
+      "pafOrganisationName": "Test Birchwood Farm Holdings",
+      "line1": "5 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "5",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ5 1ZZ",
+      "uprn": "900000200005",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    },
+    "vat": "GB800000005",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0005",
+      "charityCommission": "TC000005"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "NZ6300",
+        "parcelId": "8335"
+      },
+      {
+        "sheetId": "NZ6300",
+        "parcelId": "3650"
+      },
+      {
+        "sheetId": "NZ6200",
+        "parcelId": "9573"
+      },
+      {
+        "sheetId": "NZ6501",
+        "parcelId": "9836"
+      },
+      {
+        "sheetId": "NZ6501",
+        "parcelId": "8980"
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

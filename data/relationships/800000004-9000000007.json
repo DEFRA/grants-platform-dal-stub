@@ -1,0 +1,17 @@
+{
+  "sbi": "800000004",
+  "crn": "9000000007",
+  "role": "Business Partner",
+  "permissionGroups": [
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_APPLICATIONS",
+      "level": "AMEND",
+      "functions": ["Amend CS Application"]
+    },
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_AGREEMENTS",
+      "level": "AMEND",
+      "functions": ["Create and edit a CS claim", "View CS Claims"]
+    }
+  ]
+}

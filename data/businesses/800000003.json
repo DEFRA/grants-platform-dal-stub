@@ -2,7 +2,7 @@
   "sbi": "800000003",
   "organisationId": "7400099",
   "info": {
-    "name": "Hope Valley Farm Ltd",
+    "name": "Test Hope Valley Farm Ltd",
     "reference": "0800000003",
     "email": {
       "address": "contact+800000003@example.test"
@@ -27,7 +27,7 @@
       "dependentLocality": null,
       "doubleDependentLocality": null,
       "flatName": null,
-      "pafOrganisationName": "Hope Valley Farm Ltd"
+      "pafOrganisationName": "Test Hope Valley Farm Ltd"
     },
     "vat": "GB800000003",
     "legalStatus": {

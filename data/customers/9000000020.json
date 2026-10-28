@@ -1,0 +1,37 @@
+{
+  "crn": "9000000020",
+  "info": {
+    "name": {
+      "title": "Mrs",
+      "first": "Arthur",
+      "middle": null,
+      "last": "Test-Oakhurst"
+    },
+    "phone": {
+      "mobile": "07700900320",
+      "landline": "01632960320"
+    },
+    "email": {
+      "address": "arthur.test-oakhurst+9000000020@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "120 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "120",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200120",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000120"
+}

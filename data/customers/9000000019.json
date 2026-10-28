@@ -1,0 +1,37 @@
+{
+  "crn": "9000000019",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Lily",
+      "middle": null,
+      "last": "Test-Northcote"
+    },
+    "phone": {
+      "mobile": "07700900319",
+      "landline": "01632960319"
+    },
+    "email": {
+      "address": "lily.test-northcote+9000000019@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "119 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "119",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200119",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000119"
+}

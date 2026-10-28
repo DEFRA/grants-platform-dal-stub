@@ -1,0 +1,37 @@
+{
+  "crn": "9000000008",
+  "info": {
+    "name": {
+      "title": "Mrs",
+      "first": "George",
+      "middle": null,
+      "last": "Test-Cartwright"
+    },
+    "phone": {
+      "mobile": "07700900308",
+      "landline": "01632960308"
+    },
+    "email": {
+      "address": "george.test-cartwright+9000000008@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "108 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "108",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200108",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000108"
+}

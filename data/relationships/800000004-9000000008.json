@@ -1,0 +1,17 @@
+{
+  "sbi": "800000004",
+  "crn": "9000000008",
+  "role": "Business Partner",
+  "permissionGroups": [
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_APPLICATIONS",
+      "level": "VIEW",
+      "functions": ["View CS Application"]
+    },
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_AGREEMENTS",
+      "level": "VIEW",
+      "functions": ["View CS Claims"]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "crn": "9000000010",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Harry",
+      "middle": null,
+      "last": "Test-Elderfield"
+    },
+    "phone": {
+      "mobile": "07700900310",
+      "landline": "01632960310"
+    },
+    "email": {
+      "address": "harry.test-elderfield+9000000010@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "110 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "110",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200110",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000110"
+}

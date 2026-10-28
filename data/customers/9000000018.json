@@ -1,0 +1,37 @@
+{
+  "crn": "9000000018",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Oscar",
+      "middle": null,
+      "last": "Test-Marsden"
+    },
+    "phone": {
+      "mobile": "07700900318",
+      "landline": "01632960318"
+    },
+    "email": {
+      "address": "oscar.test-marsden+9000000018@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "118 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "118",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200118",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000118"
+}

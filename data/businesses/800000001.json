@@ -2,7 +2,7 @@
   "sbi": "800000001",
   "organisationId": "7400001",
   "info": {
-    "name": "Green Farm",
+    "name": "Test Green Farm",
     "reference": "0800000001",
     "email": {
       "address": "contact+800000001@example.test"
@@ -27,7 +27,7 @@
       "dependentLocality": null,
       "doubleDependentLocality": null,
       "flatName": null,
-      "pafOrganisationName": "Green Farm"
+      "pafOrganisationName": "Test Green Farm"
     },
     "vat": "GB800000001",
     "legalStatus": {

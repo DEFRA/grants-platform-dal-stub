@@ -1,0 +1,37 @@
+{
+  "crn": "9000000016",
+  "info": {
+    "name": {
+      "title": "Mrs",
+      "first": "Leo",
+      "middle": null,
+      "last": "Test-Kestrel"
+    },
+    "phone": {
+      "mobile": "07700900316",
+      "landline": "01632960316"
+    },
+    "email": {
+      "address": "leo.test-kestrel+9000000016@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "116 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "116",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200116",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000116"
+}

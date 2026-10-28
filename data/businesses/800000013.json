@@ -1,0 +1,64 @@
+{
+  "sbi": "800000013",
+  "organisationId": "7410013",
+  "info": {
+    "name": "Test Juniper Fold Farm",
+    "reference": "0800000013",
+    "email": {
+      "address": "contact+800000013@example.test"
+    },
+    "phone": {
+      "mobile": "07700900513",
+      "landline": "01632960513"
+    },
+    "address": {
+      "line1": "Test Juniper Fold Farm House",
+      "line2": "Test Park",
+      "line3": null,
+      "line4": null,
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ13 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000013",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0013",
+      "charityCommission": "TC000013"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6351",
+        "parcelId": "8781",
+        "area": 68.0498
+      },
+      {
+        "sheetId": "SD6352",
+        "parcelId": "8774",
+        "area": 11.1006
+      },
+      {
+        "sheetId": "SD6252",
+        "parcelId": "7537",
+        "area": 0.3361
+      }
+    ]
+  },
+  "countyParishHoldings": [
+    {
+      "cphNumber": "99/902/0013"
+    }
+  ],
+  "agreements": []
+}

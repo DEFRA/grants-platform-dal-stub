@@ -1,0 +1,37 @@
+{
+  "crn": "9000000030",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Finley",
+      "middle": null,
+      "last": "Test-Abbot"
+    },
+    "phone": {
+      "mobile": "07700900330",
+      "landline": "01632960330"
+    },
+    "email": {
+      "address": "finley.test-abbot+9000000030@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "130 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "130",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200130",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000130"
+}

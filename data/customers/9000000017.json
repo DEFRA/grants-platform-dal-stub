@@ -1,0 +1,37 @@
+{
+  "crn": "9000000017",
+  "info": {
+    "name": {
+      "title": "Dr",
+      "first": "Freya",
+      "middle": "T",
+      "last": "Test-Lockwood"
+    },
+    "phone": {
+      "mobile": "07700900317",
+      "landline": "01632960317"
+    },
+    "email": {
+      "address": "freya.test-lockwood+9000000017@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "117 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "117",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200117",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000117"
+}
