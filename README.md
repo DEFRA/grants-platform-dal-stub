@@ -184,6 +184,8 @@ them obviously fake. Add more only when a scenario genuinely needs it.
 
 The personas `9000000006` to `9000000036` (businesses `800000004` to `800000027`), except `9000000034`, belong to the grants-ui acceptance suite. Each carries exactly the parcels, permission groups and agreements its scenarios depend on and nothing else. Scenarios on different grants share a persona, since application state, locks and audit events are keyed per grant; scenarios on the same grant never share an SBI, because each wipes its SBI's state for that grant and the suite runs in parallel. Treat them as owned by that suite and add new scenarios on new identifiers.
 
+The persona `9000000034` (business `800000025`) holds five parcels and five agreements.
+
 ## Identifier mapping
 
 Some environments sign users in with a Defra ID instance whose CRNs and SBIs are not in these
