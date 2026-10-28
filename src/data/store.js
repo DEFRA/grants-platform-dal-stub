@@ -308,7 +308,6 @@ function identifierRunProblems(text, where) {
   return problems
 }
 
-
 function permissionGroupProblems(groups) {
   if (!Array.isArray(groups)) {
     return ['permissionGroups must be an array']
