@@ -1,0 +1,269 @@
+{
+  "sbi": "800000027",
+  "organisationId": "7410027",
+  "info": {
+    "name": "Test Foxglove Farm",
+    "reference": "0800000027",
+    "email": {
+      "address": "contact+800000027@example.test"
+    },
+    "phone": {
+      "mobile": "07700900527",
+      "landline": "01632960527"
+    },
+    "address": {
+      "pafOrganisationName": "Test Foxglove Farm Holdings",
+      "line1": "427 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "427",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ27 1ZZ",
+      "uprn": "900000200027",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD8545",
+        "parcelId": "9859",
+        "area": 1.8859
+      },
+      {
+        "sheetId": "SD8545",
+        "parcelId": "7357",
+        "area": 11.5277
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "2464",
+        "area": 3.6174
+      },
+      {
+        "sheetId": "SD8545",
+        "parcelId": "9173",
+        "area": 2.0341
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "1169",
+        "area": 1.1966
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4688",
+        "area": 2.5875
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "3297",
+        "area": 2.8555
+      },
+      {
+        "sheetId": "SD8646",
+        "parcelId": "2016",
+        "area": 6.243
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4877",
+        "area": 0.1472
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "5697",
+        "area": 0.3539
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4874",
+        "area": 0.2269
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4172",
+        "area": 0.5003
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4597",
+        "area": 0.2423
+      },
+      {
+        "sheetId": "SD8545",
+        "parcelId": "8581",
+        "area": 0.6044
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4037",
+        "area": 3.0394
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "0131",
+        "area": 0.3473
+      },
+      {
+        "sheetId": "SD8545",
+        "parcelId": "9389",
+        "area": 4.3174
+      },
+      {
+        "sheetId": "SD8646",
+        "parcelId": "0304",
+        "area": 4.7156
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "1620",
+        "area": 8.5743
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "3471",
+        "area": 0.0899
+      },
+      {
+        "sheetId": "SD8545",
+        "parcelId": "7787",
+        "area": 1.4125
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "2311",
+        "area": 0.0346
+      },
+      {
+        "sheetId": "SD8646",
+        "parcelId": "2003",
+        "area": 0.4593
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "1690",
+        "area": 2.4212
+      },
+      {
+        "sheetId": "SD8546",
+        "parcelId": "8423",
+        "area": 4.8889
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "0786",
+        "area": 0.2481
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "0226",
+        "area": 0.0602
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "3465",
+        "area": 4.4426
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "1359",
+        "area": 0.0445
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "5683",
+        "area": 1.1909
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "0948",
+        "area": 5.1965
+      },
+      {
+        "sheetId": "SD8646",
+        "parcelId": "0123",
+        "area": 2.8565
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4573",
+        "area": 0.0725
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "0030",
+        "area": 0.0988
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "0412",
+        "area": 0.0682
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "1202",
+        "area": 0.0492
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "3547",
+        "area": 2.5634
+      },
+      {
+        "sheetId": "SD8545",
+        "parcelId": "9935",
+        "area": 0.0321
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4781",
+        "area": 0.1287
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "0475",
+        "area": 1.2785
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "3620",
+        "area": 0.0379
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "3684",
+        "area": 0.0393
+      },
+      {
+        "sheetId": "SD8646",
+        "parcelId": "4406",
+        "area": 2.0963
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4278",
+        "area": 0.2156
+      },
+      {
+        "sheetId": "SD8645",
+        "parcelId": "4280",
+        "area": 0.0643
+      },
+      {
+        "sheetId": "SD8643",
+        "parcelId": "5887",
+        "area": 9.588
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

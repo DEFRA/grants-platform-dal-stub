@@ -2,8 +2,8 @@ import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled'
 import hapiApolloModule from '@as-integrations/hapi'
 
-import { loadTypeDefs } from '#/graphql/schema.js'
-import { resolvers } from '#/graphql/resolvers/index.js'
+import { loadTypeDefs } from '../graphql/schema.js'
+import { resolvers } from '../graphql/resolvers/index.js'
 
 // CommonJS package: under Node the default import is the module object whose
 // `default` property is the plugin; under vitest's interop it is already the plugin.

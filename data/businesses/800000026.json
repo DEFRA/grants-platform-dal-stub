@@ -1,0 +1,64 @@
+{
+  "sbi": "800000026",
+  "organisationId": "7410026",
+  "info": {
+    "name": "Test Heather Ling Farm",
+    "reference": "0800000026",
+    "email": {
+      "address": "contact+800000026@example.test"
+    },
+    "phone": {
+      "mobile": "07700900526",
+      "landline": "01632960526"
+    },
+    "address": {
+      "pafOrganisationName": "Test Heather Ling Farm Holdings",
+      "line1": "426 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "426",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ26 1ZZ",
+      "uprn": "900000200026",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "NT8109",
+        "parcelId": "6898",
+        "area": 0.0795
+      },
+      {
+        "sheetId": "NT9009",
+        "parcelId": "1023",
+        "area": 2.0852
+      },
+      {
+        "sheetId": "NT8701",
+        "parcelId": "9412",
+        "area": 52.8839
+      },
+      {
+        "sheetId": "NU0002",
+        "parcelId": "1755",
+        "area": 1.761
+      },
+      {
+        "sheetId": "NT8506",
+        "parcelId": "8111",
+        "area": 0.7341
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

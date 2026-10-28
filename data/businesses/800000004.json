@@ -30,17 +30,9 @@
       "doubleDependentLocality": null
     },
     "vat": "GB800000004",
-    "legalStatus": {
-      "code": 102111,
-      "type": "Sole Proprietorship"
-    },
     "type": {
       "code": 101443,
       "type": "Farmer"
-    },
-    "registrationNumbers": {
-      "companiesHouse": "TEST0004",
-      "charityCommission": "TC000004"
     }
   },
   "land": {

@@ -21,19 +21,6 @@
       "city": "Mockford",
       "postalCode": "ZZ23 2ZZ",
       "uprn": null
-    },
-    "vat": "GB800000023",
-    "legalStatus": {
-      "code": 102111,
-      "type": "Sole Proprietorship"
-    },
-    "type": {
-      "code": 101443,
-      "type": "Farmer"
-    },
-    "registrationNumbers": {
-      "companiesHouse": "TEST0023",
-      "charityCommission": "TC000023"
     }
   },
   "land": {

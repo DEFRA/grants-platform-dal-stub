@@ -28,19 +28,6 @@
       "uprn": "900000200005",
       "dependentLocality": null,
       "doubleDependentLocality": null
-    },
-    "vat": "GB800000005",
-    "legalStatus": {
-      "code": 102111,
-      "type": "Sole Proprietorship"
-    },
-    "type": {
-      "code": 101443,
-      "type": "Farmer"
-    },
-    "registrationNumbers": {
-      "companiesHouse": "TEST0005",
-      "charityCommission": "TC000005"
     }
   },
   "land": {

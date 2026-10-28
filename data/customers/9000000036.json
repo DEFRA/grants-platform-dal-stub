@@ -1,0 +1,37 @@
+{
+  "crn": "9000000036",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Quentin",
+      "middle": null,
+      "last": "Test-Jessop"
+    },
+    "phone": {
+      "mobile": "07700900336",
+      "landline": "01632960336"
+    },
+    "email": {
+      "address": "quentin.test-jessop+9000000036@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "536 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "536",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200136",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000136"
+}

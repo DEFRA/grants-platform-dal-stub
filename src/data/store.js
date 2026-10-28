@@ -112,6 +112,7 @@ export class DataStore {
     for (const { name, doc } of docs) {
       const sbi = String(doc.sbi ?? '')
       const fileProblems = fixtureValueProblems(doc)
+
       if (!isSyntheticBusinessName(doc.info?.name)) {
         fileProblems.push(
           `info.name "${doc.info?.name}" does not start with "Test"`

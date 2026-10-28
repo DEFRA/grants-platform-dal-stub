@@ -1,0 +1,351 @@
+{
+  "sbi": "800000025",
+  "organisationId": "7410025",
+  "info": {
+    "name": "Test Business 025",
+    "reference": "0800000025",
+    "email": {
+      "address": "contact+800000025@example.test"
+    },
+    "phone": {
+      "mobile": "07700900525",
+      "landline": "01632960525"
+    },
+    "address": {
+      "line1": "525 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "postalCode": "ZZ25 2ZZ",
+      "uprn": null
+    },
+    "vat": "GB800000025",
+    "legalStatus": {
+      "code": 102111,
+      "type": "Sole Proprietorship"
+    },
+    "type": {
+      "code": 101443,
+      "type": "Farmer"
+    },
+    "registrationNumbers": {
+      "companiesHouse": "TEST0025",
+      "charityCommission": "TC000025"
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD5551",
+        "parcelId": "1107",
+        "area": 21.5106
+      },
+      {
+        "sheetId": "SD8566",
+        "parcelId": "1235",
+        "area": 67.6582
+      },
+      {
+        "sheetId": "SD5852",
+        "parcelId": "1436",
+        "area": 177.2427
+      },
+      {
+        "sheetId": "SD8241",
+        "parcelId": "1599",
+        "area": 5.9224
+      },
+      {
+        "sheetId": "SD6765",
+        "parcelId": "1649",
+        "area": 11.2391
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": [
+    {
+      "contractId": "TEST-CONTRACT-025-1",
+      "name": "TEST-SFI-025-1",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2028-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "MOR1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5551",
+          "parcelName": "1107",
+          "actionArea": 11.5106,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 21.5106,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "UP1",
+          "optionDescription": "Upland pasture management",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5551",
+          "parcelName": "1107",
+          "actionArea": 11.5106,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 21.5106,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "BND1",
+          "optionDescription": "Boundary maintenance",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5551",
+          "parcelName": "1107",
+          "actionArea": null,
+          "actionMTL": 50,
+          "actionUnits": null,
+          "parcelTotalArea": 21.5106,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "FG12",
+          "optionDescription": "Wooden field gate",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5551",
+          "parcelName": "1107",
+          "actionArea": null,
+          "actionMTL": null,
+          "actionUnits": 1,
+          "parcelTotalArea": 21.5106,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2027-02-27T13:54:20.492Z"
+        }
+      ]
+    },
+    {
+      "contractId": "TEST-CONTRACT-025-2",
+      "name": "TEST-SFI-025-2",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2028-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "CMOR1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8566",
+          "parcelName": "1235",
+          "actionArea": 27.6582,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 67.6582,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "HEF5",
+          "optionDescription": "Hedgerow management",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8566",
+          "parcelName": "1235",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 67.6582,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "HEF6",
+          "optionDescription": "Hedgerow management",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8566",
+          "parcelName": "1235",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 67.6582,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2026-07-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "HEF8",
+          "optionDescription": "Hedgerow management",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8566",
+          "parcelName": "1235",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 67.6582,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2026-07-27T13:54:20.492Z"
+        }
+      ]
+    },
+    {
+      "contractId": "TEST-CONTRACT-025-3",
+      "name": "TEST-SFI-025-3",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2028-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "UPL1",
+          "optionDescription": "Moderate livestock grazing on moorland",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5852",
+          "parcelName": "1436",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 177.2427,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2026-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "OFM3",
+          "optionDescription": "Management of field margins",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5852",
+          "parcelName": "1436",
+          "actionArea": 20,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 177.2427,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2026-06-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "SP1",
+          "optionDescription": "Sheep grazing on pasture",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5852",
+          "parcelName": "1436",
+          "actionArea": 30,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 177.2427,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2026-05-27T13:54:20.492Z"
+        }
+      ]
+    },
+    {
+      "contractId": "TEST-CONTRACT-025-4",
+      "name": "TEST-SFI-025-4",
+      "status": "IN_PROGRESS",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2028-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "CMOR1",
+          "optionDescription": "Assess moorland and produce a written record",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8241",
+          "parcelName": "1599",
+          "actionArea": 5.9224,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 5.9224,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "UPL1",
+          "optionDescription": "Moderate livestock grazing on moorland",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8241",
+          "parcelName": "1599",
+          "actionArea": 5.9224,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 5.9224,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-06-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "OFM3",
+          "optionDescription": "Management of field margins",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD8241",
+          "parcelName": "1599",
+          "actionArea": 5.9224,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 5.9224,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2029-05-27T13:54:20.492Z"
+        }
+      ]
+    },
+    {
+      "contractId": "TEST-CONTRACT-025-5",
+      "name": "TEST-SFI-025-5",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2026-08-28T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "CSAM3",
+          "optionDescription": "Herbal Leys",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2026-08-28T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD6765",
+          "parcelName": "1649",
+          "actionArea": 10,
+          "actionMTL": null,
+          "actionUnits": null,
+          "parcelTotalArea": 11.2391,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2026-08-28T13:54:20.492Z"
+        }
+      ]
+    }
+  ]
+}

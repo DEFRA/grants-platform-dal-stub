@@ -1,6 +1,7 @@
 import { ecsFormat } from '@elastic/ecs-pino-format'
 import { stdSerializers } from 'pino'
-import { config } from '#/config.js'
+import pretty from 'pino-pretty'
+import { config } from '../config.js'
 import { getTraceId } from '@defra/hapi-tracing'
 
 const logConfig = config.get('log')
@@ -14,8 +15,13 @@ const formatters = {
       serviceName
     })
   },
-  'pino-pretty': { transport: { target: 'pino-pretty' } }
+  'pino-pretty': {}
 }
+
+// pino's transport runs pino-pretty in a worker thread, which node --watch breaks
+// by posting its own messages to the worker; pretty-print in-process instead.
+export const loggerStream =
+  logConfig.format === 'pino-pretty' ? pretty() : process.stdout
 
 export const loggerOptions = {
   enabled: logConfig.isEnabled,

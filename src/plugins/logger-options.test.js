@@ -100,6 +100,25 @@ describe('production log redaction', () => {
     expect(output).not.toContain('DEFRA-ID-JWT')
   })
 
+  test('pretty printing runs in-process so node --watch cannot break a worker transport', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    vi.resetModules()
+    const { loggerOptions, loggerStream } =
+      await import('#/plugins/logger-options.js')
+
+    expect(loggerOptions.transport).toBeUndefined()
+    expect(loggerStream).not.toBe(process.stdout)
+    expect(typeof loggerStream.write).toBe('function')
+  })
+
+  test('production logs straight to stdout', async () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    vi.resetModules()
+    const { loggerStream } = await import('#/plugins/logger-options.js')
+
+    expect(loggerStream).toBe(process.stdout)
+  })
+
   test('outside production the whole request and response are dropped', async () => {
     vi.stubEnv('NODE_ENV', 'development')
     vi.resetModules()
