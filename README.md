@@ -182,7 +182,7 @@ them obviously fake. Add more only when a scenario genuinely needs it.
 | `9000000004` | Hugo Test-Lockwood     | `800000001`                                                              | No permission groups                                                    |                                                   |
 | `9000000005` | Matilda Test-Stanhope  | `800000002` Test Bracken Edge Farm, `800000003` Test Clover Lea Farm Ltd | Full on Test Bracken Edge Farm, `VIEW` only on Clover Lea               | Multi-business customer; neither has agreements   |
 
-The personas `9000000006` to `9000000033` (businesses `800000004` to `800000024`) belong to the grants-ui acceptance suite. Each carries exactly the parcels, permission groups and agreements its scenarios depend on and nothing else. Scenarios on different grants share a persona, since application state, locks and audit events are keyed per grant; scenarios on the same grant never share an SBI, because each wipes its SBI's state for that grant and the suite runs in parallel. Treat them as owned by that suite and add new scenarios on new identifiers.
+The personas `9000000006` to `9000000036` (businesses `800000004` to `800000027`), except `9000000034`, belong to the grants-ui acceptance suite. Each carries exactly the parcels, permission groups and agreements its scenarios depend on and nothing else. Scenarios on different grants share a persona, since application state, locks and audit events are keyed per grant; scenarios on the same grant never share an SBI, because each wipes its SBI's state for that grant and the suite runs in parallel. Treat them as owned by that suite and add new scenarios on new identifiers.
 
 ## Identifier mapping
 
@@ -282,7 +282,7 @@ The following attribution statement MUST be cited in your products and applicati
 
 ### About the licence
 
-The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable
+The Open Government Licence (OGL) was developed by the Controller of His Majesty's Stationery Office (HMSO) to enable
 information providers in the public sector to license the use and re-use of their information under a common open
 licence.
 

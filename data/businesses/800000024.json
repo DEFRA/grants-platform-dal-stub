@@ -2,7 +2,7 @@
   "sbi": "800000024",
   "organisationId": "7410024",
   "info": {
-    "name": "Test Alder Carr Farm",
+    "name": "Test Elder Gill Farm",
     "reference": "0800000024",
     "email": {
       "address": "contact+800000024@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960524"
     },
     "address": {
-      "line1": "Test Alder Carr Farm House",
+      "line1": "Test Elder Gill Farm House",
       "line2": "Test Park",
       "line3": "Mockford",
       "line4": "Testshire",
@@ -21,19 +21,6 @@
       "city": "Mockford",
       "postalCode": "ZZ24 2ZZ",
       "uprn": null
-    },
-    "vat": "GB800000024",
-    "legalStatus": {
-      "code": 102111,
-      "type": "Sole Proprietorship"
-    },
-    "type": {
-      "code": 101443,
-      "type": "Farmer"
-    },
-    "registrationNumbers": {
-      "companiesHouse": "TEST0024",
-      "charityCommission": "TC000024"
     }
   },
   "land": {

@@ -111,7 +111,10 @@ export class DataStore {
     )
     for (const { name, doc } of docs) {
       const sbi = String(doc.sbi ?? '')
-      const fileProblems = fixtureValueProblems(doc)
+      const fileProblems = [
+        ...fixtureValueProblems(doc),
+        ...parcelProblems(doc.land?.parcels)
+      ]
       if (!isSyntheticBusinessName(doc.info?.name)) {
         fileProblems.push(
           `info.name "${doc.info?.name}" does not start with "Test"`
@@ -305,6 +308,38 @@ function identifierRunProblems(text, where) {
     }
   }
   return problems
+}
+
+// Parcels are optional, but each needs its reference, and a business lists a
+// parcel once. Different businesses may share a parcel: the acceptance suite
+// gives scenarios on the same grant distinct businesses with the same land.
+function parcelProblems(parcels) {
+  if (parcels === undefined) {
+    return []
+  }
+  if (!Array.isArray(parcels)) {
+    return ['land.parcels must be an array']
+  }
+  const seen = new Set()
+  return parcels.flatMap((parcel, index) => {
+    const where = `land.parcels[${index}]`
+    if (
+      typeof parcel?.sheetId !== 'string' ||
+      typeof parcel?.parcelId !== 'string'
+    ) {
+      return [`${where} needs string sheetId and parcelId`]
+    }
+    const problems = []
+    if (parcel.area !== undefined && typeof parcel.area !== 'number') {
+      problems.push(`${where}.area must be a number`)
+    }
+    const ref = `${parcel.sheetId}-${parcel.parcelId}`
+    if (seen.has(ref)) {
+      problems.push(`${where} repeats parcel ${ref}`)
+    }
+    seen.add(ref)
+    return problems
+  })
 }
 
 function permissionGroupProblems(groups) {

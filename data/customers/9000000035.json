@@ -1,0 +1,37 @@
+{
+  "crn": "9000000035",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Rafferty",
+      "middle": "T",
+      "last": "Test-Kirkby"
+    },
+    "phone": {
+      "mobile": "07700900335",
+      "landline": "01632960335"
+    },
+    "email": {
+      "address": "rafferty.test-kirkby+9000000035@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "535 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "535",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200135",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000135"
+}

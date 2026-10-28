@@ -21,19 +21,6 @@
       "city": "Mockford",
       "postalCode": "ZZ21 2ZZ",
       "uprn": null
-    },
-    "vat": "GB800000021",
-    "legalStatus": {
-      "code": 102111,
-      "type": "Sole Proprietorship"
-    },
-    "type": {
-      "code": 101443,
-      "type": "Farmer"
-    },
-    "registrationNumbers": {
-      "companiesHouse": "TEST0021",
-      "charityCommission": "TC000021"
     }
   },
   "land": {

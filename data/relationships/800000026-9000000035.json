@@ -1,0 +1,26 @@
+{
+  "sbi": "800000026",
+  "crn": "9000000035",
+  "role": "Business Partner",
+  "permissionGroups": [
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_APPLICATIONS",
+      "level": "SUBMIT",
+      "functions": ["Submit CS Application"]
+    },
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_AGREEMENTS",
+      "level": "SUBMIT",
+      "functions": [
+        "Submit (and resubmit) a CS claim",
+        "Create and edit a CS claim",
+        "View CS Claims"
+      ]
+    },
+    {
+      "id": "BUSINESS_DETAILS",
+      "level": "FULL_PERMISSION",
+      "functions": []
+    }
+  ]
+}
