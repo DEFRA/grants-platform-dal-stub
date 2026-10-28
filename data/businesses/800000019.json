@@ -47,23 +47,8 @@
     "parcels": [
       {
         "sheetId": "NZ6300",
-        "parcelId": "8335"
-      },
-      {
-        "sheetId": "NZ6300",
-        "parcelId": "3650"
-      },
-      {
-        "sheetId": "NZ6200",
-        "parcelId": "9573"
-      },
-      {
-        "sheetId": "NZ6501",
-        "parcelId": "9836"
-      },
-      {
-        "sheetId": "NZ6501",
-        "parcelId": "8980"
+        "parcelId": "8335",
+        "area": 5.7792
       }
     ]
   },

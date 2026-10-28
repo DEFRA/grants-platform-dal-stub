@@ -40,7 +40,8 @@
     "parcels": [
       {
         "sheetId": "NY1215",
-        "parcelId": "1016"
+        "parcelId": "1016",
+        "area": 308.6793
       }
     ]
   },

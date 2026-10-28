@@ -65,11 +65,13 @@
       },
       {
         "sheetId": "NT9009",
-        "parcelId": "1023"
+        "parcelId": "1023",
+        "area": 2.0852
       },
       {
         "sheetId": "NU1514",
-        "parcelId": "2607"
+        "parcelId": "2607",
+        "area": 110.5436
       }
     ]
   },

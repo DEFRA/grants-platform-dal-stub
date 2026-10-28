@@ -165,7 +165,7 @@ prefix, and any relationship permission group whose id or level is not in the DA
 
 Land parcel references (`sheetId`/`parcelId`) must match parcels seeded in the land service
 used alongside the stub for land journeys to work end to end. The fixtures use parcels from
-land-grants-api's `src/land-data/land_parcels/parcels.csv`, the file that seeds its local
+land-grants-api's `src/land-data/land_parcels/parcels.csv` and `test_parcels.csv`, the files that seed its local
 `land-grants-postgres-seeded` image, with `area` (hectares) taken from the same file, so
 they draw on the map and come back from the land service with covers and available actions.
 
