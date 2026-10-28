@@ -1,4 +1,4 @@
-import { isPermitted } from '#/data/permitted-functions.js'
+import { isPermitted } from '../../data/permitted-functions.js'
 import { NotFound } from '../errors.js'
 import { validCrn } from '../identifiers.js'
 

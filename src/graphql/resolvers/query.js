@@ -1,6 +1,6 @@
 import permissionGroups from '../../data/static/permission-groups.json' with { type: 'json' }
 
-import { isSyntheticCrn, isSyntheticSbi } from '#/data/synthetic-ranges.js'
+import { isSyntheticCrn, isSyntheticSbi } from '../../data/synthetic-ranges.js'
 import { NotFound } from '../errors.js'
 import { validCrn, validSbi } from '../identifiers.js'
 

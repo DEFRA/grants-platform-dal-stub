@@ -1,6 +1,6 @@
 import { pino } from 'pino'
 
-import { loggerOptions, loggerStream } from '#/plugins/logger-options.js'
+import { loggerOptions, loggerStream } from '../../../plugins/logger-options.js'
 
 const logger = pino(loggerOptions, loggerStream)
 

@@ -1,7 +1,7 @@
 import { ecsFormat } from '@elastic/ecs-pino-format'
 import { stdSerializers } from 'pino'
 import pretty from 'pino-pretty'
-import { config } from '#/config.js'
+import { config } from '../config.js'
 import { getTraceId } from '@defra/hapi-tracing'
 
 const logConfig = config.get('log')
