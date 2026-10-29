@@ -52,8 +52,8 @@ describe('synthetic identifier ranges', () => {
     expect(isSyntheticSbi(sbi)).toBe(false)
   })
 
-  test.each(['0800000001', '0800000099', '0800000100'])(
-    '%s is a synthetic FRN (0 followed by a synthetic SBI)',
+  test.each(['7000000001', '7000000099', '7000000100'])(
+    '%s is a synthetic FRN',
     (frn) => {
       expect(isSyntheticFrn(frn)).toBe(true)
     }
@@ -62,7 +62,7 @@ describe('synthetic identifier ranges', () => {
   test.each([
     '9000000001', // a synthetic CRN is not an FRN
     '1100000001', // issued format
-    '0100000001', // 0 followed by an issued-looking SBI
+    '0800000001', // leading zero, read as a 9-digit number downstream
     '800000001', // the SBI alone
     ''
   ])('%s is not a synthetic FRN', (frn) => {

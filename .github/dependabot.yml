@@ -11,11 +11,30 @@ updates:
       default-days: 7
     open-pull-requests-limit: 10
     ignore:
-      # eslint 10 is blocked by neostandard, which peers eslint ^9.0.0.
-      # Remove when neostandard widens its eslint peer.
-      - dependency-name: eslint
-        versions: ['>=10.0.0']
+      # @apollo/server 5.5.1 peers graphql ^16.11.0.
+      # Remove when @apollo/server accepts graphql 17.
+      - dependency-name: graphql
+        versions: ['>=17.0.0']
     groups:
+      # Packages that peer each other move together, majors included, or the
+      # PR fails npm ci with ERESOLVE. A dependency joins the first group it
+      # matches, so these stay above weekly-dependencies.
+      vitest:
+        applies-to: version-updates
+        patterns:
+          - vitest
+          - '@vitest/*'
+      eslint:
+        applies-to: version-updates
+        patterns:
+          - eslint
+          - neostandard
+      graphql:
+        applies-to: version-updates
+        patterns:
+          - graphql
+          - '@apollo/*'
+          - '@as-integrations/*'
       weekly-dependencies:
         applies-to: version-updates
         patterns:
