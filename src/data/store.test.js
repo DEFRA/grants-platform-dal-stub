@@ -200,8 +200,8 @@ describe('DataStore', () => {
       'businesses/800000001.json': business('800000001', {
         info: {
           name: 'Test Business',
-          reference: '0800000001',
-          frn: '0800000001',
+          reference: '7000000001',
+          frn: '7000000001',
           phone: { mobile: '07700900301', landline: '01632960301' },
           address: { postalCode: 'ZZ30 1ZZ', uprn: '900000300001' }
         }

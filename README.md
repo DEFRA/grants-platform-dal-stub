@@ -126,7 +126,7 @@ Defined once in `src/data/synthetic-ranges.js` and enforced by the loader, by
 | -------- | ---------------------- | ------------------------------------------------------ |
 | CRN      | `9000000NNN`           | `9000000001` to `9000000999`                           |
 | SBI      | `800000NNN`            | `800000001` to `800000999`                             |
-| FRN      | `0` + synthetic SBI    | `0800000001` for `reference` / `frn`                   |
+| FRN      | `7000000NNN`           | `7000000001` to `7000000999`, NNN matching the SBI     |
 | Postcode | `ZZ9 9AA` / `ZZ99 9AA` | `ZZ13 1ZZ` (valid format; Royal Mail has no `ZZ` area) |
 | Mobile   | `07700 900NNN`         | `07700900101` (Ofcom range reserved for fiction)       |
 | Landline | `01632 960NNN`         | `01632960101` (Ofcom range reserved for fiction)       |
@@ -135,8 +135,8 @@ Defined once in `src/data/synthetic-ranges.js` and enforced by the loader, by
 | Business | starts with `Test`     | `Test Alder Carr Farm`, `Test Estates Ltd`             |
 
 Issued SBIs are 9 digits starting with `1`, and issued CRNs and FRNs are 10 digits starting
-`1`. Synthetic SBIs start `8` and CRNs `90`, well away from the issued blocks, and every block above is
-obviously sequential. The loader
+`1`. Synthetic SBIs start `8`, FRNs `70` and CRNs `90`, well away from the issued blocks, and every block above is
+obviously sequential. FRNs have no leading zero because the Payment Hub reads them as numbers. The loader
 also rejects any 9- or 10-digit value elsewhere in a fixture that looks like an issued
 identifier, any `postalCode`, `mobile` or `landline` outside those ranges, any email address
 not at `example.test`, any business name not starting with `Test`, any surname without the `Test-`
