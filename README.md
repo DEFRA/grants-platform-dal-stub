@@ -186,6 +186,15 @@ The personas `9000000006` to `9000000036` (businesses `800000004` to `800000027`
 
 The persona `9000000034` (business `800000025`) holds five parcels and five agreements.
 
+The personas `9000000037` to `9000000040` are targets for the [identifier mapping](#identifier-mapping), one customer per business, each with CS applications and agreements `SUBMIT`:
+
+| CRN          | Name                      | SBI                                   | Extra permissions                    | Notes                                           |
+| ------------ | ------------------------- | ------------------------------------- | ------------------------------------ | ----------------------------------------------- |
+| `9000000037` | Harriet Test-Pemberton    | `800000028` Test Larkspur Meadow Farm | `BUSINESS_DETAILS` `FULL_PERMISSION` | 8 parcels, three without an area; no agreements |
+| `9000000038` | Desmond Test-Whitcombe    | `800000029` Test Rowan Brook Farm     |                                      | 48 parcels; no agreements                       |
+| `9000000039` | Leonora Test-Fairweather  | `800000030` Test Bramble Hollow Farm  |                                      | 51 parcels; two signed agreements (`CLIG3`)     |
+| `9000000040` | Cuthbert Test-Ravenscroft | `800000031` Test Juniper Ridge Farm   |                                      | 84 parcels; no agreements                       |
+
 ## Identifier mapping
 
 Some environments sign users in with a Defra ID instance whose CRNs and SBIs are not in these

@@ -1,0 +1,76 @@
+{
+  "sbi": "800000028",
+  "organisationId": "7410028",
+  "info": {
+    "name": "Test Larkspur Meadow Farm",
+    "reference": "7000000028",
+    "email": {
+      "address": "contact+800000028@example.test"
+    },
+    "phone": {
+      "mobile": "07700900528",
+      "landline": "01632960528"
+    },
+    "address": {
+      "pafOrganisationName": "Test Larkspur Meadow Farm Holdings",
+      "line1": "428 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "428",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ28 1ZZ",
+      "uprn": "900000200028",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "NT8109",
+        "parcelId": "6898",
+        "area": 0.0795
+      },
+      {
+        "sheetId": "NT9009",
+        "parcelId": "1023",
+        "area": 2.0852
+      },
+      {
+        "sheetId": "NT8701",
+        "parcelId": "9412",
+        "area": 52.8839
+      },
+      {
+        "sheetId": "NU0002",
+        "parcelId": "1755",
+        "area": 1.761
+      },
+      {
+        "sheetId": "NT9802",
+        "parcelId": "9709"
+      },
+      {
+        "sheetId": "NT8506",
+        "parcelId": "8111",
+        "area": 0.7341
+      },
+      {
+        "sheetId": "NU0001",
+        "parcelId": "6274"
+      },
+      {
+        "sheetId": "NT8108",
+        "parcelId": "1434"
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}
