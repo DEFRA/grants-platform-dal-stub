@@ -44,7 +44,7 @@
     "@hapi/hapi": "21.4.11",
     "convict": "6.2.5",
     "convict-format-with-validator": "6.2.0",
-    "graphql": "16.11.0",
+    "graphql": "16.14.2",
     "hapi-pino": "13.0.0",
     "hapi-pulse": "4.0.0",
     "joi": "18.3.0",
