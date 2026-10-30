@@ -1,0 +1,37 @@
+{
+  "crn": "9000000040",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Cuthbert",
+      "last": "Test-Ravenscroft",
+      "middle": null
+    },
+    "phone": {
+      "mobile": "07700900340",
+      "landline": "01632960340"
+    },
+    "email": {
+      "address": "cuthbert.test-ravenscroft+9000000040@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "540 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "540",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200140",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000140"
+}

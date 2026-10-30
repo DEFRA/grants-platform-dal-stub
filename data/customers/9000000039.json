@@ -1,0 +1,37 @@
+{
+  "crn": "9000000039",
+  "info": {
+    "name": {
+      "title": "Mrs",
+      "first": "Leonora",
+      "last": "Test-Fairweather",
+      "middle": null
+    },
+    "phone": {
+      "mobile": "07700900339",
+      "landline": "01632960339"
+    },
+    "email": {
+      "address": "leonora.test-fairweather+9000000039@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "539 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "539",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200139",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000139"
+}
