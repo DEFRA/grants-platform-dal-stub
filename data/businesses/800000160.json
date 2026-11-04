@@ -1,0 +1,54 @@
+{
+  "sbi": "800000160",
+  "organisationId": "7410160",
+  "info": {
+    "name": "Test Perf Farm 160",
+    "reference": "7000000160",
+    "email": {
+      "address": "contact+800000160@example.test"
+    },
+    "phone": {
+      "mobile": "07700900759",
+      "landline": "01632960759"
+    },
+    "address": {
+      "pafOrganisationName": "Test Perf Farm 160 Holdings",
+      "line1": "160 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "160",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ14 1ZZ",
+      "uprn": "900000500160",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6351",
+        "parcelId": "8781",
+        "area": 68.0498
+      },
+      {
+        "sheetId": "SD6352",
+        "parcelId": "8774",
+        "area": 11.1006
+      },
+      {
+        "sheetId": "SD6252",
+        "parcelId": "7537",
+        "area": 0.3361
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

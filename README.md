@@ -195,6 +195,14 @@ The personas `9000000037` to `9000000040` are targets for the [identifier mappin
 | `9000000039` | Leonora Test-Fairweather  | `800000030` Test Bramble Hollow Farm  |                                      | 51 parcels; two signed agreements (`CLIG3`)     |
 | `9000000040` | Cuthbert Test-Ravenscroft | `800000031` Test Juniper Ridge Farm   |                                      | 84 parcels; no agreements                       |
 
+The personas `9000000101` to `9000000200` (Perf Test-Perf101 to Perf Test-Perf200) belong to the
+[grants-ui-performance-tests](https://github.com/DEFRA/grants-ui-performance-tests) woodland
+journey. Each has its own business, `800000101` to `800000200` (Test Perf Farm 101 to Test Perf
+Farm 200), with matching last three digits, so concurrent virtual users never share application
+state. Every one holds the same three parcels as `800000011` (`SD6351 8781`, `SD6352 8774`,
+`SD6252 7537`), CS applications and agreements `SUBMIT`, and no agreements. Don't use them for
+other scenarios.
+
 ## Identifier mapping
 
 Some environments sign users in with a Defra ID instance whose CRNs and SBIs are not in these
