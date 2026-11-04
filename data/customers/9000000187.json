@@ -1,0 +1,37 @@
+{
+  "crn": "9000000187",
+  "info": {
+    "name": {
+      "title": "Mx",
+      "first": "Perf",
+      "middle": null,
+      "last": "Test-Perf187"
+    },
+    "phone": {
+      "mobile": "07700900686",
+      "landline": "01632960686"
+    },
+    "email": {
+      "address": "perf.test-perf187+9000000187@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "187 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "187",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ14 1ZZ",
+      "uprn": "900000400187",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000387"
+}
