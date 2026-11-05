@@ -28,6 +28,10 @@
       "uprn": "900000200026",
       "dependentLocality": null,
       "doubleDependentLocality": null
+    },
+    "legalStatus": {
+      "code": 102109,
+      "type": "Private Limited Company (Ltd)"
     }
   },
   "land": {
