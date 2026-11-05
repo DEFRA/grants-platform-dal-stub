@@ -53,5 +53,47 @@
     ]
   },
   "countyParishHoldings": [],
-  "agreements": []
+  "agreements": [
+    {
+      "contractId": "TEST-CONTRACT-023-1",
+      "name": "TEST-SFI-023-1",
+      "status": "SIGNED",
+      "contractType": "SFI Expanded Offer",
+      "schemeYear": 2025,
+      "startDate": "2023-06-04T21:47:50.970Z",
+      "endDate": "2028-02-27T13:54:20.492Z",
+      "paymentSchedules": [
+        {
+          "optionCode": "BND2",
+          "optionDescription": "Maintain earth banks or stone-faced hedgebanks",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5349",
+          "parcelName": "3815",
+          "actionArea": null,
+          "actionMTL": 101,
+          "actionUnits": null,
+          "parcelTotalArea": 6.3614,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2028-02-27T13:54:20.492Z"
+        },
+        {
+          "optionCode": "CHRW1",
+          "optionDescription": "Assess and record hedgerow condition",
+          "commitmentGroupStartDate": "2024-09-30T18:47:49.485Z",
+          "commitmentGroupEndDate": "2029-10-02T15:56:57.542Z",
+          "year": 2024,
+          "sheetName": "SD5349",
+          "parcelName": "3815",
+          "actionArea": null,
+          "actionMTL": 121,
+          "actionUnits": null,
+          "parcelTotalArea": 6.3614,
+          "startDate": "2023-06-04T21:47:50.970Z",
+          "endDate": "2028-02-27T13:54:20.492Z"
+        }
+      ]
+    }
+  ]
 }
