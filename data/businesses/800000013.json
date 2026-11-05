@@ -23,6 +23,13 @@
       "uprn": null
     },
     "vat": "GB800000013",
+    "legalStatus": {
+      "code": 123456,
+      "type": "Private Ltd Company"
+    },
+    "registrationNumbers": {
+      "companiesHouse": null
+    },
     "type": {
       "code": 101443,
       "type": "Farmer"
