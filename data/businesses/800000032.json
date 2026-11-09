@@ -1,0 +1,54 @@
+{
+  "sbi": "800000032",
+  "organisationId": "7410032",
+  "info": {
+    "name": "Test Hawthorn Gill Farm",
+    "reference": "7000000032",
+    "email": {
+      "address": "contact+800000032@example.test"
+    },
+    "phone": {
+      "mobile": "07700900532",
+      "landline": "01632960532"
+    },
+    "address": {
+      "pafOrganisationName": "Test Hawthorn Gill Farm Holdings",
+      "line1": "432 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "432",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ32 1ZZ",
+      "uprn": "900000200032",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "land": {
+    "parcels": [
+      {
+        "sheetId": "SD6251",
+        "parcelId": "8952",
+        "area": 0.7196
+      },
+      {
+        "sheetId": "SD5349",
+        "parcelId": "3815",
+        "area": 6.3614
+      },
+      {
+        "sheetId": "NY1215",
+        "parcelId": "1016",
+        "area": 308.6793
+      }
+    ]
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}

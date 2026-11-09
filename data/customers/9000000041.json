@@ -1,0 +1,37 @@
+{
+  "crn": "9000000041",
+  "info": {
+    "name": {
+      "title": "Ms",
+      "first": "Wilhelmina",
+      "last": "Test-Ashdown",
+      "middle": null
+    },
+    "phone": {
+      "mobile": "07700900341",
+      "landline": "01632960341"
+    },
+    "email": {
+      "address": "wilhelmina.test-ashdown+9000000041@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "541 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "541",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200141",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000141"
+}
