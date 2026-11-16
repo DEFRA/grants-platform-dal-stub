@@ -8,7 +8,7 @@ Application code lives in `src/`. The GraphQL layer is under `src/graphql`: `sch
 
 ## Build, Test, and Development Commands
 
-Requires Node.js 24 (`.nvmrc`); the `#/` import map and the lint config do not work on older versions.
+Requires Node.js 26 (`.nvmrc`); the `#/` import map and the lint config do not work on older versions.
 
 - `npm run dev`: runs the server in watch mode on port 3008.
 - `npm test`: runs Vitest with coverage.
