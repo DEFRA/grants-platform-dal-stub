@@ -1,8 +1,8 @@
 {
-  "sbi": "800000201",
-  "organisationId": "7410201",
+  "sbi": "800000042",
+  "organisationId": "7410042",
   "info": {
-    "name": "Smiths Farm",
+    "name": "Test-Smiths Farm",
     "reference": "7000000200",
     "email": {
       "address": "contact+800000200@example.test"
@@ -12,7 +12,7 @@
       "landline": "01632960799"
     },
     "address": {
-      "pafOrganisationName": "Smiths Farm",
+      "pafOrganisationName": "Test-Smiths Farm",
       "line1": "200 Test Lane",
       "line2": "Test Park",
       "line3": "Mockford",
@@ -25,7 +25,7 @@
       "city": "Mockford",
       "county": "Testshire",
       "postalCode": "ZZ14 1ZZ",
-      "uprn": "900000500201",
+      "uprn": "900000500042",
       "dependentLocality": null,
       "doubleDependentLocality": null
     }
