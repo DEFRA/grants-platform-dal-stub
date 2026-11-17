@@ -38,7 +38,7 @@ endpoint, not of code.
 
 ## Running it
 
-Requires Node.js `>= v24` (`nvm use` picks the pinned version).
+Requires Node.js `>= v26` (`nvm use` picks the pinned version).
 
 ```bash
 npm install
