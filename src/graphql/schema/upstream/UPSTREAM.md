@@ -25,4 +25,4 @@ two lists.
 Also copied verbatim: `src/data/static/permission-groups.json` from
 `app/data-sources/static/permission-groups.json`.
 
-Upstream commit: 87acb06e451116aa0fc645dc56f4c4df2a0c2e58
+Upstream commit: 34debfa9985c956df269d8a828daa88be72251ec
