@@ -1,0 +1,90 @@
+name: Sync DAL Schema
+
+# Opens (or refreshes) a pull request when the vendored DAL schema has drifted
+# from DEFRA/fcp-dal-api, so the drift is fixed before it fails other PRs.
+#
+# Optional SCHEMA_SYNC_TOKEN secret (contents and pull requests: write). Without
+# it the PR is opened by GITHUB_TOKEN, and GitHub does not run pull request
+# checks for those until someone closes and reopens the PR.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1-5'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  BRANCH: chore/sync-dal-schema
+  UPSTREAM_REPO: DEFRA/fcp-dal-api
+
+jobs:
+  sync:
+    name: Sync vendored DAL schema
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ secrets.SCHEMA_SYNC_TOKEN || github.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Sync with upstream
+        id: sync
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          UPSTREAM_SCHEMA_TOKEN: ${{ secrets.UPSTREAM_SCHEMA_TOKEN }}
+        run: |
+          upstream_sha=$(gh api "repos/$UPSTREAM_REPO/commits/main" --jq .sha)
+          sync_status=0
+          UPSTREAM_REF="$upstream_sha" npm run --silent schema:sync > "$RUNNER_TEMP/sync.log" 2>&1 || sync_status=$?
+          cat "$RUNNER_TEMP/sync.log"
+          if [ -z "$(git status --porcelain)" ]; then
+            exit "$sync_status"
+          fi
+          sed -i "s/^Upstream commit: .*/Upstream commit: $upstream_sha/" src/graphql/schema/upstream/UPSTREAM.md
+          echo "upstream_sha=$upstream_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Open or refresh the pull request
+        if: steps.sync.outputs.upstream_sha
+        env:
+          GH_TOKEN: ${{ secrets.SCHEMA_SYNC_TOKEN || github.token }}
+          UPSTREAM_SHA: ${{ steps.sync.outputs.upstream_sha }}
+        run: |
+          if git fetch origin "$BRANCH" 2>/dev/null && git diff --quiet FETCH_HEAD; then
+            echo "$BRANCH already holds this sync"
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B "$BRANCH"
+          git add -A
+          git commit -m "Sync DAL schema with upstream ${UPSTREAM_SHA:0:7}"
+          git push --force origin "$BRANCH"
+
+          {
+            echo "The vendored DAL schema has drifted from [$UPSTREAM_REPO@${UPSTREAM_SHA:0:7}](https://github.com/$UPSTREAM_REPO/commit/$UPSTREAM_SHA). This PR is the output of \`npm run schema:sync\`."
+            echo
+            echo 'Before merging: review the diff and update resolvers and fixtures if a check fails. Anything listed as FAILED below needs classifying by hand in `scripts/sync-upstream-schema.js`.'
+            echo
+            echo '```'
+            cat "$RUNNER_TEMP/sync.log"
+            echo '```'
+          } > "$RUNNER_TEMP/pr-body.md"
+          if [ "$(gh pr list --head "$BRANCH" --state open --json number --jq length)" != 0 ]; then
+            gh pr edit "$BRANCH" --body-file "$RUNNER_TEMP/pr-body.md"
+          else
+            gh pr create --base main --head "$BRANCH" \
+              --title 'Sync DAL schema with upstream' \
+              --body-file "$RUNNER_TEMP/pr-body.md"
+          fi
