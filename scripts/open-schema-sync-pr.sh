@@ -4,6 +4,7 @@
 # brings an open one in line with upstream, or closes it once upstream no longer differs.
 # Commits go through the API so they are signed.
 set -euo pipefail
+shopt -s inherit_errexit
 
 vendored=(src/graphql/schema/upstream src/data/static/permission-groups.json ":!$UPSTREAM_NOTES")
 
@@ -30,11 +31,14 @@ else
   gh api --silent "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/heads/$branch" -f sha="$branch_head"
 fi
 
-mapfile -t stale < <(git diff --name-only "$branch_head" -- "${vendored[@]}")
+# A file only the pull request has, such as a new upstream type classified there, is left alone.
+mapfile -t stale < <(git diff --name-only --diff-filter=d "$branch_head" -- "${vendored[@]}")
+opened=false
 if [ "${#stale[@]}" -gt 0 ]; then
   branch_head=$(
     for file in "${stale[@]}" "$UPSTREAM_NOTES"; do
-      jq -n --arg path "$file" --rawfile contents <(base64 -w0 "$file") '{path: $path, contents: $contents}'
+      contents=$(base64 -w0 "$file")
+      jq -n --arg path "$file" --arg contents "$contents" '{path: $path, contents: $contents}'
     done |
       jq -s --arg repo "$GITHUB_REPOSITORY" --arg branch "$branch" --arg head "$branch_head" \
         --arg headline "Sync DAL schema with upstream ${upstream_sha:0:7}" '{
@@ -67,9 +71,7 @@ if [ "${#stale[@]}" -gt 0 ]; then
     pr_url=$(gh pr create --base "$GITHUB_REF_NAME" --head "$branch" \
       --title 'Sync DAL schema with upstream' \
       --body-file "$RUNNER_TEMP/pr-body.md")
-    jq -n --arg text ":arrows_counterclockwise: $GITHUB_REPOSITORY: the DAL schema changed upstream. Review and merge <$pr_url|the sync pull request>." '{text: $text}' |
-      curl -sf -X POST -H 'content-type: application/json' --data @- "$SLACK_WEBHOOK_URL" ||
-      echo '::warning::Could not announce the pull request in Slack'
+    opened=true
   fi
 fi
 
@@ -77,4 +79,10 @@ fi
 if [ "$(gh run list --workflow validate-schema-sync.yml --commit "$branch_head" --json databaseId --jq length)" = 0 ]; then
   gh workflow run validate-schema-sync.yml --ref "$branch" -f pr_number="${pr_url##*/}" \
     -f head_sha="$branch_head" -f head_branch="$branch" -f base_branch="$GITHUB_REF_NAME"
+fi
+
+# Last, so a failed announcement fails the run and reaches Slack through the failure alert instead.
+if "$opened"; then
+  jq -n --arg text ":arrows_counterclockwise: $GITHUB_REPOSITORY: the DAL schema changed upstream. Review and merge <$pr_url|the sync pull request>." '{text: $text}' |
+    curl -sf --retry 3 --retry-all-errors -X POST -H 'content-type: application/json' --data @- "$SLACK_WEBHOOK_URL"
 fi
