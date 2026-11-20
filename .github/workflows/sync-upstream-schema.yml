@@ -6,13 +6,16 @@ name: Sync DAL Schema
 # fresh branch.
 #
 # GitHub does not run pull request workflows for changes made with GITHUB_TOKEN,
-# so this starts Check Pull Request on the branch itself. Commits are created
+# so this starts Validate Schema Sync for the pull request. Commits are created
 # through the API because main requires signed commits.
 
 on:
   schedule:
     - cron: '0 6 * * 1-5'
   workflow_dispatch:
+  push:
+    branches:
+      - test/TGC-1911-sync
 
 concurrency:
   group: ${{ github.workflow }}
@@ -30,7 +33,6 @@ env:
 jobs:
   sync:
     name: Sync vendored DAL schema
-    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

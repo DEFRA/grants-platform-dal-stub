@@ -1,0 +1,73 @@
+name: Validate Schema Sync
+
+# Started by the Sync DAL Schema workflow for the pull request it opens or updates,
+# because GitHub does not run pull request workflows for changes made with
+# GITHUB_TOKEN. Runs the Check Pull Request jobs on the pull request's head commit
+# and reports them there as one "Schema sync validation" status that links to
+# this run.
+
+on:
+  push:
+    branches:
+      - test/TGC-1911-sync
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Number of the schema sync pull request'
+        required: true
+        type: string
+      head_sha:
+        description: 'Head commit of the pull request'
+        required: true
+        type: string
+      head_branch:
+        description: 'Head branch of the pull request'
+        required: true
+        type: string
+      base_branch:
+        description: 'Base branch of the pull request'
+        required: true
+        type: string
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  STATUS_URL: repos/${{ github.repository }}/statuses/${{ inputs.head_sha }}
+  STATUS_CONTEXT: Schema sync validation
+  RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+jobs:
+  pending:
+    name: Mark validation as pending
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - name: Set pending status
+        run: |
+          gh api --silent "$STATUS_URL" -f state=pending -f context="$STATUS_CONTEXT" \
+            -f description='Checks are running' -f target_url="$RUN_URL"
+
+  checks:
+    needs: pending
+    uses: ./.github/workflows/check-pull-request.yml
+    with:
+      pr_number: ${{ inputs.pr_number }}
+      head_sha: ${{ inputs.head_sha }}
+      head_branch: ${{ inputs.head_branch }}
+      base_branch: ${{ inputs.base_branch }}
+    secrets: inherit
+
+  report:
+    name: Report validation result
+    if: always()
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - name: Set final status
+        env:
+          STATE: ${{ needs.checks.result == 'success' && 'success' || 'failure' }}
+        run: |
+          gh api --silent "$STATUS_URL" -f state="$STATE" -f context="$STATUS_CONTEXT" \
+            -f description="Checks and SonarCloud quality gate: $STATE" -f target_url="$RUN_URL"
