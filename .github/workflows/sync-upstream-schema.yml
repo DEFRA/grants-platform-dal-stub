@@ -12,6 +12,9 @@ on:
   schedule:
     - cron: '0 6 * * 1-5'
   workflow_dispatch:
+  push:
+    branches:
+      - test/TGC-1911-sync
 
 concurrency:
   group: ${{ github.workflow }}
