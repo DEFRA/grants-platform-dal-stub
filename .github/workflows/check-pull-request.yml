@@ -9,6 +9,8 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+  # Started by the Sync DAL Schema workflow, whose pull requests do not trigger the events above.
+  workflow_dispatch:
 
 jobs:
   checkdeps:
@@ -81,12 +83,11 @@ jobs:
 
   upstream-schema:
     # The .gql files under src/graphql/schema/upstream are verbatim copies from
-    # DEFRA/fcp-dal-api. This job fails when they have drifted from upstream main,
-    # or when upstream has a file we have not classified, so the stub never builds
-    # on a stale copy of the real DAL schema. Fix: `npm run schema:sync`, review the
-    # diff, update resolvers if needed, and classify any new file in
-    # scripts/sync-upstream-schema.js. While the upstream repository is not readable
-    # the check passes with a warning annotation on the PR.
+    # DEFRA/fcp-dal-api. This job fails when they differ from the upstream commit
+    # recorded in UPSTREAM.md, so a hand edit fails here but a newer upstream does
+    # not; the Sync DAL Schema workflow raises a pull request for that. While the
+    # upstream repository is not readable the check passes with a warning
+    # annotation on the PR.
     name: Vendored DAL schema matches fcp-dal-api
     runs-on: ubuntu-latest
     steps:
