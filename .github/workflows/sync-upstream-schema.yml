@@ -6,7 +6,7 @@ name: Sync DAL Schema
 # fresh branch.
 #
 # GitHub does not run pull request workflows for changes made with GITHUB_TOKEN,
-# so this starts Check Pull Request on the branch itself. Commits are created
+# so this starts Validate Schema Sync for the pull request. Commits are created
 # through the API because main requires signed commits.
 
 on:

@@ -253,12 +253,12 @@ repository, branch and token the scripts use.
 
 The `Sync DAL Schema` workflow runs the sync every weekday morning, and on demand from the
 Actions tab. When a vendored file has changed upstream it opens a pull request from a new
-`chore/sync-dal-schema-*` branch, announces it in Slack and starts the pull request checks
-on it. Review the diff and push resolvers for any new fields the consumers need to that
-branch; a later sync is added to the open pull request as another commit, and the pull
-request is closed if upstream goes back to what `main` already has. The run fails, and
-alerts Slack, when upstream is unreadable or has a new, renamed or removed file that needs
-classifying by hand.
+`chore/sync-dal-schema-*` branch, announces it in Slack and runs the pull request checks
+on it, reported as a single `Schema sync validation` status. Review the diff and push
+resolvers for any new fields the consumers need to that branch; a later sync is added to
+the open pull request as another commit, and the pull request is closed if upstream goes
+back to what `main` already has. The run fails, and alerts Slack, when upstream is
+unreadable or has a new, renamed or removed file that needs classifying by hand.
 
 ## Development
 

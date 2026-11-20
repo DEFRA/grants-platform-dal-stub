@@ -73,7 +73,8 @@ if [ "${#stale[@]}" -gt 0 ]; then
   fi
 fi
 
-# Also covers a head whose checks were never started because an earlier run failed here.
-if [ "$(gh run list --workflow check-pull-request.yml --commit "$branch_head" --json databaseId --jq length)" = 0 ]; then
-  gh workflow run check-pull-request.yml --ref "$branch"
+# Also covers a head whose validation was never started because an earlier run failed here.
+if [ "$(gh run list --workflow validate-schema-sync.yml --commit "$branch_head" --json databaseId --jq length)" = 0 ]; then
+  gh workflow run validate-schema-sync.yml --ref "$branch" -f pr_number="${pr_url##*/}" \
+    -f head_sha="$branch_head" -f head_branch="$branch" -f base_branch="$GITHUB_REF_NAME"
 fi
