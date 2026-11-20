@@ -243,3 +243,5 @@ describe('CustomerBusiness.messages', () => {
     expect(CustomerBusiness.messages({}, {})).toEqual([])
   })
 })
+
+// temporary test of a developer fix on the sync branch
