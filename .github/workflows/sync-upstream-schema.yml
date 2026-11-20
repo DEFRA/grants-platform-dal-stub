@@ -2,7 +2,8 @@ name: Sync DAL Schema
 
 # Opens a pull request when DEFRA/fcp-dal-api has schema changes the vendored
 # copies do not have yet. While a sync PR is open, a newer sync is added to its
-# branch as another commit, so fixes pushed there are kept.
+# branch as another commit, so fixes pushed there are kept; each new PR gets a
+# fresh branch.
 #
 # GitHub does not run pull request workflows for changes made with GITHUB_TOKEN,
 # so this starts Check Pull Request on the branch itself. Commits are created
@@ -22,13 +23,14 @@ permissions:
   pull-requests: write
 
 env:
-  BRANCH: chore/sync-dal-schema
+  BRANCH_PREFIX: chore/sync-dal-schema
   UPSTREAM_REPO: DEFRA/fcp-dal-api
   UPSTREAM_NOTES: src/graphql/schema/upstream/UPSTREAM.md
 
 jobs:
   sync:
     name: Sync vendored DAL schema
+    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -48,15 +50,15 @@ jobs:
           sync_status=0
           npm run --silent schema:sync > "$RUNNER_TEMP/sync.log" 2>&1 || sync_status=$?
           cat "$RUNNER_TEMP/sync.log"
-          # The recorded commit moves on every sync; only a changed vendored file is drift.
-          if git diff --quiet -- . ":!$UPSTREAM_NOTES"; then
-            exit "$sync_status"
-          fi
-          echo "drifted=true" >> "$GITHUB_OUTPUT"
+          echo "status=$sync_status" >> "$GITHUB_OUTPUT"
 
-      - name: Open or update the pull request
-        if: steps.sync.outputs.drifted
+      - name: Open, update or close the pull request
         env:
           GH_TOKEN: ${{ github.token }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SYNC_STATUS: ${{ steps.sync.outputs.status }}
         run: bash scripts/open-schema-sync-pr.sh
+
+      - name: Fail when the sync reported problems
+        if: steps.sync.outputs.status != '0'
+        run: exit 1

@@ -35,7 +35,7 @@ Requests use the same schema, path and error shapes as the real DAL, so switchin
 
 ## Architectural Constraints
 
-- Files under `src/graphql/schema/upstream/` and `src/data/static/permission-groups.json` are verbatim upstream copies. Never edit them by hand: run `npm run schema:sync`, which also records the upstream commit in `UPSTREAM.md`, then review the diff and update resolvers. The pull request check fails when the copies differ from that recorded commit. The scheduled `Sync DAL Schema` workflow raises a `chore/sync-dal-schema` pull request when upstream moves on; push resolver fixes to that branch.
+- Files under `src/graphql/schema/upstream/` and `src/data/static/permission-groups.json` are verbatim upstream copies. Never edit them by hand: run `npm run schema:sync`, which also records the upstream commit in `UPSTREAM.md`, then review the diff and update resolvers. The pull request check fails when the copies differ from that recorded commit. The scheduled `Sync DAL Schema` workflow raises a pull request from a `chore/sync-dal-schema-*` branch when upstream moves on; push resolver fixes to that branch.
 - The `Query` type is authored in `src/graphql/schema/stub/query.gql`, so the operations advertised are exactly the ones implemented. Add a root field and its resolver together.
 - Resolver behaviour mirrors the real DAL: unknown identifiers are `NOT FOUND` (404), malformed identifiers are `BAD_USER_INPUT` (HTTP 200, the directive message) through `src/graphql/identifiers.js`, and fields without fixture data resolve to `null` or an empty list rather than invented values.
 - Every field reachable from `Business` and `Customer` must be answerable. `src/graphql/full-coverage.test.js` generates a selection from the schema and fails otherwise.

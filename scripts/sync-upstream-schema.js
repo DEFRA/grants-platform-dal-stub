@@ -5,7 +5,7 @@
 //   node scripts/sync-upstream-schema.js --check  exit 1 if anything differs from the recorded commit
 //
 // Env: GITHUB_TOKEN or UPSTREAM_SCHEMA_TOKEN (auth), UPSTREAM_REPO, UPSTREAM_REF (the branch).
-// An unreadable upstream repository (401/403/404) skips the comparison with a warning.
+// An unreadable upstream repository (401/403/404) skips the check with a warning and fails the sync.
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -301,6 +301,9 @@ async function main() {
   if (!(await upstreamIsReadable())) {
     warnSkipped()
     report({ check, problems, updated: [], compared: false })
+    if (!check) {
+      process.exitCode = 1
+    }
     return
   }
 
