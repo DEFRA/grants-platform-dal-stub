@@ -9,6 +9,23 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+  # Called by Validate Schema Sync for the pull requests of the Sync DAL Schema
+  # workflow, which do not trigger the events above. The inputs are empty on a
+  # pull request event, where the jobs check out the merge commit as usual.
+  workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: string
+      head_sha:
+        required: true
+        type: string
+      head_branch:
+        required: true
+        type: string
+      base_branch:
+        required: true
+        type: string
 
 jobs:
   checkdeps:
@@ -17,6 +34,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.head_sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -35,6 +54,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.head_sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -66,6 +87,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.head_sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -81,17 +104,18 @@ jobs:
 
   upstream-schema:
     # The .gql files under src/graphql/schema/upstream are verbatim copies from
-    # DEFRA/fcp-dal-api. This job fails when they have drifted from upstream main,
-    # or when upstream has a file we have not classified, so the stub never builds
-    # on a stale copy of the real DAL schema. Fix: `npm run schema:sync`, review the
-    # diff, update resolvers if needed, and classify any new file in
-    # scripts/sync-upstream-schema.js. While the upstream repository is not readable
-    # the check passes with a warning annotation on the PR.
+    # DEFRA/fcp-dal-api. This job fails when they differ from the upstream commit
+    # recorded in UPSTREAM.md, so a hand edit fails here but a newer upstream does
+    # not; the Sync DAL Schema workflow raises a pull request for that. While the
+    # upstream repository is not readable the check passes with a warning
+    # annotation on the PR.
     name: Vendored DAL schema matches fcp-dal-api
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.head_sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -116,6 +140,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.head_sha }}
 
       - name: Build production image
         run: docker build --no-cache --tag grants-platform-dal-stub .
@@ -135,6 +161,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.head_sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -159,6 +187,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.head_sha }}
           # Full history improves the relevance of SonarCloud's new-code reporting
           fetch-depth: 0
 
@@ -170,6 +199,12 @@ jobs:
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5.0
+        with:
+          # A called run is not a pull request event, so SonarCloud is told which pull request to report on.
+          args: >-
+            ${{ inputs.pr_number && format(
+              '-Dsonar.pullrequest.key={0} -Dsonar.pullrequest.branch={1} -Dsonar.pullrequest.base={2} -Dsonar.qualitygate.wait=true',
+              inputs.pr_number, inputs.head_branch, inputs.base_branch) || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
