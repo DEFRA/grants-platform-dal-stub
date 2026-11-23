@@ -4,7 +4,8 @@ Every `.gql` file in this directory is a verbatim copy of a file under
 `app/graphql/types/` in [DEFRA/fcp-dal-api](https://github.com/DEFRA/fcp-dal-api),
 the real Data Access Layer (DAL). Do not edit them here. To pick up upstream
 changes run `npm run schema:sync` and review the diff; `npm run schema:check`
-fails when the copies have drifted from upstream `main`.
+fails when the copies differ from the upstream commit recorded at the end of
+this file, which the sync keeps up to date.
 
 Only the read-side types the stub serves are copied: business, land, agreement,
 application, county parish holding, permitted functions, customer, messages,

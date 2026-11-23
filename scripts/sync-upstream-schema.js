@@ -1,17 +1,18 @@
 #!/usr/bin/env node
 // Keeps src/graphql/schema/upstream in step with the DAL repository.
 //
-//   node scripts/sync-upstream-schema.js          copy the upstream files locally
-//   node scripts/sync-upstream-schema.js --check  exit 1 if anything differs
+//   node scripts/sync-upstream-schema.js          copy the files from the upstream branch and record its commit
+//   node scripts/sync-upstream-schema.js --check  exit 1 if anything differs from the recorded commit
 //
-// Env: GITHUB_TOKEN or UPSTREAM_SCHEMA_TOKEN (auth), UPSTREAM_REPO, UPSTREAM_REF.
-// An unreadable upstream (401/403/404) skips the comparison with a warning.
+// Env: GITHUB_TOKEN or UPSTREAM_SCHEMA_TOKEN (auth), UPSTREAM_REPO, UPSTREAM_REF (the branch).
+// An unreadable upstream repository (401/403/404) skips the check with a warning and fails the sync.
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const UPSTREAM_REPO = process.env.UPSTREAM_REPO || 'DEFRA/fcp-dal-api'
-const UPSTREAM_REF = process.env.UPSTREAM_REF || 'main'
+const UPSTREAM_BRANCH = process.env.UPSTREAM_REF || 'main'
+const UPSTREAM_API = `https://api.github.com/repos/${UPSTREAM_REPO}`
 const TYPES_DIR = 'app/graphql/types'
 const STATIC_DIR = 'app/data-sources/static'
 
@@ -26,6 +27,11 @@ const UNREADABLE_STATUSES = new Set([
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const localSchemaDir = 'src/graphql/schema/upstream'
+const upstreamNotes = `${localSchemaDir}/UPSTREAM.md`
+const RECORDED_COMMIT = /^Upstream commit: (\S+)$/m
+
+// The upstream commit every comparison and copy is made against.
+let commit
 
 // Copied verbatim to the same relative path under localSchemaDir.
 const VENDORED_TYPES = [
@@ -95,15 +101,13 @@ const headers = {
   ...(token && { authorization: `Bearer ${token}` })
 }
 
-class UpstreamUnreachable extends Error {}
+async function upstreamIsReadable() {
+  const response = await fetch(UPSTREAM_API, { headers })
+  return !UNREADABLE_STATUSES.has(response.status)
+}
 
 async function fetchJson(url) {
   const response = await fetch(url, { headers })
-  if (UNREADABLE_STATUSES.has(response.status)) {
-    throw new UpstreamUnreachable(
-      `${response.status} ${response.statusText} fetching ${url}`
-    )
-  }
   if (!response.ok) {
     throw new Error(`${response.status} ${response.statusText} fetching ${url}`)
   }
@@ -111,7 +115,7 @@ async function fetchJson(url) {
 }
 
 async function fetchRaw(upstreamPath) {
-  const url = `https://raw.githubusercontent.com/${UPSTREAM_REPO}/${UPSTREAM_REF}/${upstreamPath}`
+  const url = `https://raw.githubusercontent.com/${UPSTREAM_REPO}/${commit}/${upstreamPath}`
   const response = await fetch(url, { headers })
   if (response.status === HTTP_NOT_FOUND) {
     return null
@@ -124,7 +128,7 @@ async function fetchRaw(upstreamPath) {
 
 async function listUpstreamSchemaFiles() {
   const tree = await fetchJson(
-    `https://api.github.com/repos/${UPSTREAM_REPO}/git/trees/${UPSTREAM_REF}?recursive=1`
+    `${UPSTREAM_API}/git/trees/${commit}?recursive=1`
   )
   if (tree.truncated) {
     throw new Error('GitHub tree listing was truncated')
@@ -135,6 +139,32 @@ async function listUpstreamSchemaFiles() {
     )
     .map((entry) => entry.path)
     .sort()
+}
+
+async function recordedCommit() {
+  const notes = await fs.readFile(path.join(root, upstreamNotes), 'utf8')
+  return notes.match(RECORDED_COMMIT)?.[1]
+}
+
+async function recordCommit() {
+  const absolute = path.join(root, upstreamNotes)
+  const notes = await fs.readFile(absolute, 'utf8')
+  await fs.writeFile(
+    absolute,
+    notes.replace(RECORDED_COMMIT, `Upstream commit: ${commit}`)
+  )
+}
+
+// A commit that only exists in a fork is still served under the upstream repository's URLs.
+async function recordedCommitProblem() {
+  const response = await fetch(
+    `${UPSTREAM_API}/compare/${commit}...${UPSTREAM_BRANCH}`,
+    { headers }
+  )
+  const { status } = response.ok ? await response.json() : {}
+  return ['ahead', 'identical'].includes(status)
+    ? null
+    : `${upstreamNotes} records commit ${commit}, which is not on ${UPSTREAM_REPO}@${UPSTREAM_BRANCH}`
 }
 
 async function listLocalSchemaFiles() {
@@ -220,8 +250,8 @@ async function syncVendored(check) {
   return { problems, updated: stale.map((file) => file.localPath) }
 }
 
-function warnSkipped(err) {
-  const message = `Upstream schema check skipped: ${UPSTREAM_REPO}@${UPSTREAM_REF} is not readable (${err.message})`
+function warnSkipped() {
+  const message = `Upstream schema check skipped: ${UPSTREAM_REPO} is not readable`
   console.warn(message)
   if (process.env.GITHUB_ACTIONS === 'true') {
     console.log(`::warning title=Upstream schema check skipped::${message}`)
@@ -230,7 +260,7 @@ function warnSkipped(err) {
 
 function summary({ check, updated, compared }) {
   if (updated.length > 0) {
-    return `Review the diff, update resolvers if needed, and record the upstream commit in ${localSchemaDir}/UPSTREAM.md`
+    return 'Review the diff and update resolvers if needed'
   }
   if (!check && compared) {
     return 'Vendored files already up to date'
@@ -249,7 +279,7 @@ function report({ check, problems, updated, compared }) {
 
   if (problems.length > 0) {
     console.error(
-      `Upstream schema check against ${UPSTREAM_REPO}@${UPSTREAM_REF} FAILED:`
+      `Upstream schema check against ${UPSTREAM_REPO}@${commit} FAILED:`
     )
     for (const problem of problems) {
       console.error(`  - ${problem}`)
@@ -259,7 +289,7 @@ function report({ check, problems, updated, compared }) {
   }
   if (check && compared) {
     console.log(
-      `Upstream schema check passed: ${Object.keys(VENDORED).length} vendored and ${Object.keys(EXCLUDED).length} excluded files accounted for at ${UPSTREAM_REPO}@${UPSTREAM_REF}`
+      `Upstream schema check passed: ${Object.keys(VENDORED).length} vendored and ${Object.keys(EXCLUDED).length} excluded files accounted for at ${UPSTREAM_REPO}@${commit}`
     )
   }
 }
@@ -268,21 +298,32 @@ async function main() {
   const check = process.argv.includes('--check')
   const problems = await strayLocalFileProblems()
 
-  let upstreamFiles
-  try {
-    upstreamFiles = await listUpstreamSchemaFiles()
-  } catch (err) {
-    if (!(err instanceof UpstreamUnreachable)) {
-      throw err
-    }
-    warnSkipped(err)
+  if (!(await upstreamIsReadable())) {
+    warnSkipped()
     report({ check, problems, updated: [], compared: false })
+    if (!check) {
+      process.exitCode = 1
+    }
     return
   }
 
-  problems.push(...classificationProblems(upstreamFiles))
+  if (check) {
+    commit = await recordedCommit()
+    const problem = await recordedCommitProblem()
+    if (problem) {
+      report({ check, problems: [...problems, problem], updated: [] })
+      return
+    }
+  } else {
+    commit = (await fetchJson(`${UPSTREAM_API}/commits/${UPSTREAM_BRANCH}`)).sha
+  }
+
+  problems.push(...classificationProblems(await listUpstreamSchemaFiles()))
   const { problems: vendoredProblems, updated } = await syncVendored(check)
   problems.push(...vendoredProblems)
+  if (!check) {
+    await recordCommit()
+  }
   report({ check, problems, updated, compared: true })
 }
 

@@ -237,19 +237,28 @@ type is authored in `src/graphql/schema/stub/query.gql` so the operations advert
 exactly the ones implemented.
 
 ```bash
-npm run schema:check   # exit 1 if the copies differ from fcp-dal-api main
-npm run schema:sync    # overwrite the copies from fcp-dal-api main, then review the diff
+npm run schema:check   # exit 1 if the copies differ from the upstream commit recorded in UPSTREAM.md
+npm run schema:sync    # overwrite the copies from fcp-dal-api main and record its commit, then review the diff
 ```
 
-The check runs on every pull request as its own job and fails the PR on any drift, on a
-vendored file that has been renamed or removed upstream, on an upstream file that is not
-yet classified in `scripts/sync-upstream-schema.js`, or on a local file under `upstream/`
-that is not a vendored copy. If the upstream repository cannot be read the job passes with
-a warning annotation on the pull request, since the vendored copies are still what the stub
-serves; the comparison resumes by itself once the repository is readable again.
-`UPSTREAM_REPO`, `UPSTREAM_REF` and `UPSTREAM_SCHEMA_TOKEN` override the repository, ref
-and token the scripts use. After syncing, update the commit recorded in `UPSTREAM.md` and
-add resolvers for any new fields the consumers need.
+The check runs on every pull request as its own job. It compares the copies with the
+upstream commit recorded in `UPSTREAM.md`, so it fails on a hand-edited copy, on a recorded
+commit that is not on upstream `main`, on a file at that commit that is not classified in
+`scripts/sync-upstream-schema.js`, or on a local file under `upstream/` that is not a
+vendored copy. A newer upstream does not fail it. If the upstream repository cannot be read
+the job passes with a warning annotation on the pull request, since the vendored copies are
+still what the stub serves; the comparison resumes by itself once the repository is
+readable again. `UPSTREAM_REPO`, `UPSTREAM_REF` and `UPSTREAM_SCHEMA_TOKEN` override the
+repository, branch and token the scripts use.
+
+The `Sync DAL Schema` workflow runs the sync every weekday morning, and on demand from the
+Actions tab. When a vendored file has changed upstream it opens a pull request from a new
+`chore/sync-dal-schema-*` branch, announces it in Slack and runs the pull request checks
+on it, reported as a single `Schema sync validation` status. Review the diff and push
+resolvers for any new fields the consumers need to that branch; a later sync is added to
+the open pull request as another commit, and the pull request is closed if upstream goes
+back to what `main` already has. The run fails, and alerts Slack, when upstream is
+unreadable or has a new, renamed or removed file that needs classifying by hand.
 
 ## Development
 
