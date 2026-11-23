@@ -34,7 +34,7 @@
   "author": "Defra DDTS",
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@apollo/server": "5.5.1",
+    "@apollo/server": "5.5.2",
     "@as-integrations/hapi": "2.0.2",
     "@defra/cdp-auditing": "0.6.3",
     "@defra/cdp-metrics": "0.6.1",
