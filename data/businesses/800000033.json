@@ -1,0 +1,38 @@
+{
+  "sbi": "800000033",
+  "organisationId": "7410033",
+  "info": {
+    "name": "Test Meadowsweet Farm",
+    "reference": "7000000033",
+    "email": {
+      "address": "contact+800000033@example.test"
+    },
+    "phone": {
+      "mobile": "07700900533",
+      "landline": "01632960533"
+    },
+    "address": {
+      "pafOrganisationName": "Test Meadowsweet Farm Holdings",
+      "line1": "433 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "433",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ33 1ZZ",
+      "uprn": "900000200033",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "land": {
+    "parcels": []
+  },
+  "countyParishHoldings": [],
+  "agreements": []
+}
