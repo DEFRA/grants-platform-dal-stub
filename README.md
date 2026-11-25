@@ -188,6 +188,8 @@ The persona `9000000034` (business `800000025`) holds five parcels and five agre
 
 The persona `9000000041` Wilhelmina Test-Ashdown (business `800000032` Test Hawthorn Gill Farm) also belongs to the grants-ui acceptance suite, for the land parcel text list. It holds three parcels with CS applications and agreements `SUBMIT` and no agreements, listed out of reference order so the list's sorting is tested: `SD6251 8952` (SSSI), `SD5349 3815` (SSSI, pond action) and `NY1215 1016` (SSSI and HEFER).
 
+The persona `9000000043` Ignatius Test-Kenworthy (business `800000033` Test Meadowsweet Farm) also belongs to the grants-ui acceptance suite, for the shutter page. It holds CS applications `SUBMIT`, no parcels and no agreements.
+
 The personas `9000000037` to `9000000040` are targets for the [identifier mapping](#identifier-mapping), one customer per business, each with CS applications and agreements `SUBMIT`:
 
 | CRN          | Name                      | SBI                                   | Extra permissions                    | Notes                                           |

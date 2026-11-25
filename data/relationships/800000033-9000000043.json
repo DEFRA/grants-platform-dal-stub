@@ -1,0 +1,24 @@
+{
+  "sbi": "800000033",
+  "crn": "9000000043",
+  "role": "Business Partner",
+  "permissionGroups": [
+    {
+      "id": "COUNTRYSIDE_STEWARDSHIP_APPLICATIONS",
+      "level": "SUBMIT",
+      "functions": [
+        "View CS Scheme eligibility",
+        "View Applications",
+        "View land, features and covers",
+        "View CS agreement offer",
+        "View draft CS Agreements",
+        "Create and edit a CS application",
+        "Amend a previously submitted CS application",
+        "Amend Land, Features and Covers",
+        "Submit CS Application",
+        "Withdraw CS application",
+        "Receive warnings and notifications"
+      ]
+    }
+  ]
+}

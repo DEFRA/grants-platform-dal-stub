@@ -1,0 +1,37 @@
+{
+  "crn": "9000000043",
+  "info": {
+    "name": {
+      "title": "Mr",
+      "first": "Ignatius",
+      "last": "Test-Kenworthy",
+      "middle": null
+    },
+    "phone": {
+      "mobile": "07700900343",
+      "landline": "01632960343"
+    },
+    "email": {
+      "address": "ignatius.test-kenworthy+9000000043@example.test"
+    },
+    "address": {
+      "pafOrganisationName": null,
+      "line1": "543 Test Lane",
+      "line2": "Test Park",
+      "line3": "Mockford",
+      "line4": "Testshire",
+      "line5": "",
+      "buildingNumberRange": "543",
+      "buildingName": null,
+      "flatName": null,
+      "street": "Test Lane",
+      "city": "Mockford",
+      "county": "Testshire",
+      "postalCode": "ZZ12 3ZZ",
+      "uprn": "900000200143",
+      "dependentLocality": null,
+      "doubleDependentLocality": null
+    }
+  },
+  "personId": "10000143"
+}
