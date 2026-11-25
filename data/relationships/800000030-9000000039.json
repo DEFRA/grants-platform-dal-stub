@@ -4,6 +4,21 @@
   "role": "Business Partner",
   "permissionGroups": [
     {
+      "id": "BUSINESS_DETAILS",
+      "level": "FULL_PERMISSION",
+      "functions": [
+        "View business details",
+        "View people associated with the business",
+        "Amend business and correspondence contact details",
+        "Amend controlled information, such as business name",
+        "Confirm business details",
+        "Amend bank account details",
+        "Make young/new farmer declaration",
+        "Add someone to the business",
+        "Give permissions on business"
+      ]
+    },
+    {
       "id": "COUNTRYSIDE_STEWARDSHIP_AGREEMENTS",
       "level": "SUBMIT",
       "functions": [
